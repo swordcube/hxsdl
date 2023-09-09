@@ -1,4 +1,2 @@
--cp src
--D analyzer-optimize
--main test.Test
---cpp bin/cpp
+--class-path src
+-cpp bin/cpp
