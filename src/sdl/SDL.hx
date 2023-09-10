@@ -1,5 +1,6 @@
 package sdl;
 
+import cpp.ConstCharStar;
 import cpp.RawConstPointer;
 
 @:keep
@@ -15,14 +16,54 @@ extern class SDL {
 	@:native("SDL_Init")
 	public extern static function init(flags:UInt32):Int;
 
+	@:native("SDL_Delay")
+	public extern static function delay(secs:Float):Void;
+	
+	@:native("SDL_GetTicks")
+	public extern static function getTicks():UInt32;
+
+	@:native("SDL_GetTicks64")
+	public extern static function getTicks64():UInt64;
+
 	@:native("SDL_Quit")
 	public extern static function quit():Void;
 
+	@:native("SDL_GetError")
+	public extern static function getError():ConstCharStar;
+
 	@:native("SDL_CreateWindow")
-	public extern static function createWindow(title:String, x:Int, y:Int, width:Int, height:Int, flags:UInt32 = 0):Window;
+	public extern static function createWindow(title:ConstCharStar, x:Int, y:Int, width:Int, height:Int, flags:UInt32 = 0):Window;
 
 	@:native("SDL_DestroyWindow")
 	public extern static function destroyWindow(window:Window):Void;
+
+	@:native("SDL_GetWindowPosition")
+	public static inline function getWindowPosition(window:Window):Point {
+		var winX:Int = 0;
+		var winY:Int = 0;
+		untyped __cpp__("SDL_GetWindowPosition({0}, {1}, {2})", window, Pointer.addressOf(winX), Pointer.addressOf(winY));
+		return Point.create(winX, winY);
+	}
+
+	@:native("SDL_SetWindowPosition")
+	public extern static function setWindowPosition(window:Window, x:Int, y:Int):Void;
+
+	@:native("SDL_GetWindowSize")
+	public static inline function getWindowSize(window:Window):Point {
+		var sizeX:Int = 0;
+		var sizeY:Int = 0;
+		untyped __cpp__("SDL_GetWindowSize({0}, {1}, {2})", window, Pointer.addressOf(sizeX), Pointer.addressOf(sizeY));
+		return Point.create(sizeX, sizeY);
+	}
+
+	@:native("SDL_SetWindowSize")
+	public extern static function setWindowSize(window:Window, x:Int, y:Int):Void;
+
+	@:native("SDL_GetWindowTitle")
+	public extern static function getWindowTitle(window:Window):ConstCharStar;
+
+	@:native("SDL_SetWindowTitle")
+	public extern static function setWindowTitle(window:Window, title:ConstCharStar):Void;
 
 	@:native("SDL_CreateRenderer")
 	public extern static function createRenderer(window:Window, index:Int, flags:UInt32):Renderer;
@@ -42,10 +83,8 @@ extern class SDL {
 	}
 
 	@:native("SDL_RenderCopyEx")
-	public static inline function renderCopyEx(renderer:Renderer, texture:Texture, src:Rectangle, dst:Rectangle, angle:Double, center:Point,
-			flip:sdl.Renderer.RendererFlip = NONE):Int {
-		return untyped __cpp__("SDL_RenderCopy({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src),
-			RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), flip);
+	public static inline function renderCopyEx(renderer:Renderer, texture:Texture, src:Rectangle, dst:Rectangle, angle:Double, center:Point, flip:sdl.Renderer.RendererFlip = NONE):Int {
+		return untyped __cpp__("SDL_RenderCopy({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), flip);
 	}
 
 	@:native("SDL_RenderSetVSync")
@@ -114,6 +153,35 @@ enum abstract Boolean(UInt8) from UInt8 to UInt8 {
 	var TRUE = 1;
 }
 
+@:keep
+enum abstract WindowEventID(UInt8) from UInt8 to UInt8 {
+	var NONE = 0;       /**< Never used */
+    var SHOWN;          /**< Window has been shown */
+    var HIDDEN;         /**< Window has been hidden */
+    var EXPOSED;        /**< Window has been exposed and should be
+                                         redrawn */
+    var MOVED;          /**< Window has been moved to data1, data2
+                                     */
+    var RESIZED;        /**< Window has been resized to data1xdata2 */
+    var SIZE_CHANGED;   /**< The window size has changed, either as
+                                         a result of an API call or through the
+                                         system or user changing the window size. */
+    var MINIMIZED;      /**< Window has been minimized */
+    var MAXIMIZED;      /**< Window has been maximized */
+    var RESTORED;       /**< Window has been restored to normal size
+                                         and position */
+    var ENTER;          /**< Window has gained mouse focus */
+    var LEAVE;          /**< Window has lost mouse focus */
+    var FOCUS_GAINED;   /**< Window has gained keyboard focus */
+    var FOCUS_LOST;     /**< Window has lost keyboard focus */
+    var CLOSE;          /**< The window manager requests that the window be closed */
+    var TAKE_FOCUS;     /**< Window is being offered a focus (should SetWindowInputFocus() on itself or a subwindow, or ignore) */
+    var HIT_TEST;       /**< Window had a hit test that wasn't SDL_HITTEST_NORMAL. */
+    var ICCPROF_CHANGED; /**< The ICC profile of the window's display has changed. */
+    var DISPLAY_CHANGED; /**< Window has been moved to display data1. */
+}
+
+@:keep
 enum abstract PixelType(UInt32) from UInt32 to UInt32 {
 	var UNKNOWN = 0;
 	var INDEX1;
@@ -129,12 +197,14 @@ enum abstract PixelType(UInt32) from UInt32 to UInt32 {
 	var ARRAYF32;
 }
 
+@:keep
 enum abstract BitmapOrder(UInt32) from UInt32 to UInt32 {
 	var ORDER_NONE = 0;
 	var ORDER_4321;
 	var ORDER_1234;
 }
 
+@:keep
 enum abstract PackedOrder(UInt32) from UInt32 to UInt32 {
 	var NONE = 0;
 	var XRGB;
@@ -147,6 +217,7 @@ enum abstract PackedOrder(UInt32) from UInt32 to UInt32 {
 	var BGRA;
 }
 
+@:keep
 enum abstract ArrayOrder(UInt32) from UInt32 to UInt32 {
 	var NONE = 0;
 	var RGB;
@@ -157,6 +228,7 @@ enum abstract ArrayOrder(UInt32) from UInt32 to UInt32 {
 	var ABGR;
 }
 
+@:keep
 enum abstract PackedLayout(UInt32) from UInt32 to UInt32 {
 	var LAYOUT_NONE = 0;
 	var LAYOUT_332;
@@ -170,6 +242,7 @@ enum abstract PackedLayout(UInt32) from UInt32 to UInt32 {
 }
 
 // i almost went insane making this fucking enum
+@:keep
 enum abstract PixelFormatEnum(UInt32) from UInt32 to UInt32 {
 	private static inline function definePixelFormat(type:Int, order:Int, layout:Int, bits:Int, bytes:Int) {
 		return (1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | ((bits) << 8) | ((bytes) << 0);
@@ -215,6 +288,7 @@ enum abstract PixelFormatEnum(UInt32) from UInt32 to UInt32 {
 	var ARGB2101010 = definePixelFormat(PixelType.PACKED32, PackedOrder.ARGB, PackedLayout.LAYOUT_2101010, 32, 4);
 }
 
+@:keep
 enum abstract TextureAccess(Int) from Int to Int {
 	/** Changes rarely, not lockable **/
 	var STATIC = 0;
@@ -226,21 +300,21 @@ enum abstract TextureAccess(Int) from Int to Int {
 
 @:keep
 @:native("SDL_Point")
+@:include("vendor/include/sdl2/SDL.h")
 @:structAccess
-@:structInit
 extern class Point {
 	public var x:Int;
 	public var y:Int;
 
 	public static inline function create(x:Int, y:Int):Point {
-		return untyped __cpp__("SDL_Point{ (int){0}, (int){1} }", x, y);
+		return cast untyped __cpp__("SDL_Point{ (int){0}, (int){1} }", x, y);
 	}
 }
 
 @:keep
 @:native("SDL_Rect")
+@:include("vendor/include/sdl2/SDL.h")
 @:structAccess
-@:structInit
 extern class Rectangle {
 	public var x:Int;
 	public var y:Int;
@@ -248,7 +322,7 @@ extern class Rectangle {
 	public var h:Int;
 
 	public static inline function create(x:Int, y:Int, w:Int, h:Int):Rectangle {
-		return untyped __cpp__("SDL_Rect{ (int){0}, (int){1}, (int){2}, (int){3} }", x, y, w, h);
+		return cast untyped __cpp__("SDL_Rect{ (int){0}, (int){1}, (int){2}, (int){3} }", x, y, w, h);
 	}
 }
 

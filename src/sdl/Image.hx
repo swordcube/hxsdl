@@ -6,6 +6,7 @@ package sdl;
 
 // WARNING: This will not provide EVERY feature SDL image has!
 // Instead we will have basic loading of images.
+
 extern class Image {
     @:native("IMG_Init")
     public extern static function init(flags:UInt32):Int;

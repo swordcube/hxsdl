@@ -29,7 +29,6 @@ class Test {
 
 		while(running) {
 			SDL.pollEvent(event);
-			final event:SDL_Event = event.ref;
 
 			SDL.setRenderDrawColor(renderer, 0, 0, 0, 0);
 			SDL.renderClear(renderer);
@@ -41,8 +40,8 @@ class Test {
 			
 			SDL.renderPresent(renderer);
 
-			switch(event.type) {
-				case SDL_QUIT:
+			switch(event.ref.type) {
+				case QUIT:
 					running = false;
 
 				default:
