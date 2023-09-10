@@ -117,6 +117,9 @@ extern class SDL {
 	@:native("SDL_CreateTexture")
 	public extern static function createTexture(renderer:Renderer, format:UInt32, access:Int, width:Int, height:Int):Texture;
 
+	@:native("SDL_DestroyTexture")
+	public extern static function destroyTexture(texture:Texture):Void;
+
 	@:native("SDL_CreateTextureFromSurface")
 	public extern static function createTextureFromSurface(renderer:Renderer, surface:Surface):Texture;
 
