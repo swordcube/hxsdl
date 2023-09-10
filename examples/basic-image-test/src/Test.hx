@@ -52,5 +52,6 @@ class Test {
 		SDL.destroyRenderer(renderer);
 		SDL.destroyWindow(window);
 		SDL.quit();
+		Image.quit();
 	}
 }
