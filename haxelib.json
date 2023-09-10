@@ -1,6 +1,6 @@
 {
     "name": "hxsdl",
-    "url" : "https://no.no",
+    "url" : "https://github.com/swordcube/hxsdl",
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
     "description": "A haxelib containing hxcpp bindings for SDL.",
