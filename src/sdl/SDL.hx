@@ -70,8 +70,23 @@ extern class SDL {
 	@:native("SDL_CreateRenderer")
 	public extern static function createRenderer(window:Window, index:Int, flags:UInt32):Renderer;
 
+	@:native("SDL_GetRenderDrawColor")
+	public static inline function getRenderDrawColor(renderer:Renderer) {
+		var r:UInt8 = 0;
+		var g:UInt8 = 0;
+		var b:UInt8 = 0;
+		var a:UInt8 = 0;
+		untyped __cpp__("SDL_GetRenderDrawColor({0}, {1}, {2}, {3}, {4})", renderer, Pointer.addressOf(r), Pointer.addressOf(g), Pointer.addressOf(b), Pointer.addressOf(a));
+		return {r: r, g: g, b: b, a: a};
+	}
+
 	@:native("SDL_SetRenderDrawColor")
 	public extern static function setRenderDrawColor(renderer:Renderer, r:UInt8, g:UInt8, b:UInt8, a:UInt8):Int;
+	
+	@:native("SDL_RenderFillRect")
+	public static inline function renderFillRect(renderer:Renderer, rect:Rectangle):Int {
+		return untyped __cpp__("SDL_RenderFillRect({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
 
 	@:native("SDL_RenderClear")
 	public extern static function renderClear(renderer:Renderer):Int;
@@ -86,7 +101,7 @@ extern class SDL {
 
 	@:native("SDL_RenderCopyEx")
 	public static inline function renderCopyEx(renderer:Renderer, texture:Texture, src:Rectangle, dst:Rectangle, angle:Double, center:Point, flip:sdl.Renderer.RendererFlip = NONE):Int {
-		return untyped __cpp__("SDL_RenderCopyEx({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), flip);
+		return untyped __cpp__("SDL_RenderCopyEx({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), untyped __cpp__("(SDL_RendererFlip){0}", flip));
 	}
 
 	@:native("SDL_RenderSetVSync")
