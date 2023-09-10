@@ -86,7 +86,7 @@ extern class SDL {
 
 	@:native("SDL_RenderCopyEx")
 	public static inline function renderCopyEx(renderer:Renderer, texture:Texture, src:Rectangle, dst:Rectangle, angle:Double, center:Point, flip:sdl.Renderer.RendererFlip = NONE):Int {
-		return untyped __cpp__("SDL_RenderCopy({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), flip);
+		return untyped __cpp__("SDL_RenderCopyEx({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), flip);
 	}
 
 	@:native("SDL_RenderSetVSync")
