@@ -1,5 +1,8 @@
 package sdl;
 
+import sdl.SDL.Boolean;
+import cpp.ConstCharStar;
+
 @:keep
 @:include("vendor/include/sdl2_image/SDL_image.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
@@ -15,10 +18,13 @@ extern class Image {
     public extern static function quit():Void;
     
     @:native("IMG_Load")
-    public extern static function load(file:String):Surface;
+    public extern static function load(file:ConstCharStar):Surface;
 
     @:native("IMG_LoadTexture")
-    public extern static function loadTexture(renderer:Renderer, file:String):Texture;
+    public extern static function loadTexture(renderer:Renderer, file:ConstCharStar):Texture;
+
+    @:native("IMG_LoadTyped_RW")
+    public extern static function loadTypedRW(src:RWops, freeSrc:Boolean, type:ConstCharStar):Surface;
 }
 
 enum abstract ImageInitFlags(UInt32) from UInt32 to UInt32 {

@@ -3,6 +3,8 @@ package sdl;
 import cpp.ConstCharStar;
 import cpp.RawConstPointer;
 
+import haxe.io.BytesData;
+
 @:keep
 @:include("vendor/include/sdl2/SDL.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
@@ -125,6 +127,11 @@ extern class SDL {
 
 	@:native("SDL_FreeSurface")
 	public extern static function freeSurface(surface:Surface):Int;
+
+	@:native("SDL_RWFromConstMem")
+	public static inline function rwFromConstMem(mem:BytesData, size:Int):RWops {
+		return untyped __cpp__("SDL_RWFromConstMem((void*)&{0}[0], {1})", mem, size);
+	}
 
 	@:native("SDL_PollEvent")
 	public extern static function pollEvent(event:Event):Int;
