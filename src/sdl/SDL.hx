@@ -33,6 +33,12 @@ extern class SDL {
 	@:native("SDL_GetError")
 	public extern static function getError():ConstCharStar;
 
+	@:native("SDL_GetPerformanceCounter")
+	public extern static function getPerformanceCounter():UInt64;
+
+	@:native("SDL_GetPerformanceFrequency")
+	public extern static function getPerformanceFrequency():UInt64;
+
 	@:native("SDL_CreateWindow")
 	public extern static function createWindow(title:ConstCharStar, x:Int, y:Int, width:Int, height:Int, flags:UInt32 = 0):Window;
 

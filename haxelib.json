@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
     "description": "A haxelib containing hxcpp bindings for SDL.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "classPath": "src/",
-    "releasenote": "",
+    "releasenote": "Bind getPerformanceCounter and getPerformanceFrequency in SDL.hx",
     "contributors": ["swordcube"],
     "dependencies": {
         "hxcpp": ""
