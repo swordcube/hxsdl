@@ -19,7 +19,7 @@ extern class SDL {
 	public extern static function init(flags:UInt32):Int;
 
 	@:native("SDL_Delay")
-	public extern static function delay(secs:Float):Void;
+	public extern static function delay(ms:UInt32):Void;
 	
 	@:native("SDL_GetTicks")
 	public extern static function getTicks():UInt32;
