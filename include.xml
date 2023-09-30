@@ -2,16 +2,19 @@
     <files id="haxe">
         <compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2"/>
         <compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_image"/>
+        <compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_ttf"/>
         <compilerflag value="-I${haxelib:hxsdl}"/>
     </files>
 
     <target id="haxe">
         <lib name="${haxelib:hxsdl}/vendor/lib/sdl2/x64/SDL2.lib" if="windows"/>
         <lib name="${haxelib:hxsdl}/vendor/lib/sdl2_image/x64/SDL2_image.lib" if="windows"/>
+        <lib name="${haxelib:hxsdl}/vendor/lib/sdl2_ttf/x64/SDL2_ttf.lib" if="windows"/>
 
         <lib name="winmm.lib" if="windows"/>
         <lib name="-lSDL2" if="linux || android"/>
         <lib name="-lSDL2_image" if="linux || android"/>
+        <lib name="-lSDL2_ttf" if="linux || android"/>
 
         <vflag name="-framework" value="OpenGL" if="macos || ios"/>
         <vflag name="-framework" value="SDL2" if="macos || ios"/>

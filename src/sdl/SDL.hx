@@ -137,6 +137,20 @@ extern class SDL {
 		return Point.create(w, h);
 	}
 
+	@:native("SDL_GetTextureScaleMode")
+	public static inline function getTextureScaleMode(texture:Texture):Int {
+		var scaleMode:TextureScaleMode = -1;
+		untyped __cpp__("SDL_ScaleMode output;
+		SDL_GetTextureScaleMode({0}, &output);
+		{1} = output", texture, scaleMode);
+		return scaleMode;
+	}
+
+	@:native("SDL_SetTextureScaleMode")
+	public static inline function setTextureScaleMode(texture:Texture, scaleMode:TextureScaleMode):Int {
+		return untyped __cpp__("SDL_SetTextureScaleMode({0}, (SDL_ScaleMode){1})", texture, scaleMode);
+	}
+
 	@:native("SDL_CreateTexture")
 	public extern static function createTexture(renderer:Renderer, format:UInt32, access:Int, width:Int, height:Int):Texture;
 
@@ -148,6 +162,12 @@ extern class SDL {
 
 	@:native("SDL_FreeSurface")
 	public extern static function freeSurface(surface:Surface):Int;
+
+	@:native("SDL_LockSurface")
+	public extern static function lockSurface(surface:Surface):Int;
+
+	@:native("SDL_UnlockSurface")
+	public extern static function unlockSurface(surface:Surface):Int;
 
 	@:native("SDL_RWFromConstMem")
 	public static inline function rwFromConstMem(mem:BytesData, size:Int):RWops {
@@ -330,6 +350,16 @@ enum abstract TextureAccess(Int) from Int to Int {
 }
 
 @:keep
+enum abstract TextureScaleMode(Int) from Int to Int {
+	/** Nearest pixel sampling **/
+	var NEAREST = 0;
+	/** Linear filtering **/ 
+    var LINEAR;
+	/** Anisotropic filtering **/
+    var ANISOTROPIC;
+}
+
+@:keep
 @:native("SDL_Point")
 @:include("vendor/include/sdl2/SDL.h")
 @:structAccess
@@ -354,6 +384,21 @@ extern class Rectangle {
 
 	public static inline function create(x:Int, y:Int, w:Int, h:Int):Rectangle {
 		return cast untyped __cpp__("SDL_Rect{ (int){0}, (int){1}, (int){2}, (int){3} }", x, y, w, h);
+	}
+}
+
+@:keep
+@:native("SDL_Color")
+@:include("vendor/include/sdl2/SDL.h")
+@:structAccess
+extern class Color {
+	public var r:UInt8;
+	public var g:UInt8;
+	public var b:UInt8;
+	public var a:UInt8;
+
+	public static inline function create(r:UInt8, g:UInt8, b:UInt8, a:UInt8):Color {
+		return cast untyped __cpp__("SDL_Color{ (Uint8){0}, (Uint8){1}, (Uint8){2}, (Uint8){3} }", r, g, b, a);
 	}
 }
 
