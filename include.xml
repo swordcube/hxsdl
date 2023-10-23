@@ -17,7 +17,7 @@
         <lib name="-lSDL2_ttf" if="linux || android"/>
 
         <vflag name="-framework" value="OpenGL" if="macos || ios"/>
-        <vflag name="-framework" value="SDL2" if="macos || ios"/>
+        <!-- <vflag name="-framework" value="SDL2" if="macos || ios"/> -->
         <vflag name="-framework" value="Cocoa" if="macos || ios"/>
     </target>
 </xml>
