@@ -4,6 +4,7 @@ import sdl.keyboard.ScanCode;
 import sdl.keyboard.KeyCode;
 
 @:keep
+@:unreflective
 @:native("SDL_Keysym")
 @:structAccess
 extern class KeySym {

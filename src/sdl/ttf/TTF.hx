@@ -4,6 +4,7 @@ import sdl.SDL.Color;
 import cpp.ConstCharStar;
 
 @:keep
+@:unreflective
 @:include("vendor/include/sdl2_ttf/SDL_ttf.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
 

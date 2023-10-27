@@ -3,6 +3,7 @@ package sdl.events;
 import sdl.keyboard.*;
 
 @:keep
+@:unreflective
 @:native("SDL_KeyboardEvent")
 @:include("vendor/include/sdl2/SDL.h")
 @:structAccess

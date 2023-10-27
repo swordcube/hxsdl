@@ -3,6 +3,7 @@ package sdl;
 import sdl.events.*;
 
 @:keep
+@:unreflective
 @:include("vendor/include/sdl2/SDL.h")
 @:native("SDL_Event")
 @:structAccess

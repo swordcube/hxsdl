@@ -1,6 +1,7 @@
 package sdl;
 
 @:keep
+@:unreflective
 @:native("SDL_Surface")
 @:include("vendor/include/sdl2/SDL.h")
 extern class SDL_Surface {
