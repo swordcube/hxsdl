@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
     "description": "A haxelib containing hxcpp bindings for SDL.",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "classPath": "src/",
-    "releasenote": "Add some SDL TTF related functions, get and set texture scale mode functions and lock and unlock surface functions",
+    "releasenote": "Fix Windows compliation\n\nThere is an issue i currently do not know how to fix as of now: You can't use the SDL functions in Main.hx, A workaround is to make a class to use SDL in, then call functions from that class in Main.hx.",
     "contributors": ["swordcube"],
     "dependencies": {
         "hxcpp": ""
