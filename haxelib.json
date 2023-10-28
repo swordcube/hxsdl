@@ -4,7 +4,7 @@
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
     "description": "A haxelib containing hxcpp bindings for SDL.",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "classPath": "src/",
     "releasenote": "Fix more compilation issues.",
     "contributors": ["swordcube"],
