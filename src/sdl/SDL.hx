@@ -6,10 +6,8 @@ import cpp.RawConstPointer;
 import haxe.io.BytesData;
 
 @:keep
-@:unreflective
 @:include("vendor/include/sdl2/SDL.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
-@:unreflective
 
 // WARNING: This will not have every feature SDL has to offer!
 //
@@ -188,7 +186,6 @@ extern class SDL {
 }
 
 @:keep
-@:unreflective
 enum abstract InitFlags(UInt32) to UInt32 from UInt32 {
 	var VIDEO = 0x00000020;
 	var AUDIO = 0x00000010;
@@ -202,14 +199,12 @@ enum abstract InitFlags(UInt32) to UInt32 from UInt32 {
 }
 
 @:keep
-@:unreflective
 enum abstract Boolean(UInt8) from UInt8 to UInt8 {
 	var FALSE = 0;
 	var TRUE = 1;
 }
 
 @:keep
-@:unreflective
 enum abstract WindowEventID(UInt8) from UInt8 to UInt8 {
 	var NONE = 0;       /**< Never used */
     var SHOWN;          /**< Window has been shown */
@@ -238,7 +233,6 @@ enum abstract WindowEventID(UInt8) from UInt8 to UInt8 {
 }
 
 @:keep
-@:unreflective
 enum abstract PixelType(UInt32) from UInt32 to UInt32 {
 	var UNKNOWN = 0;
 	var INDEX1;
@@ -255,7 +249,6 @@ enum abstract PixelType(UInt32) from UInt32 to UInt32 {
 }
 
 @:keep
-@:unreflective
 enum abstract BitmapOrder(UInt32) from UInt32 to UInt32 {
 	var ORDER_NONE = 0;
 	var ORDER_4321;
@@ -263,7 +256,6 @@ enum abstract BitmapOrder(UInt32) from UInt32 to UInt32 {
 }
 
 @:keep
-@:unreflective
 enum abstract PackedOrder(UInt32) from UInt32 to UInt32 {
 	var NONE = 0;
 	var XRGB;
@@ -277,7 +269,6 @@ enum abstract PackedOrder(UInt32) from UInt32 to UInt32 {
 }
 
 @:keep
-@:unreflective
 enum abstract ArrayOrder(UInt32) from UInt32 to UInt32 {
 	var NONE = 0;
 	var RGB;
@@ -289,7 +280,6 @@ enum abstract ArrayOrder(UInt32) from UInt32 to UInt32 {
 }
 
 @:keep
-@:unreflective
 enum abstract PackedLayout(UInt32) from UInt32 to UInt32 {
 	var LAYOUT_NONE = 0;
 	var LAYOUT_332;
@@ -304,7 +294,6 @@ enum abstract PackedLayout(UInt32) from UInt32 to UInt32 {
 
 // i almost went insane making this fucking enum
 @:keep
-@:unreflective
 enum abstract PixelFormatEnum(UInt32) from UInt32 to UInt32 {
 	private static inline function definePixelFormat(type:Int, order:Int, layout:Int, bits:Int, bytes:Int) {
 		return (1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | ((bits) << 8) | ((bytes) << 0);
@@ -351,7 +340,6 @@ enum abstract PixelFormatEnum(UInt32) from UInt32 to UInt32 {
 }
 
 @:keep
-@:unreflective
 enum abstract TextureAccess(Int) from Int to Int {
 	/** Changes rarely, not lockable **/
 	var STATIC = 0;
@@ -362,7 +350,6 @@ enum abstract TextureAccess(Int) from Int to Int {
 }
 
 @:keep
-@:unreflective
 enum abstract TextureScaleMode(Int) from Int to Int {
 	/** Nearest pixel sampling **/
 	var NEAREST = 0;
@@ -373,7 +360,6 @@ enum abstract TextureScaleMode(Int) from Int to Int {
 }
 
 @:keep
-@:unreflective
 @:native("SDL_Point")
 @:include("vendor/include/sdl2/SDL.h")
 @:structAccess
@@ -387,7 +373,6 @@ extern class Point {
 }
 
 @:keep
-@:unreflective
 @:native("SDL_Rect")
 @:include("vendor/include/sdl2/SDL.h")
 @:structAccess
@@ -403,7 +388,6 @@ extern class Rectangle {
 }
 
 @:keep
-@:unreflective
 @:native("SDL_Color")
 @:include("vendor/include/sdl2/SDL.h")
 @:structAccess

@@ -1,7 +1,6 @@
 package sdl.events;
 
 @:keep
-@:unreflective
 @:native("SDL_WindowEvent")
 @:include("vendor/include/sdl2/SDL.h")
 @:structAccess

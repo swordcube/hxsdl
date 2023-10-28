@@ -4,7 +4,6 @@ import sdl.SDL.Boolean;
 import cpp.ConstCharStar;
 
 @:keep
-@:unreflective
 @:include("vendor/include/sdl2_image/SDL_image.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
 
