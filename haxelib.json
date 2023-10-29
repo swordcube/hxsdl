@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
     "description": "A haxelib containing hxcpp bindings for SDL.",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "classPath": "src/",
-    "releasenote": "Force 64-bit compilation (unless the 32_BIT flag is defined in your hxml) and force the console window from opening the app from File Explorer to not show up.",
+    "releasenote": "Fix even more compilation issues.",
     "contributors": ["swordcube"],
     "dependencies": {
         "hxcpp": ""
