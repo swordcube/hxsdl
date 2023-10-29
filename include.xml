@@ -23,11 +23,9 @@
 
     <target id="haxe">
         <section if="windows">
-            <libpath name="${haxelib:hxsdl}/vendor/lib/x64" />
-
-            <lib name="sdl2/SDL2.lib" />
-            <lib name="sdl2_image/SDL2_image.lib" />
-            <lib name="sdl2_ttf/SDL2_ttf.lib" />
+            <lib name="${haxelib:hxsdl}/vendor/lib/x64/sdl2/SDL2.lib" />
+            <lib name="${haxelib:hxsdl}/vendor/lib/x64/sdl2_image/SDL2_image.lib" />
+            <lib name="${haxelib:hxsdl}/vendor/lib/x64/sdl2_ttf/SDL2_ttf.lib" />
 
             <lib name="winmm.lib" if="windows" />
         </section>
