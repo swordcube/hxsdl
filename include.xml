@@ -23,8 +23,7 @@
 
     <target id="haxe">
         <section if="windows">
-            <libpath name="${haxelib:hxsdl}/vendor/lib/x64" if="HXCPP_M64" />
-            <libpath name="${haxelib:hxsdl}/vendor/lib/x86" unless="HXCPP_M64" />
+            <libpath name="${haxelib:hxsdl}/vendor/lib/x64" />
 
             <lib name="sdl2/SDL2.lib" />
             <lib name="sdl2_image/SDL2_image.lib" />
