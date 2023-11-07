@@ -18,6 +18,9 @@ extern class SDL {
 	@:native("SDL_Init")
 	public extern static function init(flags:UInt32):Int;
 
+	@:native("SDL_SetHint")
+	public extern static function setHint(name:ConstCharStar, value:ConstCharStar):UInt8;
+
 	@:native("SDL_Delay")
 	public extern static function delay(ms:UInt32):Void;
 	
