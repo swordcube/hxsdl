@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
     "description": "A haxelib containing hxcpp bindings for SDL.",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "classPath": "src/",
-    "releasenote": "Add \"setHint\" to SDL.hx.",
+    "releasenote": "Bind RenderDrawRect and add float versions of some classes & functions.",
     "contributors": ["swordcube"],
     "dependencies": {
         "hxcpp": ""

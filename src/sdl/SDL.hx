@@ -92,9 +92,24 @@ extern class SDL {
 	@:native("SDL_SetRenderDrawColor")
 	public extern static function setRenderDrawColor(renderer:Renderer, r:UInt8, g:UInt8, b:UInt8, a:UInt8):Int;
 	
+	@:native("SDL_RenderDrawRect")
+	public static inline function renderDrawRect(renderer:Renderer, rect:Rectangle):Int {
+		return untyped __cpp__("SDL_RenderDrawRect({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
+
 	@:native("SDL_RenderFillRect")
 	public static inline function renderFillRect(renderer:Renderer, rect:Rectangle):Int {
 		return untyped __cpp__("SDL_RenderFillRect({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
+
+	@:native("SDL_RenderDrawRectF")
+	public static inline function renderDrawRectF(renderer:Renderer, rect:FRectangle):Int {
+		return untyped __cpp__("SDL_RenderDrawRectF({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
+
+	@:native("SDL_RenderFillRectF")
+	public static inline function renderFillRectF(renderer:Renderer, rect:FRectangle):Int {
+		return untyped __cpp__("SDL_RenderFillRectF({0}, {1})", renderer, RawConstPointer.addressOf(rect));
 	}
 
 	@:native("SDL_RenderClear")
@@ -111,6 +126,16 @@ extern class SDL {
 	@:native("SDL_RenderCopyEx")
 	public static inline function renderCopyEx(renderer:Renderer, texture:Texture, src:Rectangle, dst:Rectangle, angle:Double, center:Point, flip:sdl.Renderer.RendererFlip = NONE):Int {
 		return untyped __cpp__("SDL_RenderCopyEx({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), untyped __cpp__("(SDL_RendererFlip){0}", flip));
+	}
+
+	@:native("SDL_RenderCopyF")
+	public static inline function renderCopyF(renderer:Renderer, texture:Texture, src:Rectangle, dst:FRectangle):Int {
+		return untyped __cpp__("SDL_RenderCopyF({0}, {1}, {2}, {3})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst));
+	}
+
+	@:native("SDL_RenderCopyExF")
+	public static inline function renderCopyExF(renderer:Renderer, texture:Texture, src:Rectangle, dst:FRectangle, angle:Double, center:FPoint, flip:sdl.Renderer.RendererFlip = NONE):Int {
+		return untyped __cpp__("SDL_RenderCopyExF({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), untyped __cpp__("(SDL_RendererFlip){0}", flip));
 	}
 
 	@:native("SDL_RenderSetVSync")
@@ -376,6 +401,19 @@ extern class Point {
 }
 
 @:keep
+@:native("SDL_FPoint")
+@:include("vendor/include/sdl2/SDL.h")
+@:structAccess
+extern class FPoint {
+	public var x:Float;
+	public var y:Float;
+
+	public static inline function create(x:Float, y:Float):FPoint {
+		return cast untyped __cpp__("SDL_FPoint{ (double){0}, (double){1} }", x, y);
+	}
+}
+
+@:keep
 @:native("SDL_Rect")
 @:include("vendor/include/sdl2/SDL.h")
 @:structAccess
@@ -387,6 +425,21 @@ extern class Rectangle {
 
 	public static inline function create(x:Int, y:Int, w:Int, h:Int):Rectangle {
 		return cast untyped __cpp__("SDL_Rect{ (int){0}, (int){1}, (int){2}, (int){3} }", x, y, w, h);
+	}
+}
+
+@:keep
+@:native("SDL_FRect")
+@:include("vendor/include/sdl2/SDL.h")
+@:structAccess
+extern class FRectangle {
+	public var x:Float;
+	public var y:Float;
+	public var w:Float;
+	public var h:Float;
+
+	public static inline function create(x:Float, y:Float, w:Float, h:Float):FRectangle {
+		return cast untyped __cpp__("SDL_FRect{ (double){0}, (double){1}, (double){2}, (double){3} }", x, y, w, h);
 	}
 }
 
