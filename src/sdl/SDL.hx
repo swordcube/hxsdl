@@ -6,7 +6,7 @@ import cpp.RawConstPointer;
 import haxe.io.BytesData;
 
 @:keep
-@:include("vendor/include/sdl2/SDL.h")
+@:include("vendor/include/includeWorkaround.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
 
 // WARNING: This will not have every feature SDL has to offer!
@@ -75,6 +75,9 @@ extern class SDL {
 
 	@:native("SDL_SetWindowTitle")
 	public extern static function setWindowTitle(window:Window, title:ConstCharStar):Void;
+
+	@:native("SDL_SetWindowIcon")
+	public extern static function setWindowIcon(window:Window, surface:Surface):Void;
 
 	@:native("SDL_CreateRenderer")
 	public extern static function createRenderer(window:Window, index:Int, flags:UInt32):Renderer;
@@ -389,7 +392,7 @@ enum abstract TextureScaleMode(Int) from Int to Int {
 
 @:keep
 @:native("SDL_Point")
-@:include("vendor/include/sdl2/SDL.h")
+@:include("vendor/include/includeWorkaround.h")
 @:structAccess
 extern class Point {
 	public var x:Int;
@@ -402,7 +405,7 @@ extern class Point {
 
 @:keep
 @:native("SDL_FPoint")
-@:include("vendor/include/sdl2/SDL.h")
+@:include("vendor/include/includeWorkaround.h")
 @:structAccess
 extern class FPoint {
 	public var x:Float;
@@ -415,7 +418,7 @@ extern class FPoint {
 
 @:keep
 @:native("SDL_Rect")
-@:include("vendor/include/sdl2/SDL.h")
+@:include("vendor/include/includeWorkaround.h")
 @:structAccess
 extern class Rectangle {
 	public var x:Int;
@@ -430,7 +433,7 @@ extern class Rectangle {
 
 @:keep
 @:native("SDL_FRect")
-@:include("vendor/include/sdl2/SDL.h")
+@:include("vendor/include/includeWorkaround.h")
 @:structAccess
 extern class FRectangle {
 	public var x:Float;
@@ -445,7 +448,7 @@ extern class FRectangle {
 
 @:keep
 @:native("SDL_Color")
-@:include("vendor/include/sdl2/SDL.h")
+@:include("vendor/include/includeWorkaround.h")
 @:structAccess
 extern class Color {
 	public var r:UInt8;

@@ -2,7 +2,7 @@ package sdl;
 
 @:keep
 @:native("SDL_Surface")
-@:include("vendor/include/sdl2/SDL.h")
+@:include("vendor/include/includeWorkaround.h")
 extern class SDL_Surface {
     public var w:Int;
     public var h:Int;

@@ -4,7 +4,7 @@ import sdl.keyboard.*;
 
 @:keep
 @:native("SDL_KeyboardEvent")
-@:include("vendor/include/sdl2/SDL.h")
+@:include("vendor/include/includeWorkaround.h")
 @:structAccess
 extern class KeyboardEvent {
     public var timestamp:UInt32;

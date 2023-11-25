@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
     "description": "A haxelib containing hxcpp bindings for SDL.",
-    "version": "0.1.9",
+    "version": "0.2.0",
     "classPath": "src/",
-    "releasenote": "Bind RenderDrawRect and add float versions of some classes & functions.",
+    "releasenote": "SDL_SetWindowIcon has now been binded, and you can also now use SDL functions in a Haxe Main.hx file!",
     "contributors": ["swordcube"],
     "dependencies": {
         "hxcpp": ""

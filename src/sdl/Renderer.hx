@@ -2,7 +2,7 @@ package sdl;
 
 @:keep
 @:native("SDL_Renderer")
-@:include("vendor/include/sdl2/SDL.h")
+@:include("vendor/include/includeWorkaround.h")
 extern class SDL_Renderer {}
 
 typedef Renderer = Pointer<SDL_Renderer>;

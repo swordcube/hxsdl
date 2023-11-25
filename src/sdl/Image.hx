@@ -4,7 +4,7 @@ import sdl.SDL.Boolean;
 import cpp.ConstCharStar;
 
 @:keep
-@:include("vendor/include/sdl2_image/SDL_image.h")
+@:include("vendor/include/includeWorkaround.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
 
 // WARNING: This will not provide EVERY feature SDL image has!
