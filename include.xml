@@ -22,12 +22,23 @@
     </section>
 
     <target id="haxe">
-        <section if="windows">
-            <lib name="${haxelib:hxsdl}/vendor/lib/x64/sdl2/SDL2.lib" />
-            <lib name="${haxelib:hxsdl}/vendor/lib/x64/sdl2_image/SDL2_image.lib" />
-            <lib name="${haxelib:hxsdl}/vendor/lib/x64/sdl2_ttf/SDL2_ttf.lib" />
+        <section if="windows"> 
+            <!--64 bit-->
+            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2/SDL2.lib" if="HXCPP_M64"/>
+            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_image/SDL2_image.lib" if="HXCPP_M64" />
+            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_ttf/SDL2_ttf.lib" if="HXCPP_M64"/>
+            <!--32 bit-->
+            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2/SDL2.lib" if="HXCPP_M32"/>
+            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_image/SDL2_image.lib" if="HXCPP_M32" />
+            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_ttf/SDL2_ttf.lib" if="HXCPP_M32"/>
+            <lib name="winmm.lib"/>
+        </section>  
 
-            <lib name="winmm.lib" if="windows" />
+        <section if="macos"> 
+            <!--64 bit-->
+            <lib name="${haxelib:hxsdl}/vendor/lib/macOS/x64/libSDL2.a" />
+            <lib name="${haxelib:hxsdl}/vendor/lib/macOS/x64/libSDL2_image.a" />
+            <lib name="${haxelib:hxsdl}/vendor/lib/macOS/x64/libSDL2_ttf.a" />
         </section>
 
         <section if="linux || android">

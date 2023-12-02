@@ -2,3 +2,4 @@
 /bin
 /examples/basic-image-test/bin
 /release.zip
+.DS_Store

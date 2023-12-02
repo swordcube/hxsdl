@@ -4,7 +4,7 @@ import sdl.SDL.Color;
 import cpp.ConstCharStar;
 
 @:keep
-@:include("vendor/include/includeWorkaround.h")
+@:include("vendor/include/Headers.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
 
 // WARNING: This will not provide EVERY feature SDL image has!

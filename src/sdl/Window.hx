@@ -2,7 +2,7 @@ package sdl;
 
 @:keep
 @:native("SDL_Window")
-@:include("vendor/include/includeWorkaround.h")
+@:include("vendor/include/Headers.h")
 extern class SDL_Window {}
 
 typedef Window = Pointer<SDL_Window>;
