@@ -2,7 +2,7 @@ package sdl.events;
 
 @:keep
 @:native("SDL_WindowEvent")
-@:include("vendor/include/includeWorkaround.h")
+@:include("vendor/include/Headers.h")
 @:structAccess
 extern class WindowEvent {
     var timestamp:UInt32;

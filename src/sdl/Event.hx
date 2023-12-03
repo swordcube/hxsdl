@@ -3,7 +3,7 @@ package sdl;
 import sdl.events.*;
 
 @:keep
-@:include("vendor/include/includeWorkaround.h")
+@:include("vendor/include/Headers.h")
 @:native("SDL_Event")
 @:structAccess
 extern class SDL_Event {
