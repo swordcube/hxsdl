@@ -1,61 +1,65 @@
 <xml>
-    <pragma once="true" />
+	<pragma once="true" />
 
-    <files id="haxe">
-        <compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2" />
-        <compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_image" />
-        <compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_ttf" />
-        <compilerflag value="-I${haxelib:hxsdl}" />
-    </files>
-    
-    <files id="__main__">
-        <compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2" />
-        <compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_image" />
-        <compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_ttf" />
-        <compilerflag value="-I${haxelib:hxsdl}" />
-    </files>
+	<files id="haxe">
+		<compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2" />
+		<compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_image" />
+		<compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_ttf" />
+		<compilerflag value="-I${haxelib:hxsdl}" />
+	</files>
 
-    <section if="windows HXCPP_M64">
-        <copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2" toolId="exe" overwrite="true" />
-        <copyFile name="SDL2_image.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_image" toolId="exe" overwrite="true" />
-        <copyFile name="SDL2_ttf.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_ttf" toolId="exe" overwrite="true" />
-    </section>
+	<files id="__main__">
+		<compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2" />
+		<compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_image" />
+		<compilerflag value="-I${haxelib:hxsdl}/vendor/include/sdl2_ttf" />
+		<compilerflag value="-I${haxelib:hxsdl}" />
+	</files>
 
-    <section if="windows HXCPP_M32">
-        <copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2" toolId="exe" overwrite="true" />
-        <copyFile name="SDL2_image.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_image" toolId="exe" overwrite="true" />
-        <copyFile name="SDL2_ttf.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_ttf" toolId="exe" overwrite="true" />
-    </section>
+	<section if="windows HXCPP_M64">
+		<copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2" toolId="exe" overwrite="true" />
+		<copyFile name="SDL2_image.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_image" toolId="exe" overwrite="true" />
+		<copyFile name="SDL2_ttf.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_ttf" toolId="exe" overwrite="true" />
+	</section>
 
-    <target id="haxe">
-        <section if="windows"> 
-            <!--64 bit-->
-            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2/SDL2.lib" if="HXCPP_M64"/>
-            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_image/SDL2_image.lib" if="HXCPP_M64" />
-            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_ttf/SDL2_ttf.lib" if="HXCPP_M64"/>
-            <!--32 bit-->
-            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2/SDL2.lib" if="HXCPP_M32"/>
-            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_image/SDL2_image.lib" if="HXCPP_M32" />
-            <lib name="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_ttf/SDL2_ttf.lib" if="HXCPP_M32"/>
-            <lib name="winmm.lib"/>
-        </section>  
+	<section if="windows HXCPP_M32">
+		<copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2" toolId="exe" overwrite="true" />
+		<copyFile name="SDL2_image.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_image" toolId="exe" overwrite="true" />
+		<copyFile name="SDL2_ttf.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_ttf" toolId="exe" overwrite="true" />
+	</section>
 
-        <section if="macos"> 
-            <!--64 bit-->
-            <lib name="${haxelib:hxsdl}/vendor/lib/macOS/x64/libSDL2.a" />
-            <lib name="${haxelib:hxsdl}/vendor/lib/macOS/x64/libSDL2_image.a" />
-            <lib name="${haxelib:hxsdl}/vendor/lib/macOS/x64/libSDL2_ttf.a" />
-        </section>
+	<target id="haxe">
+		<!--64 bit-->
+		<section if="windows HXCPP_M64">
+			<lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2/SDL2.lib" />
+			<lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_image/SDL2_image.lib" />
+			<lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_ttf/SDL2_ttf.lib" />
+			<lib name="winmm.lib" />
+		</section>
 
-        <section if="linux || android">
-            <lib name="-lSDL2" />
-            <lib name="-lSDL2_image" />
-            <lib name="-lSDL2_ttf" />
-        </section>
+		<!--32 bit-->
+		<section if="windows HXCPP_M32">
+			<lib name="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2/SDL2.lib" />
+			<lib name="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_image/SDL2_image.lib" />
+			<lib name="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_ttf/SDL2_ttf.lib" />
+		</section>
 
-        <section if="macos || ios">
-            <vflag name="-framework" value="OpenGL" />
-            <vflag name="-framework" value="Cocoa" />
-        </section>
-    </target>
+		<!--64 bit only-->
+		<section if="macos">
+			<lib name="${haxelib:hxsdl}/vendor/lib/macOS/x64/libSDL2.a" />
+			<lib name="${haxelib:hxsdl}/vendor/lib/macOS/x64/libSDL2_image.a" />
+			<lib name="${haxelib:hxsdl}/vendor/lib/macOS/x64/libSDL2_ttf.a" />
+		</section>
+
+		<section if="linux || android">
+			<lib name="-lSDL2" />
+			<lib name="-lSDL2_image" />
+			<lib name="-lSDL2_ttf" />
+		</section>
+
+		<!--additional macos flags that maybe do something i don't know bro-->
+		<section if="macos || ios">
+			<vflag name="-framework" value="OpenGL" />
+			<vflag name="-framework" value="Cocoa" />
+		</section>
+	</target>
 </xml>
