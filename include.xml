@@ -15,10 +15,16 @@
         <compilerflag value="-I${haxelib:hxsdl}" />
     </files>
 
-    <section if="windows">
-        <copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/x64/sdl2" toolId="exe" overwrite="true" />
-        <copyFile name="SDL2_image.dll" from="${haxelib:hxsdl}/vendor/lib/x64/sdl2_image" toolId="exe" overwrite="true" />
-        <copyFile name="SDL2_ttf.dll" from="${haxelib:hxsdl}/vendor/lib/x64/sdl2_ttf" toolId="exe" overwrite="true" />
+    <section if="windows HXCPP_M64">
+        <copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2" toolId="exe" overwrite="true" />
+        <copyFile name="SDL2_image.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_image" toolId="exe" overwrite="true" />
+        <copyFile name="SDL2_ttf.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2_ttf" toolId="exe" overwrite="true" />
+    </section>
+
+    <section if="windows HXCPP_M32">
+        <copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2" toolId="exe" overwrite="true" />
+        <copyFile name="SDL2_image.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_image" toolId="exe" overwrite="true" />
+        <copyFile name="SDL2_ttf.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2_ttf" toolId="exe" overwrite="true" />
     </section>
 
     <target id="haxe">
