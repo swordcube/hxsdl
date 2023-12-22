@@ -8,6 +8,9 @@ Haxe/hxcpp @:native bindings for [SDL](https://github.com/libsdl-org/SDL), [SDL 
 
 This library only works with the Haxe `cpp` target via `hxcpp`.
 
+Keep in mind that not everything in SDL will be included nor will they all work!
+If you notice something is broken or is missing, make an issue/pull request.
+
 ---
 
 ## Installation
