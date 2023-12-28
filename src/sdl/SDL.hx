@@ -1,15 +1,16 @@
 package sdl;
 
+import cpp.UInt8;
 import cpp.UInt16;
-import cpp.RawConstPointer;
+import cpp.UInt32;
 import cpp.UInt64;
+import cpp.RawConstPointer;
 import cpp.ConstPointer;
-import cpp.VarArg;
+import cpp.ConstCharStar;
 import cpp.CastCharStar;
 import cpp.Rest;
 import cpp.Pointer;
-import cpp.ConstCharStar;
-import cpp.UInt32;
+import cpp.VarArg;
 
 import sdl.Types;
 
@@ -547,6 +548,86 @@ extern class SDL {
 
 	@:native("SDL_CreateRenderer")
 	static function createRenderer(window:Window, index:Int, flags:RendererFlags):Renderer;
+
+	@:native("SDL_CreateSoftwareRenderer")
+	static function createSoftwareRenderer(surface:Surface):Renderer;
+
+	@:native("SDL_GetRenderer")
+	static function getRenderer(window:Window):Renderer;
+
+	@:native("SDL_RenderGetWindow")
+	static function renderGetWindow(renderer:Window):Window;
+
+	@:native("SDL_GetRendererInfo")
+	static inline function getRendererInfo(renderer:Renderer):RendererInfo {
+		var result:Int;
+		untyped __cpp__("SDL_RendererInfo _info; {1} = SDL_GetRendererInfo({0}, &_info)", renderer, result);
+		return (result == 0) ? untyped __cpp__("_info") : null;
+	}
+
+	@:native("SDL_GetRendererOutputSize")
+	static inline function getRendererOutputSize(renderer:Renderer):Point {
+		var width:Int;
+		var height:Int;
+		untyped __cpp__("SDL_GetRendererOutputSize({0}, {1}, {2})", renderer, Pointer.addressOf(width), Pointer.addressOf(height));
+		return Point.create(width, height);
+	}
+	
+	@:native("SDL_CreateTexture")
+	static function createTexture(renderer:Renderer, format:UInt32, access:Int, width:Int, height:Int):Texture;
+
+	@:native("SDL_CreateTextureFromSurface")
+	static function createTextureFromSurface(renderer:Renderer, surface:Surface):Texture;
+
+	@:native("SDL_QueryTexture")
+	static function queryTexture(texture:Texture, format:Pointer<PixelFormat>, access:Pointer<Int>, width:Pointer<Int>, height:Pointer<Int>):Int;
+
+	@:native("SDL_SetTextureColorMod")
+	static function setTextureColorMod(texture:Texture, r:UInt8, g:UInt8, b:UInt8):Int;
+
+	/**
+	 * Alpha in returned color will always be 255
+	 */
+	@:native("SDL_GetTextureColorMod")
+	static inline function getTextureColorMod(texture:Texture):Color {
+		var r:UInt8;
+		var g:UInt8;
+		var b:UInt8;
+		untyped __cpp__("SDL_GetTextureColorMod({0}, {1}, {2}, {3})", texture, Pointer.addressOf(r), Pointer.addressOf(g), Pointer.addressOf(b));
+		return Color.create(r, g, b, 255);
+	}
+
+	@:native("SDL_SetTextureAlphaMod")
+	static function setTextureAlphaMod(texture:Texture, alpha:UInt8):Int;
+
+	@:native("SDL_GetTextureAlphaMod")
+	static inline function getTextureAlphaMod(texture:Texture):UInt8 {
+		var a:UInt8;
+		untyped __cpp__("SDL_GetTextureAlphaMod({0}, {1})", texture, Pointer.addressOf(a));
+		return a;
+	}
+
+	@:native("SDL_SetTextureBlendMode")
+	static function setTextureBlendMode(texture:Texture, blend:BlendMode):Int;
+
+	@:native("SDL_GetTextureBlendMode")
+	static inline function getTextureBlendMode(texture:Texture):BlendMode {
+		var blend:BlendMode = INVALID;
+		untyped __cpp__("SDL_GetTextureBlendMode({0}, {1})", texture, Pointer.addressOf(blend));
+		return blend;
+	}
+
+	@:native("SDL_GetTextureScaleMode")
+	public static inline function getTextureScaleMode(texture:Texture):Int {
+		var scaleMode:TextureScaleMode;
+		untyped __cpp__("SDL_ScaleMode output; SDL_GetTextureScaleMode({0}, &output); {1} = output", texture, scaleMode);
+		return scaleMode;
+	}
+
+	@:native("SDL_SetTextureScaleMode")
+	public static inline function setTextureScaleMode(texture:Texture, scaleMode:TextureScaleMode):Int {
+		return untyped __cpp__("SDL_SetTextureScaleMode({0}, (SDL_ScaleMode){1})", texture, scaleMode);
+	}
 
 	// haxe helper functions //
 	@:native("SDL_Event")

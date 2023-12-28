@@ -3746,12 +3746,21 @@ enum abstract RendererFlags(UInt32) from UInt32 to UInt32 {
 
 }
 
+enum abstract BlendMode(UInt32) from UInt32 to UInt32 {
+	var NONE = 0x00000000;
+    var BLEND = 0x00000001;
+    var ADD = 0x00000002;
+    var MOD = 0x00000004;
+    var MUL = 0x00000008;
+    var INVALID = 0x7FFFFFFF;
+}
+
 @:include("vendor/include/Headers.h")
 @:native("SDL_RendererInfo")
 @:structAccess
 extern class SDL_RendererInfo {
 	public var name:ConstCharStar;
-	public var flags:UInt32;
+	public var flags:RendererFlags;
 
 	@:native("num_texture_formats")
 	public var numTextureFormats:UInt32;
