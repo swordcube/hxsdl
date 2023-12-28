@@ -1,55 +1,701 @@
 package sdl;
 
-import cpp.ConstCharStar;
+import cpp.UInt16;
 import cpp.RawConstPointer;
+import cpp.UInt64;
+import cpp.ConstPointer;
+import cpp.VarArg;
+import cpp.CastCharStar;
+import cpp.Rest;
+import cpp.Pointer;
+import cpp.ConstCharStar;
+import cpp.UInt32;
 
-import haxe.io.BytesData;
+import sdl.Types;
 
-@:keep
 @:include("vendor/include/Headers.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
 
-// WARNING: This will not have every feature SDL has to offer!
-//
-// Make an issue explaining what feature you want implemented over on GitHub!
-// https://github.com/swordcube/hxsdl/issues
-
 extern class SDL {
+	// SDL.h //
+	/**
+	 * Initialize the SDL library.
+	 *
+	 * SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the
+	 * two may be used interchangeably. Though for readability of your code
+	 * SDL_InitSubSystem() might be preferred.
+	 *
+	 * The file I/O (for example: SDL_RWFromFile) and threading (SDL_CreateThread)
+	 * subsystems are initialized by default. Message boxes
+	 * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
+	 * video subsystem, in hopes of being useful in showing an error dialog when
+	 * SDL_Init fails. You must specifically initialize other subsystems if you
+	 * use them in your application.
+	 *
+	 * Logging (such as SDL_Log) works without initialization, too.
+	 *
+	 * `flags` may be any of the following OR'd together:
+	 *
+	 * - `SDL_INIT_TIMER`: timer subsystem
+	 * - `SDL_INIT_AUDIO`: audio subsystem
+	 * - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events
+	 *   subsystem
+	 * - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+	 *   events subsystem
+	 * - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem
+	 * - `SDL_INIT_GAMECONTROLLER`: controller subsystem; automatically
+	 *   initializes the joystick subsystem
+	 * - `SDL_INIT_EVENTS`: events subsystem
+	 * - `SDL_INIT_EVERYTHING`: all of the above subsystems
+	 * - `SDL_INIT_NOPARACHUTE`: compatibility; this flag is ignored
+	 *
+	 * Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()
+	 * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
+	 * call SDL_Quit() to force shutdown). If a subsystem is already loaded then
+	 * this call will increase the ref-count and return.
+	 *
+	 * @param flags subsystem initialization flags
+	 * @returns 0 on success or a negative error code on failure; call
+	 *          SDL_GetError() for more information.
+	 *
+	 * @since SDL 2.0.0.
+	 */
 	@:native("SDL_Init")
-	public extern static function init(flags:UInt32):Int;
+	static function init(flags:InitFlags):Int;
 
-	@:native("SDL_SetHint")
-	public extern static function setHint(name:ConstCharStar, value:ConstCharStar):UInt8;
-
-	@:native("SDL_Delay")
-	public extern static function delay(ms:UInt32):Void;
 	
-	@:native("SDL_GetTicks")
-	public extern static function getTicks():UInt32;
+	/**
+	 * Compatibility function to initialize the SDL library.
+	 *
+	 * In SDL2, this function and SDL_Init() are interchangeable.
+	 *
+	 * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+	 * @returns 0 on success or a negative error code on failure; call
+	 *          SDL_GetError() for more information.
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_InitSubSystem")
+	static function initSubSystem(flags:InitFlags):Int;
 
-	@:native("SDL_GetTicks64")
-	public extern static function getTicks64():UInt64;
+	/**
+	 * Shut down specific SDL subsystems.
+	 *
+	 * If you start a subsystem using a call to that subsystem's init function
+	 * (for example SDL_VideoInit()) instead of SDL_Init() or SDL_InitSubSystem(),
+	 * SDL_QuitSubSystem() and SDL_WasInit() will not work. You will need to use
+	 * that subsystem's quit function (SDL_VideoQuit()) directly instead. But
+	 * generally, you should not be using those functions directly anyhow; use
+	 * SDL_Init() instead.
+	 *
+	 * You still need to call SDL_Quit() even if you close all open subsystems
+	 * with SDL_QuitSubSystem().
+	 *
+	 * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_QuitSubSystem")
+	static function quitSubSystem(flags:InitFlags):Void;
 
+	/**
+	 * Get a mask of the specified subsystems which are currently initialized.
+	 *
+	 * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+	 * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
+	 *          returns the initialization status of the specified subsystems.
+	 *
+	 *          The return value does not include SDL_INIT_NOPARACHUTE.
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_WasInit")
+	static function wasInit(flags:InitFlags):InitFlags;
+
+	/**
+	 * Clean up all initialized subsystems.
+	 *
+	 * You should call this function even if you have already shutdown each
+	 * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
+	 * function even in the case of errors in initialization.
+	 *
+	 * If you start a subsystem using a call to that subsystem's init function
+	 * (for example SDL_VideoInit()) instead of SDL_Init() or SDL_InitSubSystem(),
+	 * then you must use that subsystem's quit function (SDL_VideoQuit()) to shut
+	 * it down before calling SDL_Quit(). But generally, you should not be using
+	 * those functions directly anyhow; use SDL_Init() instead.
+	 *
+	 * You can use this function with atexit() to ensure that it is run when your
+	 * application is shutdown, but it is not wise to do this from a library or
+	 * other dynamically loaded code.
+	 *
+	 * @since SDL 2.0.0.
+	 */
 	@:native("SDL_Quit")
-	public extern static function quit():Void;
+	static function quit():Void;
 
+	// SDL_hints.h //
+	/**
+	 * Set a hint with a specific priority.
+	 *
+	 * The priority controls the behavior when setting a hint that already has a
+	 * value. Hints will replace existing hints of their priority and lower.
+	 * Environment variables are considered to have override priority.
+	 *
+	 * @param name the hint to set
+	 * @param value the value of the hint variable
+	 * @param priority the SDL_HintPriority level for the hint
+	 * @returns SDL_TRUE if the hint was set, SDL_FALSE otherwise.
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_SetHintWithPriority")
+	static function setHintWithPriority(name:ConstCharStar, value:ConstCharStar, priority:HintPriority):Boolean;
+
+	/**
+	 * Set a hint with normal priority.
+	 *
+	 * Hints will not be set if there is an existing override hint or environment
+	 * variable that takes precedence. You can use SDL_SetHintWithPriority() to
+	 * set the hint with override priority instead.
+	 *
+	 * @param name the hint to set
+	 * @param value the value of the hint variable
+	 * @returns SDL_TRUE if the hint was set, SDL_FALSE otherwise.
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_SetHint")
+	static function setHint(name:ConstCharStar, value:ConstCharStar):Boolean;
+	
+	/**
+	 * Reset a hint to the default value.
+	 *
+	 * This will reset a hint to the value of the environment variable, or NULL if
+	 * the environment isn't set. Callbacks will be called normally with this
+	 * change.
+	 *
+	 * @param name the hint to set
+	 * @returns SDL_TRUE if the hint was set, SDL_FALSE otherwise.
+	 *
+	 * @since SDL 2.24.0.
+	 */
+	@:native("SDL_ResetHint")
+	static function resetHint(name:ConstCharStar):Boolean;
+	
+	/**
+	 * Reset all hints to the default values.
+	 *
+	 * This will reset all hints to the value of the associated environment
+	 * variable, or NULL if the environment isn't set. Callbacks will be called
+	 * normally with this change.
+	 *
+	 * @since SDL 2.26.0.
+	 */
+	@:native("SDL_ResetHints")
+	static function resetHints():Boolean;
+
+	/**
+	 * Get the value of a hint.
+	 *
+	 * @param name the hint to query
+	 * @returns the string value of a hint or NULL if the hint isn't set.
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_GetHint")
+	static function getHint(name:ConstCharStar):ConstCharStar;
+
+	/**
+	 * Get the boolean value of a hint variable.
+	 *
+	 * @param name the name of the hint to get the boolean value from
+	 * @param defaultValue the value to return if the hint does not exist
+	 * @returns the boolean value of a hint or the provided default value if the
+	 *          hint does not exist.
+	 *
+	 * @since SDL 2.0.5.
+	 */
+	@:native("SDL_GetHintBoolean")
+	static function getHintBoolean(name:ConstCharStar, defaultValue:Boolean):Boolean;
+
+	/**
+	 * Add a function to watch a particular hint.
+	 *
+	 * @param name the hint to watch
+	 * @param callback An SDL_HintCallback function that will be called when the
+	 *                 hint value changes
+	 * @param userdata a pointer to pass to the callback function
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_AddHintCallback")
+	static function addHintCallback(name:ConstCharStar, callback:HintCallback, userdata:Pointer<Void>):Void;
+
+	/**
+	 * Remove a function watching a particular hint.
+	 *
+	 * @param name the hint being watched
+	 * @param callback An SDL_HintCallback function that will be called when the
+	 *                 hint value changes
+	 * @param userdata a pointer being passed to the callback function
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_DelHintCallback")
+	static function deleteHintCallback(name:ConstCharStar, callback:HintCallback, userdata:Pointer<Void>):Void;
+
+	/**
+	 * Clear all hints.
+	 *
+	 * This function is automatically called during SDL_Quit(), and deletes all
+	 * callbacks without calling them and frees all memory associated with hints.
+	 * If you're calling this from application code you probably want to call
+	 * SDL_ResetHints() instead.
+	 *
+	 * This function will be removed from the API the next time we rev the ABI.
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_ClearHints")
+	static function clearHints():Void;
+
+	// SDL_error.h //
+	/**
+	 * Set the SDL error message for the current thread.
+	 *
+	 * Calling this function will replace any previous error message that was set.
+	 *
+	 * This function always returns -1, since SDL frequently uses -1 to signify an
+	 * failing result, leading to this idiom:
+	 *
+	 * ```haxe
+	 * if (errorCode) {
+	 *     return SDL.setError("This operation has failed: %d", errorCode);
+	 * }
+	 * ```
+	 *
+	 * @param fmt a printf()-style message format string
+	 * @param args additional parameters matching % tokens in the `fmt` string, if
+	 *            any
+	 * @returns always -1.
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_SetError")
+	static function setError(fmt:ConstCharStar, args:Rest<Any>):Int;
+
+	/**
+	 * Retrieve a message about the last error that occurred on the current
+	 * thread.
+	 *
+	 * It is possible for multiple errors to occur before calling SDL_GetError().
+	 * Only the last error is returned.
+	 *
+	 * The message is only applicable when an SDL function has signaled an error.
+	 * You must check the return values of SDL function calls to determine when to
+	 * appropriately call SDL_GetError(). You should *not* use the results of
+	 * SDL_GetError() to decide if an error has occurred! Sometimes SDL will set
+	 * an error string even when reporting success.
+	 *
+	 * SDL will *not* clear the error string for successful API calls. You *must*
+	 * check return values for failure cases before you can assume the error
+	 * string applies.
+	 *
+	 * Error strings are set per-thread, so an error set in a different thread
+	 * will not interfere with the current thread's operation.
+	 *
+	 * The returned string is internally allocated and must not be freed by the
+	 * application.
+	 *
+	 * @returns a message with information about the specific error that occurred,
+	 *          or an empty string if there hasn't been an error message set since
+	 *          the last call to SDL_ClearError(). The message is only applicable
+	 *          when an SDL function has signaled an error. You must check the
+	 *          return values of SDL function calls to determine when to
+	 *          appropriately call SDL_GetError().
+	 *
+	 * @since SDL 2.0.0.
+	 */
 	@:native("SDL_GetError")
-	public extern static function getError():ConstCharStar;
+	static function getError():ConstCharStar;
 
-	@:native("SDL_GetPerformanceCounter")
-	public extern static function getPerformanceCounter():UInt64;
+	/**
+	 * Get the last error message that was set for the current thread.
+	 *
+	 * This allows the caller to copy the error string into a provided buffer, but
+	 * otherwise operates exactly the same as SDL_GetError().
+	 *
+	 * @param errStr A buffer to fill with the last error message that was set for
+	 *               the current thread
+	 * @param maxLen The size of the buffer pointed to by the errStr parameter
+	 * @returns the pointer passed in as the `errStr` parameter.
+	 *
+	 * @since SDL 2.0.14.
+	 */
+	@:native("SDL_GetErrorMsg")
+	static function getErrorMessage(errStr:CastCharStar, maxLen:Int):CastCharStar;
 
-	@:native("SDL_GetPerformanceFrequency")
-	public extern static function getPerformanceFrequency():UInt64;
+	/**
+	 * Clear any previous error message for this thread.
+	 *
+	 * @since SDL 2.0.0.
+	 */
+	@:native("SDL_ClearError")
+	static function clearError():Void;
+
+	// SDL_log.h
+	/**
+	 * Set the priority of all log categories.
+	 *
+	 * @param priority the SDL_LogPriority to assign
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogAllSetPriority")
+	static function logAllSetPriority(priority:LogPriority):Void;
+
+	/**
+	 * Set the priority of a particular log category.
+	 *
+	 * @param category the category to assign a priority to
+	 * @param priority the SDL_LogPriority to assign
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogSetPriority")
+	static function logSetPriority(category:LogCategory, priority:LogPriority):Void;
+
+	/**
+	 * Get the priority of a particular log category.
+	 *
+	 * @param category the category to query
+	 * \returns the SDL_LogPriority for the requested category
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogGetPriority")
+	static function logGetPriority(category:LogCategory):LogPriority;
+
+	/**
+	 * Reset all priorities to default.
+	 *
+	 * This is called by SDL_Quit().
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogResetPriorities")
+	static function logResetPriorities():Void;
+
+	/**
+	 * Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.
+	 *
+	 * @param fmt a printf() style message format string
+	 *
+	 * @param args additional parameters matching % tokens in the `fmt` string, if any
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_Log")
+	static function log(fmt:ConstCharStar, args:Rest<Any>):Void;
+
+	/**
+	 * Log a message with SDL_LOG_PRIORITY_VERBOSE.
+	 *
+	 * @param category the category of the message
+	 * @param fmt a printf() style message format string
+	 * @param args additional parameters matching % tokens in the **fmt** string,
+	 *            if any
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogVerbose")
+	static function logVerbose(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
+
+	/**
+	 * Log a message with SDL_LOG_PRIORITY_DEBUG.
+	 *
+	 * @param category the category of the message
+	 * @param fmt a printf() style message format string
+	 * @param args additional parameters matching % tokens in the **fmt** string,
+	 *            if any
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogDebug")
+	static function logDebug(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
+
+	/**
+	 * Log a message with SDL_LOG_PRIORITY_INFO.
+	 *
+	 * @param category the category of the message
+	 * @param fmt a printf() style message format string
+	 * @param args additional parameters matching % tokens in the **fmt** string,
+	 *            if any
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogInfo")
+	static function logInfo(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
+
+	/**
+	 * Log a message with SDL_LOG_PRIORITY_WARN.
+	 *
+	 * @param category the category of the message
+	 * @param fmt a printf() style message format string
+	 * @param args additional parameters matching % tokens in the **fmt** string,
+	 *            if any
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogWarn")
+	static function logWarn(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
+
+	/**
+	 * Log a message with SDL_LOG_PRIORITY_ERROR.
+	 *
+	 * @param category the category of the message
+	 * @param fmt a printf() style message format string
+	 * @param args additional parameters matching % tokens in the **fmt** string,
+	 *            if any
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogError")
+	static function logError(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
+
+	/**
+	 * Log a message with SDL_LOG_PRIORITY_CRITICAL.
+	 *
+	 * @param category the category of the message
+	 * @param fmt a printf() style message format string
+	 * @param args additional parameters matching % tokens in the **fmt** string,
+	 *            if any
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogCritical")
+	static function logCritical(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
+
+	/**
+	 * Log a message with the specified category and priority.
+	 *
+	 * @param category the category of the message
+	 * @param priority the priority of the message
+	 * @param fmt a printf() style message format string
+	 * @param args additional parameters matching % tokens in the **fmt** string,
+	 *            if any
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogMessage")
+	static function logMessage(category:LogCategory, priority:LogPriority, fmt:ConstCharStar, args:Rest<Any>):Void;
+
+	/**
+	 * Log a message with the specified category and priority.
+	 *
+	 * @param category the category of the message
+	 * @param priority the priority of the message
+	 * @param fmt a printf() style message format string
+	 * @param ap a variable argument list
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogMessageV")
+	static function logMessageV(category:LogCategory, priority:LogPriority, fmt:ConstCharStar, va:VarArg):Void;
+
+	/**
+	 * Get the current log output function.
+	 *
+	 * @param callback an SDL_LogOutputFunction filled in with the current log callback
+	 * @param userdata custom data that is passed to `callback`
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogGetOutputFunction")
+	static inline function logGetOutputFunction(userdata:Any):LogOutputFunction {
+		untyped __cpp__("SDL_LogOutputFunction _func; SDL_LogGetOutputFunction(&_func, &{0})", userdata);
+		return untyped __cpp__("_func");
+	}
+	
+	/**
+	 * Replace the default log output function with one of your own.
+	 *
+	 * @param callback an SDL_LogOutputFunction to call instead of the default
+	 * @param userdata custom data that is passed to `callback`
+	 *
+	 * @since This function is available since SDL 2.0.0.
+	 */
+	@:native("SDL_LogSetOutputFunction")
+	static inline function logSetOutputFunction(callback:LogOutputFunction, userdata:Any):Void {
+		untyped __cpp__("SDL_LogSetOutputFunction({0}, (void*){1})", callback, userdata);
+	}
+
+	// SDL_version.h //
+	@:native("SDL_MAJOR_VERSION")
+	static final majorVersion:Int;
+
+	@:native("SDL_MINOR_VERSION")
+	static final minorVersion:Int;
+
+	@:native("SDL_PATCHLEVEL")
+	static final patchLevel:Int;
+
+	@:native("SDL_GetVersion")
+	static function getVersion():Version;
+	
+	@:native("SDL_VERSION_ATLEAST")
+	static inline function versionAtLeast(major:Int, minor:Int, patch:Int):Bool {
+		return untyped __cpp__("SDL_VERSION_ATLEAST({0}, {1}, {2})", major, minor, patch);
+	}
+
+	@:native("SDL_GetRevision")
+	static function getRevision():ConstCharStar;
+
+	@:native("SDL_GetRevisionNumber")
+	@:deprecated("Use SDL.getRevision() instead; if SDL was carefully built, it will return a git hash.")
+	static function getRevisionNumber():Int;
+
+	// SDL_video.h //
+	@:native("SDL_GetNumVideoDrivers")
+	static function getNumVideoDrivers():Int;
+
+	@:native("SDL_GetVideoDriver")
+	static function getVideoDriver(index:Int):ConstCharStar;
+
+	@:native("SDL_VideoInit")
+	static function videoInit(driver_name:ConstCharStar):Int;
+
+	@:native("SDL_VideoQuit")
+	static function videoQuit():Void;
+
+	@:native("SDL_GetCurrentVideoDriver")
+	static function getCurrentVideoDriver():ConstCharStar;
+
+	@:native("SDL_GetNumVideoDisplays")
+	static function getNumVideoDisplays():Int;
+
+	@:native("SDL_GetDisplayName")
+	static function getDisplayName(displayIndex:Int):ConstCharStar;
+	
+	@:native("SDL_GetDisplayBounds")
+	static inline function getDisplayBounds(displayIndex:Int):Rectangle {
+		var result:Int;
+		untyped __cpp__("SDL_Rect _rect; {1} = SDL_GetDisplayBounds({0}, &_rect)", displayIndex, result);
+		return (result == 0) ? untyped __cpp__("_rect") : null;
+	}
+
+	@:native("SDL_GetDisplayUsableBounds")
+	static inline function getDisplayUsableBounds(displayIndex:Int):Rectangle {
+		var result:Int;
+		untyped __cpp__("SDL_Rect _rect; {1} = SDL_GetDisplayUsableBounds({0}, &_rect)", displayIndex, result);
+		return (result == 0) ? untyped __cpp__("_rect") : null;
+	}
+
+	@:native("SDL_GetDisplayDPI")
+	static function getDisplayDPI(displayIndex:Int, ddpi:Pointer<Float>, hdpi:Pointer<Float>, vdpi:Pointer<Float>):Int;
+
+	@:native("SDL_GetDisplayOrientation")
+	static function getDisplayOrientation(displayIndex:Int):DisplayOrientation;
+
+	@:native("SDL_GetNumDisplayModes")
+	static function getNumDisplayModes(displayIndex:Int):Int;
+
+	@:native("SDL_GetDisplayMode")
+	static inline function getDisplayMode(displayIndex:Int, modeIndex:Int):DisplayMode {
+		var result:Int;
+		untyped __cpp__("SDL_DisplayMode _mode; {0} = SDL_GetDisplayMode({1}, {2}, &_mode)", result, displayIndex, modeIndex);
+		return (result == 0) ? untyped __cpp__("_mode") : null;
+	}
+
+	@:native("SDL_GetDesktopDisplayMode")
+	static inline function getDesktopDisplayMode(displayIndex:Int):DisplayMode {
+		var result:Int;
+		untyped __cpp__("SDL_DisplayMode _mode; {0} = SDL_GetDesktopDisplayMode({1}, &_mode)", result, displayIndex);
+		return (result == 0) ? untyped __cpp__("_mode") : null;
+	}
+
+	@:native("SDL_GetCurrentDisplayMode")
+	static inline function getCurrentDisplayMode(displayIndex:Int):DisplayMode {
+		var result:Int;
+		untyped __cpp__("SDL_DisplayMode _mode; {0} = SDL_GetCurrentDisplayMode({1}, &_mode)", result, displayIndex);
+		return (result == 0) ? untyped __cpp__("_mode") : null;
+	}
+
+	@:native("SDL_GetClosestDisplayMode")
+	static function getClosestDisplayMode(displayIndex:Int, mode:ConstPointer<DisplayMode>, closest:Pointer<DisplayMode>):Pointer<DisplayMode>;
+
+	@:native("SDL_GetPointDisplayIndex")
+	static inline function getPointDisplayIndex(point:Point):Int {
+		return untyped __cpp__("SDL_GetPointDisplayIndex(&{0})", point);
+	}
+
+	@:native("SDL_GetRectDisplayIndex")
+	static inline function getRectDisplayIndex(rect:Rectangle):Int {
+		return untyped __cpp__("SDL_GetRectDisplayIndex(&{0})", rect);
+	}
+
+	@:native("SDL_GetWindowDisplayIndex")
+	static function getWindowDisplayIndex(window:Window):Int;
+
+	@:native("SDL_SetWindowDisplayMode")
+	static inline function setWindowDisplayMode(window:Window, mode:DisplayMode):Int {
+		return untyped __cpp__("SDL_SetWindowDisplayMode({0}, &{1})", window, mode);
+	}
+
+	@:native("SDL_GetWindowDisplayMode")
+	static inline function getWindowDisplayMode(window:Window):DisplayMode {
+		var result:Int;
+		untyped __cpp__("SDL_DisplayMode _mode; {0} = SDL_GetWindowDisplayMode({1}, &_mode)", result, window);
+		return (result == 0) ? untyped __cpp__("_mode") : null;
+	}
+
+	@:native("SDL_GetWindowICCProfile")
+	static inline function getWindowICCProfile(window:Window, size:UInt64):Any {
+		return untyped __cpp__("SDL_GetWindowICCProfile({0}, &{1})", window, size);
+	}
+
+	@:native("SDL_GetWindowPixelFormat")
+	static function getWindowPixelFormat(window:Window):PixelFormat;
 
 	@:native("SDL_CreateWindow")
-	public extern static function createWindow(title:ConstCharStar, x:Int, y:Int, width:Int, height:Int, flags:UInt32 = 0):Window;
+	static function createWindow(title:ConstCharStar, x:Int, y:Int, w:Int, h:Int, flags:WindowInitFlags):Window;
 
-	@:native("SDL_DestroyWindow")
-	public extern static function destroyWindow(window:Window):Void;
+	@:native("SDL_CreateWindowFrom")
+	static inline function createWindowFrom(data:Any):Window {
+		return untyped __cpp__("SDL_CreateWindowFrom((void*){0})", data);
+	}
+
+	@:native("SDL_GetWindowID")
+	static function getWindowID(window:Window):UInt32;
+
+	@:native("SDL_GetWindowFromID")
+	static function getWindowFromID(id:UInt32):Window;
+
+	@:native("SDL_GetWindowFlags")
+	static function getWindowFlags(window:Window):WindowInitFlags;
+
+	@:native("SDL_SetWindowTitle")
+	static function setWindowTitle(window:Window, title:ConstCharStar):Void;
+
+	@:native("SDL_GetWindowTitle")
+	static function getWindowTitle(window:Window):ConstCharStar;
+
+	@:native("SDL_SetWindowIcon")
+	static function setWindowIcon(window:Window, icon:Surface):Void;
+
+	@:native("SDL_SetWindowData")
+	static inline function setWindowData(window:Window, name:ConstCharStar, userdata:Any):Any {
+		return untyped __cpp__("SDL_SetWindowData({0}, {1}, {2})", window, name, userdata);
+	}
+
+	@:native("SDL_GetWindowData")
+	static inline function getWindowData(window:Window, name:ConstCharStar):Any {
+		return untyped __cpp__("SDL_GetWindowData({0}, {1})", window, name);
+	}
 
 	@:native("SDL_GetWindowPosition")
-	public static inline function getWindowPosition(window:Window):Point {
+	static inline function getWindowPosition(window:Window):Point {
 		var winX:Int = 0;
 		var winY:Int = 0;
 		untyped __cpp__("SDL_GetWindowPosition({0}, {1}, {2})", window, Pointer.addressOf(winX), Pointer.addressOf(winY));
@@ -57,7 +703,7 @@ extern class SDL {
 	}
 
 	@:native("SDL_SetWindowPosition")
-	public extern static function setWindowPosition(window:Window, x:Int, y:Int):Void;
+	static function setWindowPosition(window:Window, x:Int, y:Int):Void;
 
 	@:native("SDL_GetWindowSize")
 	public static inline function getWindowSize(window:Window):Point {
@@ -68,397 +714,243 @@ extern class SDL {
 	}
 
 	@:native("SDL_SetWindowSize")
-	public extern static function setWindowSize(window:Window, x:Int, y:Int):Void;
+	static function setWindowSize(window:Window, x:Int, y:Int):Void;
 
-	@:native("SDL_GetWindowTitle")
-	public extern static function getWindowTitle(window:Window):ConstCharStar;
+	@:native("SDL_GetWindowBordersSize")
+	static inline function getWindowBordersSize(window:Window):Rectangle {
+		var top:Int;
+		var left:Int;
+		var bottom:Int;
+		var right:Int;
+		untyped __cpp__("SDL_GetWindowBordersSize({0}, {1}, {2}, {3})", Pointer.addressOf(top), Pointer.addressOf(left), Pointer.addressOf(bottom), Pointer.addressOf(right));
+		return Rectangle.create(top, left, bottom, right);
+	}
 
-	@:native("SDL_SetWindowTitle")
-	public extern static function setWindowTitle(window:Window, title:ConstCharStar):Void;
+	@:native("SDL_GetWindowSizeInPixels")
+	static inline function getWindowSizeInPixels(window:Window):Point {
+		var width:Int;
+		var height:Int;
+		untyped __cpp__("SDL_GetWindowSizeInPixels({0}, {1}, {2})", window, Pointer.addressOf(width), Pointer.addressOf(height));
+		return Point.create(width, height);
+	}
 
-	@:native("SDL_SetWindowIcon")
-	public extern static function setWindowIcon(window:Window, surface:Surface):Void;
+	@:native("SDL_SetWindowMinimumSize")
+	static function setWindowMinimumSize(window:Window, minWidth:Int, minHeight:Int):Void;
+
+	@:native("SDL_GetWindowMinimumSize")
+	static inline function getWindowMinimumSize(window:Window):Point {
+		var width:Int;
+		var height:Int;
+		untyped __cpp__("SDL_GetWindowMinimumSize({0}, {1}, {2})", window, Pointer.addressOf(width), Pointer.addressOf(height));
+		return Point.create(width, height);
+	}
+
+	@:native("SDL_SetWindowMaximumSize")
+	static function setWindowMaximumSize(window:Window, maxWidth:Int, maxHeight:Int):Void;
+
+	@:native("SDL_GetWindowMaximumSize")
+	static inline function getWindowMaximumSize(window:Window):Point {
+		var width:Int;
+		var height:Int;
+		untyped __cpp__("SDL_GetWindowMaximumSize({0}, {1}, {2})", window, Pointer.addressOf(width), Pointer.addressOf(height));
+		return Point.create(width, height);
+	}
+
+	@:native("SDL_SetWindowBordered")
+	static function setWindowBordered(window:Window, bordered:Boolean):Void;
+
+	@:native("SDL_SetWindowResizable")
+	static function setWindowResizable(window:Window, resizable:Boolean):Void;
+
+	@:native("SDL_SetWindowAlwaysOnTop")
+	static function setWindowAlwaysOnTop(window:Window, onTop:Boolean):Void;
+
+	@:native("SDL_ShowWindow")
+	static function showWindow(window:Window):Void;
+
+	@:native("SDL_HideWindow")
+	static function hideWindow(window:Window):Void;
+
+	@:native("SDL_RaiseWindow")
+	static function raiseWindow(window:Window):Void;
+
+	@:native("SDL_MaximizeWindow")
+	static function maximizeWindow(window:Window):Void;
+
+	@:native("SDL_MinimizeWindow")
+	static function minimizeWindow(window:Window):Void;
+
+	@:native("SDL_RestoreWindow")
+	static function restoreWindow(window:Window):Void;
+
+	@:native("SDL_SetWindowFullscreen")
+	static function setWindowFullscreen(window:Window, flags:WindowInitFlags):Int;
+
+	@:native("SDL_HasWindowSurface")
+	static function hasWindowSurface(window:Window):Boolean;
+
+	@:native("SDL_GetWindowSurface")
+	static function getWindowSurface(window:Window):Surface;
+
+	@:native("SDL_UpdateWindowSurface")
+	static function updateWindowSurface(window:Window):Int;
+
+	@:native("SDL_UpdateWindowSurfaceRects")
+	static function updateWindowSurfaceRects(window:Window, rects:RawConstPointer<Rectangle>, numrects:Int):Int;
+
+	@:native("SDL_DestroyWindowSurface")
+	static function destroyWindowSurface(window:Window):Int;
+
+	@:native("SDL_SetWindowGrab")
+	static function setWindowGrab(window:Window, grabbed:Boolean):Void;
+
+	@:native("SDL_SetWindowKeyboardGrab")
+	static function setWindowKeyboardGrab(window:Window, grabbed:Boolean):Void;
+
+	@:native("SDL_SetWindowMouseGrab")
+	static function setWindowMouseGrab(window:Window, grabbed:Boolean):Void;
+
+	@:native("SDL_GetWindowGrab")
+	static function getWindowGrab(window:Window):Boolean;
+
+	@:native("SDL_GetWindowKeyboardGrab")
+	static function getWindowKeyboardGrab(window:Window):Boolean;
+
+	@:native("SDL_GetWindowMouseGrab")
+	static function getWindowMouseGrab(window:Window):Boolean;
+
+	@:native("SDL_GetGrabbedWindow")
+	static function getGrabbedWindow():Window;
+
+	@:native("SDL_SetWindowMouseRect")
+	static inline function setWindowMouseRect(window:Window, rect:Rectangle):Int {
+		return untyped __cpp__("SDL_SetWindowMouseRect({0}, {1})", window, rect);
+	}
+
+	@:native("SDL_GetWindowMouseRect")
+	static inline function getWindowMouseRect(window:Window):Rectangle {
+		return untyped __cpp__("SDL_GetWindowMouseRect({0})", window);
+	}
+
+	@:native("SDL_SetWindowBrightness")
+	static function setWindowBrightness(window:Window, brightness:Float):Int;
+
+	@:native("SDL_GetWindowBrightness")
+	static function getWindowBrightness(window:Window):Float;
+
+	@:native("SDL_SetWindowOpacity")
+	static function setWindowOpacity(window:Window, opacity:Float):Int;
+
+	@:native("SDL_GetWindowOpacity")
+	static inline function getWindowOpacity(window:Window):Float {
+		untyped __cpp__("float _opac; SDL_GetWindowOpacity({0}, &_opac)", window);
+		return untyped __cpp__("_opac");
+	}
+
+	@:native("SDL_SetWindowModalFor")
+	static function setWindowModalFor(modalWindow:Window, parentWindow:Window):Int;
+
+	@:native("SDL_SetWindowInputFocus")
+	static function setWindowInputFocus(window:Window):Int;
+
+	@:native("SDL_SetWindowGammaRamp")
+	static function setWindowGammaRamp(window:Window, red:RawConstPointer<UInt16>, green:RawConstPointer<UInt16>, blue:RawConstPointer<UInt16>):Int;
+
+	@:native("SDL_GetWindowGammaRamp")
+	static function getWindowGammaRamp(window:Window, red:Pointer<UInt16>, green:Pointer<UInt16>, blue:Pointer<UInt16>):Int;
+
+	@:native("SDL_SetWindowHitTest")
+	static inline function setWindowHitTest(window:Window, callback:HitTest, callbackData:Any):Int {
+		return untyped __cpp__("SDL_SetWindowHitTest({0}, {1}, {2})", window, callback, callbackData);
+	}
+
+	@:native("SDL_FlashWindow")
+	static function flashWindow(window:Window, operation:FlashOperation):Int;
+
+	@:native("SDL_DestroyWindow")
+	static function destroyWindow(window:Window):Void;
+
+	@:native("SDL_IsScreenSaverEnabled")
+	static function isScreenSaverEnabled():Boolean;
+
+	@:native("SDL_EnableScreenSaver")
+	static function enableScreenSaver():Void;
+
+	@:native("SDL_DisableScreenSaver")
+	static function disableScreenSaver():Void;
+
+	@:native("SDL_GL_LoadLibrary")
+	static function glLoadLibrary(path:ConstCharStar):Int;
+
+	@:native("SDL_GL_GetProcAddress")
+	static inline function glGetProcAddress(proc:ConstCharStar):Any {
+		return untyped __cpp__("SDL_GL_GetProcAddress({0})", proc);
+	}
+
+	@:native("SDL_GL_UnloadLibrary")
+	static function glUnloadLibrary():Void;
+
+	@:native("SDL_GL_ExtensionSupported")
+	static function glExtensionSupported(extension:ConstCharStar):Boolean;
+
+	@:native("SDL_GL_ResetAttributes")
+	static function glResetAttributes():Void;
+
+	@:native("SDL_GL_SetAttribute")
+	static function glSetAttribute(attr:GlAttribute, value:Int):Int;
+
+	static inline function glGetAttribute(attr:GlAttribute):Int {
+		var result:Int;
+		untyped __cpp__("int _val; {0} = SDL_GL_GetAttribute({1}, &_val)", result, attr);
+		return (result == 0) ? untyped __cpp__("_val") : null;
+	}
+
+	@:native("SDL_GL_GetAttribute")
+	@:noCompletion static function _glGetAttribute(attr:GlAttribute, value:Pointer<Int>):Int;
+
+	@:native("SDL_GL_CreateContext")
+	static function glCreateContext(window:Window):GlContext;
+
+	@:native("SDL_GL_MakeCurrent")
+	static function glMakeCurrent(window:Window, context:GlContext):Int;
+
+	@:native("SDL_GL_GetCurrentWindow")
+	static function glGetCurrentWindow():Window;
+
+	@:native("SDL_GL_GetCurrentContext")
+	static function glGetCurrentContext():GlContext;
+
+	@:native("SDL_GL_GetDrawableSize")
+	static inline function glGetDrawableSize(window:Window):Point {
+		var width:Int;
+		var height:Int;
+		untyped __cpp__("SDL_GL_GetDrawableSize({0}, {1}, {2})", window, Pointer.addressOf(width), Pointer.addressOf(height));
+		return Point.create(width, height);
+	}
+
+	@:native("SDL_GL_SetSwapInterval")
+	static function glSetSwapInterval(interval:Int):Int;
+
+	@:native("SDL_GL_GetSwapInterval")
+	static function glGetSwapInterval():Int;
+
+	@:native("SDL_GL_SwapWindow")
+	static function glSwapWindow(window:Window):Void;
+
+	@:native("SDL_GL_DeleteContext")
+	static function glDeleteContext(context:GlContext):Void;
+
+	// SDL_render.h //
+	@:native("SDL_GetNumRenderDrivers")
+	static function getNumRenderDrivers():Int;
 
 	@:native("SDL_CreateRenderer")
-	public extern static function createRenderer(window:Window, index:Int, flags:UInt32):Renderer;
+	static function createRenderer(window:Window, index:Int, flags:RendererFlags):Renderer;
 
-	@:native("SDL_GetRenderDrawColor")
-	public static inline function getRenderDrawColor(renderer:Renderer) {
-		var r:UInt8 = 0;
-		var g:UInt8 = 0;
-		var b:UInt8 = 0;
-		var a:UInt8 = 0;
-		untyped __cpp__("SDL_GetRenderDrawColor({0}, {1}, {2}, {3}, {4})", renderer, Pointer.addressOf(r), Pointer.addressOf(g), Pointer.addressOf(b), Pointer.addressOf(a));
-		return {r: r, g: g, b: b, a: a};
-	}
-
-	@:native("SDL_SetRenderDrawColor")
-	public extern static function setRenderDrawColor(renderer:Renderer, r:UInt8, g:UInt8, b:UInt8, a:UInt8):Int;
-	
-	@:native("SDL_RenderDrawRect")
-	public static inline function renderDrawRect(renderer:Renderer, rect:Rectangle):Int {
-		return untyped __cpp__("SDL_RenderDrawRect({0}, {1})", renderer, RawConstPointer.addressOf(rect));
-	}
-
-	@:native("SDL_RenderFillRect")
-	public static inline function renderFillRect(renderer:Renderer, rect:Rectangle):Int {
-		return untyped __cpp__("SDL_RenderFillRect({0}, {1})", renderer, RawConstPointer.addressOf(rect));
-	}
-
-	@:native("SDL_RenderDrawRectF")
-	public static inline function renderDrawRectF(renderer:Renderer, rect:FRectangle):Int {
-		return untyped __cpp__("SDL_RenderDrawRectF({0}, {1})", renderer, RawConstPointer.addressOf(rect));
-	}
-
-	@:native("SDL_RenderFillRectF")
-	public static inline function renderFillRectF(renderer:Renderer, rect:FRectangle):Int {
-		return untyped __cpp__("SDL_RenderFillRectF({0}, {1})", renderer, RawConstPointer.addressOf(rect));
-	}
-
-	@:native("SDL_RenderClear")
-	public extern static function renderClear(renderer:Renderer):Int;
-
-	@:native("SDL_RenderPresent")
-	public extern static function renderPresent(renderer:Renderer):Int;
-
-	@:native("SDL_RenderCopy")
-	public static inline function renderCopy(renderer:Renderer, texture:Texture, src:Rectangle, dst:Rectangle):Int {
-		return untyped __cpp__("SDL_RenderCopy({0}, {1}, {2}, {3})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst));
-	}
-
-	@:native("SDL_RenderCopyEx")
-	public static inline function renderCopyEx(renderer:Renderer, texture:Texture, src:Rectangle, dst:Rectangle, angle:Double, center:Point, flip:sdl.Renderer.RendererFlip = NONE):Int {
-		return untyped __cpp__("SDL_RenderCopyEx({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), untyped __cpp__("(SDL_RendererFlip){0}", flip));
-	}
-
-	@:native("SDL_RenderCopyF")
-	public static inline function renderCopyF(renderer:Renderer, texture:Texture, src:Rectangle, dst:FRectangle):Int {
-		return untyped __cpp__("SDL_RenderCopyF({0}, {1}, {2}, {3})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst));
-	}
-
-	@:native("SDL_RenderCopyExF")
-	public static inline function renderCopyExF(renderer:Renderer, texture:Texture, src:Rectangle, dst:FRectangle, angle:Double, center:FPoint, flip:sdl.Renderer.RendererFlip = NONE):Int {
-		return untyped __cpp__("SDL_RenderCopyExF({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), untyped __cpp__("(SDL_RendererFlip){0}", flip));
-	}
-
-	@:native("SDL_RenderSetVSync")
-	public extern static function renderSetVSync(renderer:Renderer, vsync:Boolean):Int;
-
-	@:native("SDL_GetRenderTarget")
-	public extern static function getRenderTarget(renderer:Renderer):Texture;
-
-	@:native("SDL_SetRenderTarget")
-	public extern static function setRenderTarget(renderer:Renderer, texture:Texture):Int;
-
-	@:native("SDL_SetRenderTarget")
-	public static inline function resetRenderTarget(renderer:Renderer):Int
-		return untyped __cpp__("SDL_SetRenderTarget({0}, NULL)", renderer);
-
-	@:native("SDL_DestroyRenderer")
-	public extern static function destroyRenderer(renderer:Renderer):Int;
-
-	@:native("SDL_QueryTexture")
-	public extern static function queryTexture(texture:Texture, format:Pointer<UInt32>, access:Pointer<Int>, width:Pointer<Int>, height:Pointer<Int>):Int;
-
-	// utilizes queryTexture to get texture size :3
-	public static inline function getTextureSize(texture:Texture):Point {
-		var w:Int = 0;
-		var h:Int = 0;
-		queryTexture(texture, null, null, Pointer.addressOf(w), Pointer.addressOf(h));
-		return Point.create(w, h);
-	}
-
-	@:native("SDL_GetTextureScaleMode")
-	public static inline function getTextureScaleMode(texture:Texture):Int {
-		var scaleMode:TextureScaleMode = -1;
-		untyped __cpp__("SDL_ScaleMode output;
-		SDL_GetTextureScaleMode({0}, &output);
-		{1} = output", texture, scaleMode);
-		return scaleMode;
-	}
-
-	@:native("SDL_SetTextureScaleMode")
-	public static inline function setTextureScaleMode(texture:Texture, scaleMode:TextureScaleMode):Int {
-		return untyped __cpp__("SDL_SetTextureScaleMode({0}, (SDL_ScaleMode){1})", texture, scaleMode);
-	}
-
-	@:native("SDL_CreateTexture")
-	public extern static function createTexture(renderer:Renderer, format:UInt32, access:Int, width:Int, height:Int):Texture;
-
-	@:native("SDL_DestroyTexture")
-	public extern static function destroyTexture(texture:Texture):Void;
-
-	@:native("SDL_CreateTextureFromSurface")
-	public extern static function createTextureFromSurface(renderer:Renderer, surface:Surface):Texture;
-
-	@:native("SDL_FreeSurface")
-	public extern static function freeSurface(surface:Surface):Int;
-
-	@:native("SDL_LockSurface")
-	public extern static function lockSurface(surface:Surface):Int;
-
-	@:native("SDL_UnlockSurface")
-	public extern static function unlockSurface(surface:Surface):Int;
-
-	@:native("SDL_RWFromConstMem")
-	public static inline function rwFromConstMem(mem:BytesData, size:Int):RWops {
-		return untyped __cpp__("SDL_RWFromConstMem((void*)&{0}[0], {1})", mem, size);
-	}
-
-	@:native("SDL_PollEvent")
-	public extern static function pollEvent(event:Event):Int;
-
+	// haxe helper functions //
 	@:native("SDL_Event")
-	public static inline function createEventPtr():Event {
-		var event:Event = null;
-		untyped __cpp__('SDL_Event __sdl_ev__; {0} = &__sdl_ev__', event);
-		return event;
+	static inline function makeEventPtr():Event {
+		untyped __cpp__('SDL_Event __sdl_ev__');
+		return untyped __cpp__('__sdl_ev__');
 	}
 }
-
-@:keep
-enum abstract InitFlags(UInt32) to UInt32 from UInt32 {
-	var VIDEO = 0x00000020;
-	var AUDIO = 0x00000010;
-	var JOYSTICK = 0x00000200;
-	var HAPTIC = 0x00001000;
-	var CONTROLLER = 0x00002000;
-	var EVENTS = 0x00004000;
-	var SENSOR = 0x00004000;
-	var NOPARACHUTE = 0x00100000;
-	var EVERYTHING = 0x00000020 | 0x00000010 | 0x00000200 | 0x00001000 | 0x00002000 | 0x00004000 | 0x00100000;
-}
-
-@:keep
-enum abstract Boolean(UInt8) from UInt8 to UInt8 {
-	var FALSE = 0;
-	var TRUE = 1;
-}
-
-@:keep
-enum abstract WindowEventID(UInt8) from UInt8 to UInt8 {
-	var NONE = 0;       /**< Never used */
-    var SHOWN;          /**< Window has been shown */
-    var HIDDEN;         /**< Window has been hidden */
-    var EXPOSED;        /**< Window has been exposed and should be
-                                         redrawn */
-    var MOVED;          /**< Window has been moved to data1, data2
-                                     */
-    var RESIZED;        /**< Window has been resized to data1xdata2 */
-    var SIZE_CHANGED;   /**< The window size has changed, either as
-                                         a result of an API call or through the
-                                         system or user changing the window size. */
-    var MINIMIZED;      /**< Window has been minimized */
-    var MAXIMIZED;      /**< Window has been maximized */
-    var RESTORED;       /**< Window has been restored to normal size
-                                         and position */
-    var ENTER;          /**< Window has gained mouse focus */
-    var LEAVE;          /**< Window has lost mouse focus */
-    var FOCUS_GAINED;   /**< Window has gained keyboard focus */
-    var FOCUS_LOST;     /**< Window has lost keyboard focus */
-    var CLOSE;          /**< The window manager requests that the window be closed */
-    var TAKE_FOCUS;     /**< Window is being offered a focus (should SetWindowInputFocus() on itself or a subwindow, or ignore) */
-    var HIT_TEST;       /**< Window had a hit test that wasn't SDL_HITTEST_NORMAL. */
-    var ICCPROF_CHANGED; /**< The ICC profile of the window's display has changed. */
-    var DISPLAY_CHANGED; /**< Window has been moved to display data1. */
-}
-
-@:keep
-enum abstract PixelType(UInt32) from UInt32 to UInt32 {
-	var UNKNOWN = 0;
-	var INDEX1;
-	var INDEX4;
-	var INDEX8;
-	var PACKED8;
-	var PACKED16;
-	var PACKED32;
-	var ARRAYU8;
-	var ARRAYU16;
-	var ARRAYU32;
-	var ARRAYF16;
-	var ARRAYF32;
-}
-
-@:keep
-enum abstract BitmapOrder(UInt32) from UInt32 to UInt32 {
-	var ORDER_NONE = 0;
-	var ORDER_4321;
-	var ORDER_1234;
-}
-
-@:keep
-enum abstract PackedOrder(UInt32) from UInt32 to UInt32 {
-	var NONE = 0;
-	var XRGB;
-	var RGBX;
-	var ARGB;
-	var RGBA;
-	var XBGR;
-	var BGRX;
-	var ABGR;
-	var BGRA;
-}
-
-@:keep
-enum abstract ArrayOrder(UInt32) from UInt32 to UInt32 {
-	var NONE = 0;
-	var RGB;
-	var RGBA;
-	var ARGB;
-	var BGR;
-	var BGRA;
-	var ABGR;
-}
-
-@:keep
-enum abstract PackedLayout(UInt32) from UInt32 to UInt32 {
-	var LAYOUT_NONE = 0;
-	var LAYOUT_332;
-	var LAYOUT_4444;
-	var LAYOUT_1555;
-	var LAYOUT_5551;
-	var LAYOUT_565;
-	var LAYOUT_8888;
-	var LAYOUT_2101010;
-	var LAYOUT_1010102;
-}
-
-// i almost went insane making this fucking enum
-@:keep
-enum abstract PixelFormatEnum(UInt32) from UInt32 to UInt32 {
-	private static inline function definePixelFormat(type:Int, order:Int, layout:Int, bits:Int, bytes:Int) {
-		return (1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | ((bits) << 8) | ((bytes) << 0);
-	}
-
-	var UNKNOWN = 0;
-	var INDEX1LSB = definePixelFormat(PixelType.INDEX1, BitmapOrder.ORDER_4321, 0, 1, 0);
-	var INDEX1MSB = definePixelFormat(PixelType.INDEX1, BitmapOrder.ORDER_1234, 0, 1, 0);
-	var INDEX4LSB = definePixelFormat(PixelType.INDEX4, BitmapOrder.ORDER_4321, 0, 4, 0);
-	var INDEX4MSB = definePixelFormat(PixelType.INDEX4, BitmapOrder.ORDER_1234, 0, 4, 0);
-	var INDEX8 = definePixelFormat(PixelType.INDEX8, 0, 0, 8, 1);
-	var RGB332 = definePixelFormat(PixelType.PACKED8, PackedOrder.XRGB, PackedLayout.LAYOUT_332, 8, 1);
-	var XRGB4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.XRGB, PackedLayout.LAYOUT_4444, 12, 2);
-	var RGB444 = XRGB4444;
-	var XBGR4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.XBGR, PackedLayout.LAYOUT_4444, 12, 2);
-	var BGR444 = XBGR4444;
-	var XRGB1555 = definePixelFormat(PixelType.PACKED16, PackedOrder.XRGB, PackedLayout.LAYOUT_1555, 15, 2);
-	var RGB555 = XRGB1555;
-	var XBGR1555 = definePixelFormat(PixelType.PACKED16, PackedOrder.XBGR, PackedLayout.LAYOUT_1555, 15, 2);
-	var BGR555 = XBGR1555;
-	var ARGB4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.ARGB, PackedLayout.LAYOUT_4444, 16, 2);
-	var RGBA4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.RGBA, PackedLayout.LAYOUT_4444, 16, 2);
-	var ABGR4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.ABGR, PackedLayout.LAYOUT_4444, 16, 2);
-	var BGRA4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.BGRA, PackedLayout.LAYOUT_4444, 16, 2);
-	var ARGB1555 = definePixelFormat(PixelType.PACKED16, PackedOrder.ARGB, PackedLayout.LAYOUT_1555, 16, 2);
-	var RGBA5551 = definePixelFormat(PixelType.PACKED16, PackedOrder.RGBA, PackedLayout.LAYOUT_5551, 16, 2);
-	var ABGR1555 = definePixelFormat(PixelType.PACKED16, PackedOrder.ABGR, PackedLayout.LAYOUT_1555, 16, 2);
-	var BGRA5551 = definePixelFormat(PixelType.PACKED16, PackedOrder.BGRA, PackedLayout.LAYOUT_5551, 16, 2);
-	var RGB565 = definePixelFormat(PixelType.PACKED16, PackedOrder.XRGB, PackedLayout.LAYOUT_565, 16, 2);
-	var BGR565 = definePixelFormat(PixelType.PACKED16, PackedOrder.XBGR, PackedLayout.LAYOUT_565, 16, 2);
-	var RGB24 = definePixelFormat(PixelType.ARRAYU8, ArrayOrder.RGB, 0, 24, 3);
-	var BGR24 = definePixelFormat(PixelType.ARRAYU8, ArrayOrder.BGR, 0, 24, 3);
-	var XRGB8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.XRGB, PackedLayout.LAYOUT_8888, 24, 4);
-	var RGB888 = XRGB8888;
-	var RGBX8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.RGBX, PackedLayout.LAYOUT_8888, 24, 4);
-	var XBGR8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.XBGR, PackedLayout.LAYOUT_8888, 24, 4);
-	var BGR888 = XBGR8888;
-	var BGRX8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.BGRX, PackedLayout.LAYOUT_8888, 24, 4);
-	var ARGB8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.ARGB, PackedLayout.LAYOUT_8888, 32, 4);
-	var RGBA8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.RGBA, PackedLayout.LAYOUT_8888, 32, 4);
-	var ABGR8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.ABGR, PackedLayout.LAYOUT_8888, 32, 4);
-	var BGRA8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.BGRA, PackedLayout.LAYOUT_8888, 32, 4);
-	var ARGB2101010 = definePixelFormat(PixelType.PACKED32, PackedOrder.ARGB, PackedLayout.LAYOUT_2101010, 32, 4);
-}
-
-@:keep
-enum abstract TextureAccess(Int) from Int to Int {
-	/** Changes rarely, not lockable **/
-	var STATIC = 0;
-	/** Changes frequently, lockable **/ 
-    var STREAMING;
-	/** Texture can be used as a render target **/
-    var RENDER_TARGET;
-}
-
-@:keep
-enum abstract TextureScaleMode(Int) from Int to Int {
-	/** Nearest pixel sampling **/
-	var NEAREST = 0;
-	/** Linear filtering **/ 
-    var LINEAR;
-	/** Anisotropic filtering **/
-    var ANISOTROPIC;
-}
-
-@:keep
-@:native("SDL_Point")
-@:include("vendor/include/Headers.h")
-@:structAccess
-extern class Point {
-	public var x:Int;
-	public var y:Int;
-
-	public static inline function create(x:Int, y:Int):Point {
-		return cast untyped __cpp__("SDL_Point{ (int){0}, (int){1} }", x, y);
-	}
-}
-
-@:keep
-@:native("SDL_FPoint")
-@:include("vendor/include/Headers.h")
-@:structAccess
-extern class FPoint {
-	public var x:Float;
-	public var y:Float;
-
-	public static inline function create(x:Float, y:Float):FPoint {
-		return cast untyped __cpp__("SDL_FPoint{ (double){0}, (double){1} }", x, y);
-	}
-}
-
-@:keep
-@:native("SDL_Rect")
-@:include("vendor/include/Headers.h")
-@:structAccess
-extern class Rectangle {
-	public var x:Int;
-	public var y:Int;
-	public var w:Int;
-	public var h:Int;
-
-	public static inline function create(x:Int, y:Int, w:Int, h:Int):Rectangle {
-		return cast untyped __cpp__("SDL_Rect{ (int){0}, (int){1}, (int){2}, (int){3} }", x, y, w, h);
-	}
-}
-
-@:keep
-@:native("SDL_FRect")
-@:include("vendor/include/Headers.h")
-@:structAccess
-extern class FRectangle {
-	public var x:Float;
-	public var y:Float;
-	public var w:Float;
-	public var h:Float;
-
-	public static inline function create(x:Float, y:Float, w:Float, h:Float):FRectangle {
-		return cast untyped __cpp__("SDL_FRect{ (double){0}, (double){1}, (double){2}, (double){3} }", x, y, w, h);
-	}
-}
-
-@:keep
-@:native("SDL_Color")
-@:include("vendor/include/Headers.h")
-@:structAccess
-extern class Color {
-	public var r:UInt8;
-	public var g:UInt8;
-	public var b:UInt8;
-	public var a:UInt8;
-
-	public static inline function create(r:UInt8, g:UInt8, b:UInt8, a:UInt8):Color {
-		return cast untyped __cpp__("SDL_Color{ (Uint8){0}, (Uint8){1}, (Uint8){2}, (Uint8){3} }", r, g, b, a);
-	}
-}
-
-typedef Double = cpp.Float64;
