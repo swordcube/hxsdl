@@ -18,514 +18,108 @@ import sdl.Types;
 
 extern class SDL {
 	// SDL.h //
-	/**
-	 * Initialize the SDL library.
-	 *
-	 * SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the
-	 * two may be used interchangeably. Though for readability of your code
-	 * SDL_InitSubSystem() might be preferred.
-	 *
-	 * The file I/O (for example: SDL_RWFromFile) and threading (SDL_CreateThread)
-	 * subsystems are initialized by default. Message boxes
-	 * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
-	 * video subsystem, in hopes of being useful in showing an error dialog when
-	 * SDL_Init fails. You must specifically initialize other subsystems if you
-	 * use them in your application.
-	 *
-	 * Logging (such as SDL_Log) works without initialization, too.
-	 *
-	 * `flags` may be any of the following OR'd together:
-	 *
-	 * - `SDL_INIT_TIMER`: timer subsystem
-	 * - `SDL_INIT_AUDIO`: audio subsystem
-	 * - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events
-	 *   subsystem
-	 * - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the
-	 *   events subsystem
-	 * - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem
-	 * - `SDL_INIT_GAMECONTROLLER`: controller subsystem; automatically
-	 *   initializes the joystick subsystem
-	 * - `SDL_INIT_EVENTS`: events subsystem
-	 * - `SDL_INIT_EVERYTHING`: all of the above subsystems
-	 * - `SDL_INIT_NOPARACHUTE`: compatibility; this flag is ignored
-	 *
-	 * Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()
-	 * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
-	 * call SDL_Quit() to force shutdown). If a subsystem is already loaded then
-	 * this call will increase the ref-count and return.
-	 *
-	 * @param flags subsystem initialization flags
-	 * @returns 0 on success or a negative error code on failure; call
-	 *          SDL_GetError() for more information.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_Init")
 	static function init(flags:InitFlags):Int;
 
-	
-	/**
-	 * Compatibility function to initialize the SDL library.
-	 *
-	 * In SDL2, this function and SDL_Init() are interchangeable.
-	 *
-	 * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
-	 * @returns 0 on success or a negative error code on failure; call
-	 *          SDL_GetError() for more information.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_InitSubSystem")
 	static function initSubSystem(flags:InitFlags):Int;
 
-	/**
-	 * Shut down specific SDL subsystems.
-	 *
-	 * If you start a subsystem using a call to that subsystem's init function
-	 * (for example SDL_VideoInit()) instead of SDL_Init() or SDL_InitSubSystem(),
-	 * SDL_QuitSubSystem() and SDL_WasInit() will not work. You will need to use
-	 * that subsystem's quit function (SDL_VideoQuit()) directly instead. But
-	 * generally, you should not be using those functions directly anyhow; use
-	 * SDL_Init() instead.
-	 *
-	 * You still need to call SDL_Quit() even if you close all open subsystems
-	 * with SDL_QuitSubSystem().
-	 *
-	 * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_QuitSubSystem")
 	static function quitSubSystem(flags:InitFlags):Void;
 
-	/**
-	 * Get a mask of the specified subsystems which are currently initialized.
-	 *
-	 * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
-	 * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
-	 *          returns the initialization status of the specified subsystems.
-	 *
-	 *          The return value does not include SDL_INIT_NOPARACHUTE.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_WasInit")
 	static function wasInit(flags:InitFlags):InitFlags;
 
-	/**
-	 * Clean up all initialized subsystems.
-	 *
-	 * You should call this function even if you have already shutdown each
-	 * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
-	 * function even in the case of errors in initialization.
-	 *
-	 * If you start a subsystem using a call to that subsystem's init function
-	 * (for example SDL_VideoInit()) instead of SDL_Init() or SDL_InitSubSystem(),
-	 * then you must use that subsystem's quit function (SDL_VideoQuit()) to shut
-	 * it down before calling SDL_Quit(). But generally, you should not be using
-	 * those functions directly anyhow; use SDL_Init() instead.
-	 *
-	 * You can use this function with atexit() to ensure that it is run when your
-	 * application is shutdown, but it is not wise to do this from a library or
-	 * other dynamically loaded code.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_Quit")
 	static function quit():Void;
 
 	// SDL_hints.h //
-	/**
-	 * Set a hint with a specific priority.
-	 *
-	 * The priority controls the behavior when setting a hint that already has a
-	 * value. Hints will replace existing hints of their priority and lower.
-	 * Environment variables are considered to have override priority.
-	 *
-	 * @param name the hint to set
-	 * @param value the value of the hint variable
-	 * @param priority the SDL_HintPriority level for the hint
-	 * @returns SDL_TRUE if the hint was set, SDL_FALSE otherwise.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_SetHintWithPriority")
 	static function setHintWithPriority(name:ConstCharStar, value:ConstCharStar, priority:HintPriority):Boolean;
 
-	/**
-	 * Set a hint with normal priority.
-	 *
-	 * Hints will not be set if there is an existing override hint or environment
-	 * variable that takes precedence. You can use SDL_SetHintWithPriority() to
-	 * set the hint with override priority instead.
-	 *
-	 * @param name the hint to set
-	 * @param value the value of the hint variable
-	 * @returns SDL_TRUE if the hint was set, SDL_FALSE otherwise.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_SetHint")
 	static function setHint(name:ConstCharStar, value:ConstCharStar):Boolean;
 	
-	/**
-	 * Reset a hint to the default value.
-	 *
-	 * This will reset a hint to the value of the environment variable, or NULL if
-	 * the environment isn't set. Callbacks will be called normally with this
-	 * change.
-	 *
-	 * @param name the hint to set
-	 * @returns SDL_TRUE if the hint was set, SDL_FALSE otherwise.
-	 *
-	 * @since SDL 2.24.0.
-	 */
 	@:native("SDL_ResetHint")
 	static function resetHint(name:ConstCharStar):Boolean;
 	
-	/**
-	 * Reset all hints to the default values.
-	 *
-	 * This will reset all hints to the value of the associated environment
-	 * variable, or NULL if the environment isn't set. Callbacks will be called
-	 * normally with this change.
-	 *
-	 * @since SDL 2.26.0.
-	 */
 	@:native("SDL_ResetHints")
 	static function resetHints():Boolean;
 
-	/**
-	 * Get the value of a hint.
-	 *
-	 * @param name the hint to query
-	 * @returns the string value of a hint or NULL if the hint isn't set.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_GetHint")
 	static function getHint(name:ConstCharStar):ConstCharStar;
 
-	/**
-	 * Get the boolean value of a hint variable.
-	 *
-	 * @param name the name of the hint to get the boolean value from
-	 * @param defaultValue the value to return if the hint does not exist
-	 * @returns the boolean value of a hint or the provided default value if the
-	 *          hint does not exist.
-	 *
-	 * @since SDL 2.0.5.
-	 */
 	@:native("SDL_GetHintBoolean")
 	static function getHintBoolean(name:ConstCharStar, defaultValue:Boolean):Boolean;
 
-	/**
-	 * Add a function to watch a particular hint.
-	 *
-	 * @param name the hint to watch
-	 * @param callback An SDL_HintCallback function that will be called when the
-	 *                 hint value changes
-	 * @param userdata a pointer to pass to the callback function
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_AddHintCallback")
 	static function addHintCallback(name:ConstCharStar, callback:HintCallback, userdata:Pointer<Void>):Void;
 
-	/**
-	 * Remove a function watching a particular hint.
-	 *
-	 * @param name the hint being watched
-	 * @param callback An SDL_HintCallback function that will be called when the
-	 *                 hint value changes
-	 * @param userdata a pointer being passed to the callback function
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_DelHintCallback")
 	static function deleteHintCallback(name:ConstCharStar, callback:HintCallback, userdata:Pointer<Void>):Void;
 
-	/**
-	 * Clear all hints.
-	 *
-	 * This function is automatically called during SDL_Quit(), and deletes all
-	 * callbacks without calling them and frees all memory associated with hints.
-	 * If you're calling this from application code you probably want to call
-	 * SDL_ResetHints() instead.
-	 *
-	 * This function will be removed from the API the next time we rev the ABI.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_ClearHints")
 	static function clearHints():Void;
 
 	// SDL_error.h //
-	/**
-	 * Set the SDL error message for the current thread.
-	 *
-	 * Calling this function will replace any previous error message that was set.
-	 *
-	 * This function always returns -1, since SDL frequently uses -1 to signify an
-	 * failing result, leading to this idiom:
-	 *
-	 * ```haxe
-	 * if (errorCode) {
-	 *     return SDL.setError("This operation has failed: %d", errorCode);
-	 * }
-	 * ```
-	 *
-	 * @param fmt a printf()-style message format string
-	 * @param args additional parameters matching % tokens in the `fmt` string, if
-	 *            any
-	 * @returns always -1.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_SetError")
 	static function setError(fmt:ConstCharStar, args:Rest<Any>):Int;
 
-	/**
-	 * Retrieve a message about the last error that occurred on the current
-	 * thread.
-	 *
-	 * It is possible for multiple errors to occur before calling SDL_GetError().
-	 * Only the last error is returned.
-	 *
-	 * The message is only applicable when an SDL function has signaled an error.
-	 * You must check the return values of SDL function calls to determine when to
-	 * appropriately call SDL_GetError(). You should *not* use the results of
-	 * SDL_GetError() to decide if an error has occurred! Sometimes SDL will set
-	 * an error string even when reporting success.
-	 *
-	 * SDL will *not* clear the error string for successful API calls. You *must*
-	 * check return values for failure cases before you can assume the error
-	 * string applies.
-	 *
-	 * Error strings are set per-thread, so an error set in a different thread
-	 * will not interfere with the current thread's operation.
-	 *
-	 * The returned string is internally allocated and must not be freed by the
-	 * application.
-	 *
-	 * @returns a message with information about the specific error that occurred,
-	 *          or an empty string if there hasn't been an error message set since
-	 *          the last call to SDL_ClearError(). The message is only applicable
-	 *          when an SDL function has signaled an error. You must check the
-	 *          return values of SDL function calls to determine when to
-	 *          appropriately call SDL_GetError().
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_GetError")
 	static function getError():ConstCharStar;
 
-	/**
-	 * Get the last error message that was set for the current thread.
-	 *
-	 * This allows the caller to copy the error string into a provided buffer, but
-	 * otherwise operates exactly the same as SDL_GetError().
-	 *
-	 * @param errStr A buffer to fill with the last error message that was set for
-	 *               the current thread
-	 * @param maxLen The size of the buffer pointed to by the errStr parameter
-	 * @returns the pointer passed in as the `errStr` parameter.
-	 *
-	 * @since SDL 2.0.14.
-	 */
 	@:native("SDL_GetErrorMsg")
 	static function getErrorMessage(errStr:CastCharStar, maxLen:Int):CastCharStar;
 
-	/**
-	 * Clear any previous error message for this thread.
-	 *
-	 * @since SDL 2.0.0.
-	 */
 	@:native("SDL_ClearError")
 	static function clearError():Void;
 
 	// SDL_log.h
-	/**
-	 * Set the priority of all log categories.
-	 *
-	 * @param priority the SDL_LogPriority to assign
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogAllSetPriority")
 	static function logAllSetPriority(priority:LogPriority):Void;
 
-	/**
-	 * Set the priority of a particular log category.
-	 *
-	 * @param category the category to assign a priority to
-	 * @param priority the SDL_LogPriority to assign
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogSetPriority")
 	static function logSetPriority(category:LogCategory, priority:LogPriority):Void;
 
-	/**
-	 * Get the priority of a particular log category.
-	 *
-	 * @param category the category to query
-	 * \returns the SDL_LogPriority for the requested category
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogGetPriority")
 	static function logGetPriority(category:LogCategory):LogPriority;
 
-	/**
-	 * Reset all priorities to default.
-	 *
-	 * This is called by SDL_Quit().
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogResetPriorities")
 	static function logResetPriorities():Void;
 
-	/**
-	 * Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.
-	 *
-	 * @param fmt a printf() style message format string
-	 *
-	 * @param args additional parameters matching % tokens in the `fmt` string, if any
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_Log")
 	static function log(fmt:ConstCharStar, args:Rest<Any>):Void;
 
-	/**
-	 * Log a message with SDL_LOG_PRIORITY_VERBOSE.
-	 *
-	 * @param category the category of the message
-	 * @param fmt a printf() style message format string
-	 * @param args additional parameters matching % tokens in the **fmt** string,
-	 *            if any
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogVerbose")
 	static function logVerbose(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
 
-	/**
-	 * Log a message with SDL_LOG_PRIORITY_DEBUG.
-	 *
-	 * @param category the category of the message
-	 * @param fmt a printf() style message format string
-	 * @param args additional parameters matching % tokens in the **fmt** string,
-	 *            if any
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogDebug")
 	static function logDebug(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
 
-	/**
-	 * Log a message with SDL_LOG_PRIORITY_INFO.
-	 *
-	 * @param category the category of the message
-	 * @param fmt a printf() style message format string
-	 * @param args additional parameters matching % tokens in the **fmt** string,
-	 *            if any
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogInfo")
 	static function logInfo(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
 
-	/**
-	 * Log a message with SDL_LOG_PRIORITY_WARN.
-	 *
-	 * @param category the category of the message
-	 * @param fmt a printf() style message format string
-	 * @param args additional parameters matching % tokens in the **fmt** string,
-	 *            if any
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogWarn")
 	static function logWarn(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
 
-	/**
-	 * Log a message with SDL_LOG_PRIORITY_ERROR.
-	 *
-	 * @param category the category of the message
-	 * @param fmt a printf() style message format string
-	 * @param args additional parameters matching % tokens in the **fmt** string,
-	 *            if any
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogError")
 	static function logError(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
 
-	/**
-	 * Log a message with SDL_LOG_PRIORITY_CRITICAL.
-	 *
-	 * @param category the category of the message
-	 * @param fmt a printf() style message format string
-	 * @param args additional parameters matching % tokens in the **fmt** string,
-	 *            if any
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogCritical")
 	static function logCritical(category:LogCategory, fmt:ConstCharStar, args:Rest<Any>):Void;
 
-	/**
-	 * Log a message with the specified category and priority.
-	 *
-	 * @param category the category of the message
-	 * @param priority the priority of the message
-	 * @param fmt a printf() style message format string
-	 * @param args additional parameters matching % tokens in the **fmt** string,
-	 *            if any
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogMessage")
 	static function logMessage(category:LogCategory, priority:LogPriority, fmt:ConstCharStar, args:Rest<Any>):Void;
 
-	/**
-	 * Log a message with the specified category and priority.
-	 *
-	 * @param category the category of the message
-	 * @param priority the priority of the message
-	 * @param fmt a printf() style message format string
-	 * @param ap a variable argument list
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogMessageV")
 	static function logMessageV(category:LogCategory, priority:LogPriority, fmt:ConstCharStar, va:VarArg):Void;
 
-	/**
-	 * Get the current log output function.
-	 *
-	 * @param callback an SDL_LogOutputFunction filled in with the current log callback
-	 * @param userdata custom data that is passed to `callback`
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
 	@:native("SDL_LogGetOutputFunction")
 	static inline function logGetOutputFunction(userdata:Any):LogOutputFunction {
 		untyped __cpp__("SDL_LogOutputFunction _func; SDL_LogGetOutputFunction(&_func, &{0})", userdata);
 		return untyped __cpp__("_func");
 	}
-	
-	/**
-	 * Replace the default log output function with one of your own.
-	 *
-	 * @param callback an SDL_LogOutputFunction to call instead of the default
-	 * @param userdata custom data that is passed to `callback`
-	 *
-	 * @since This function is available since SDL 2.0.0.
-	 */
+
 	@:native("SDL_LogSetOutputFunction")
 	static inline function logSetOutputFunction(callback:LogOutputFunction, userdata:Any):Void {
 		untyped __cpp__("SDL_LogSetOutputFunction({0}, (void*){1})", callback, userdata);
@@ -943,6 +537,13 @@ extern class SDL {
 	// SDL_render.h //
 	@:native("SDL_GetNumRenderDrivers")
 	static function getNumRenderDrivers():Int;
+	
+	@:native("SDL_GetRenderDriverInfo")
+	static inline function getRenderDriverInfo(displayIndex:Int):RendererInfo {
+		var result:Int;
+		untyped __cpp__("SDL_RendererInfo _info; {1} = SDL_GetRenderDriverInfo({0}, &_info)", displayIndex, result);
+		return (result == 0) ? untyped __cpp__("_info") : null;
+	}
 
 	@:native("SDL_CreateRenderer")
 	static function createRenderer(window:Window, index:Int, flags:RendererFlags):Renderer;
