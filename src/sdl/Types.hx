@@ -3656,7 +3656,7 @@ enum abstract FlashOperation(UInt32) from UInt32 to UInt32 {
 	var UNTIL_FOCUSED;
 }
 
-typedef GlContext = CppDynamic;
+typedef GlContext = Pointer<cpp.Void>;
 
 enum abstract GlAttribute(UInt32) from UInt32 to UInt32 {
 	var RED_SIZE = 0;
@@ -3812,7 +3812,7 @@ extern class DisplayMode {
 	@:native("refresh_rate")
 	public var refreshRate:Int;
 
-	public var driverdata:CppDynamic;
+	public var driverdata:Pointer<cpp.Void>;
 }
 
 @:native("SDL_KeyboardEvent")
@@ -3951,13 +3951,13 @@ typedef HitTest = Callable<(window:Window, area:cpp.RawConstPointer<Point>, data
 /**
  * userdata, name, oldValue, newValue
  */
-typedef HintCallback = Callable<(userdata:CppDynamic, name:ConstCharStar, oldValue:ConstCharStar, newValue:ConstCharStar) -> Void>;
+typedef HintCallback = Callable<(userdata:Pointer<cpp.Void>, name:ConstCharStar, oldValue:ConstCharStar, newValue:ConstCharStar) -> Void>;
 
 /**
  * userdata, category, priority, message
  */
-typedef LogOutputFunction = Callable<(userdata:CppDynamic, category:Int, priority:LogPriority, message:ConstCharStar) -> Void>;
+typedef LogOutputFunction = Callable<(userdata:Pointer<cpp.Void>, category:Int, priority:LogPriority, message:ConstCharStar) -> Void>;
 
-typedef CppDynamic = Pointer<cpp.Void>;
 typedef DoublePointer<T> = Pointer<Pointer<T>>;
 typedef TriplePointer<T> = Pointer<Pointer<Pointer<T>>>;
+typedef Double = cpp.Float64;

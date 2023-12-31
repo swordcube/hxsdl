@@ -13,10 +13,16 @@ import cpp.Pointer;
 import cpp.VarArg;
 
 import sdl.Types;
+import sdl.Types.*;
 
 @:include("vendor/include/Headers.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
 
+/**
+ * The class containing a majority of SDL's functions!
+ * 
+ * Keep in mind that the functions have been modifyied to be easier used in Haxe.
+ */
 extern class SDL {
 	// SDL.h //
 	@:native("SDL_Init")
@@ -494,14 +500,12 @@ extern class SDL {
 	@:native("SDL_GL_SetAttribute")
 	static function glSetAttribute(attr:GlAttribute, value:Int):Int;
 
+	@:native("SDL_GL_GetAttribute")
 	static inline function glGetAttribute(attr:GlAttribute):Int {
 		var result:Int;
 		untyped __cpp__("int _val; {0} = SDL_GL_GetAttribute({1}, &_val)", result, attr);
 		return (result == 0) ? untyped __cpp__("_val") : null;
 	}
-
-	@:native("SDL_GL_GetAttribute")
-	@:noCompletion static function _glGetAttribute(attr:GlAttribute, value:Pointer<Int>):Int;
 
 	@:native("SDL_GL_CreateContext")
 	static function glCreateContext(window:Window):GlContext;
@@ -618,7 +622,7 @@ extern class SDL {
 	}
 
 	@:native("SDL_GetTextureScaleMode")
-	public static inline function getTextureScaleMode(texture:Texture):Int {
+	public static inline function getTextureScaleMode(texture:Texture):TextureScaleMode {
 		var scaleMode:TextureScaleMode;
 		untyped __cpp__("SDL_ScaleMode output; SDL_GetTextureScaleMode({0}, &output); {1} = output", texture, scaleMode);
 		return scaleMode;
@@ -629,10 +633,410 @@ extern class SDL {
 		return untyped __cpp__("SDL_SetTextureScaleMode({0}, (SDL_ScaleMode){1})", texture, scaleMode);
 	}
 
+	@:native("SDL_SetTextureUserData")
+	static function setTextureUserData(texture:Texture, userdata:Pointer<cpp.Void>):Int;
+
+	@:native("SDL_GetTextureUserData")
+	static function getTextureUserData(texture:Texture):Any;
+
+	@:native("SDL_UpdateTexture")
+	static inline function updateTexture(texture:Texture, rect:Rectangle, pixels:Array<Any>, pitch:Int):Int {
+		untyped __cpp__("
+		void** _cArray = (void**)malloc(sizeof(void*) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", pixels, pixels.length);
+
+		return untyped __cpp__("SDL_UpdateTexture({0}, {1}, _cArray, {2})", texture, RawConstPointer.addressOf(rect), pitch);
+	}
+
+	@:native("SDL_UpdateYUVTexture")
+	static inline function updateYUVTexture(texture:Texture, rect:Rectangle, Yplane:Array<UInt8>, Ypitch:Int, Uplane:Array<UInt8>, Upitch:Int, Vplane:Array<UInt8>, Vpitch:Int):Int {
+		untyped __cpp__("
+		unsigned char* _cArray = (unsigned char*)malloc(sizeof(unsigned char) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", Yplane, Yplane.length);
+
+		untyped __cpp__("
+		unsigned char* _cArray2 = (unsigned char*)malloc(sizeof(unsigned char) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray2[i] = {0}->__get(i);
+		}", Uplane, Uplane.length);
+
+		untyped __cpp__("
+		unsigned char* _cArray3 = (unsigned char*)malloc(sizeof(unsigned char) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray3[i] = {0}->__get(i);
+		}", Vplane, Vplane.length);
+
+		return untyped __cpp__("SDL_UpdateYUVTexture({0}, {1}, _cArray, {2}, _cArray2, {3}, _cArray3, {4})", texture, RawConstPointer.addressOf(rect), Ypitch, Upitch, Vpitch);
+	}
+
+	@:native("SDL_UpdateNVTexture")
+	static inline function updateNVTexture(texture:Texture, rect:Rectangle, Yplane:Array<UInt8>, Ypitch:Int, UVplane:Array<UInt8>, UVpitch:Int):Int {
+		untyped __cpp__("
+		unsigned char* _cArray = (unsigned char*)malloc(sizeof(unsigned char) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", Yplane, Yplane.length);
+
+		untyped __cpp__("
+		unsigned char* _cArray2 = (unsigned char*)malloc(sizeof(unsigned char) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray2[i] = {0}->__get(i);
+		}", UVplane, UVplane.length);
+
+		return untyped __cpp__("SDL_UpdateNVTexture({0}, {1}, _cArray, {2}, _cArray2, {3})", texture, RawConstPointer.addressOf(rect), Ypitch, UVpitch);
+	}
+
+	@:native("SDL_LockTexture")
+	static inline function lockTexture(texture:Texture, rect:Rectangle, pixels:Any, pitch:Int):Int {
+		return untyped __cpp__("SDL_LockTexture({0}, {1})", texture, RawConstPointer.addressOf(rect), Pointer.addressOf(pixels), Pointer.addressOf(pitch));
+	}
+
+	@:native("SDL_LockTextureToSurface")
+	static inline function lockTextureToSurface(texture:Texture, rect:Rectangle, surface:Surface):Int {
+		return untyped __cpp__("SDL_LockTextureToSurface({0}, {1})", texture, RawConstPointer.addressOf(rect), Pointer.addressOf(surface));
+	}
+
+	@:native("SDL_UnlockTexture")
+	static function unlockTexture(texture:Texture):Void;
+
+	@:native("SDL_RenderTargetSupported")
+	static function renderTargetSupported(renderer:Renderer):Boolean;
+
+	@:native("SDL_SetRenderTarget")
+	static function setRenderTarget(renderer:Renderer, texture:Texture):Int;
+
+	@:native("SDL_GetRenderTarget")
+	static function getRenderTarget(renderer:Renderer):Texture;
+
+	@:native("SDL_RenderSetLogicalSize")
+	static function renderSetLogicalSize(renderer:Renderer, w:Int, h:Int):Int;
+
+	@:native("SDL_RenderGetLogicalSize")
+	static inline function renderGetLogicalSize(renderer:Renderer):Point {
+		var width:Int;
+		var height:Int;
+		untyped __cpp__("SDL_RenderGetLogicalSize({0}, {1}, {2})", renderer, Pointer.addressOf(width), Pointer.addressOf(height));
+		return Point.create(width, height);
+	}
+
+	@:native("SDL_RenderSetIntegerScale")
+	static function renderSetIntegerScale(renderer:Renderer, enable:Boolean):Int;
+
+	@:native("SDL_RenderGetIntegerScale")
+	static function renderGetIntegerScale(renderer:Renderer):Boolean;
+
+	@:native("SDL_RenderSetViewport")
+	static inline function renderSetViewport(renderer:Renderer, rect:Rectangle):Int {
+		return untyped __cpp__("SDL_RenderSetViewport({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
+
+	@:native("SDL_RenderGetViewport")
+	static inline function renderGetViewport(renderer:Renderer):Rectangle {
+		var rect:Rectangle;
+		untyped __cpp__("SDL_RenderGetViewport({0}, {1})", renderer, Pointer.addressOf(rect));
+		return rect;
+	}
+
+	@:native("SDL_RenderSetClipRect")
+	static inline function renderSetClipRect(renderer:Renderer, rect:Rectangle):Int {
+		return untyped __cpp__("SDL_RenderSetClipRect({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
+
+	@:native("SDL_RenderGetClipRect")
+	static inline function renderGetClipRect(renderer:Renderer):Rectangle {
+		var rect:Rectangle;
+		untyped __cpp__("SDL_RenderGetClipRect({0}, {1})", renderer, Pointer.addressOf(rect));
+		return rect;
+	}
+
+	@:native("SDL_RenderIsClipEnabled")
+	static function renderIsClipEnabled(renderer:Renderer):Boolean;
+
+	@:native("SDL_RenderSetScale")
+	static function renderSetScale(renderer:Renderer, scaleX:Float, scaleY:Float):Int;
+
+	@:native("SDL_RenderGetScale")
+	static inline function renderGetScale(renderer:Renderer):FPoint {
+		var scaleX:Float;
+		var scaleY:Float;
+		untyped __cpp__("SDL_RenderGetScale({0}, {1}, {2})", renderer, Pointer.addressOf(scaleX), Pointer.addressOf(scaleY));
+		return FPoint.create(scaleX, scaleY);
+	}
+
+	@:native("SDL_RenderWindowToLogical")
+	static inline function renderWindowToLogical(renderer:Renderer, windowX:Int, windowY:Int, logicalX:Float, logicalY:Float):Void {
+		untyped __cpp__("SDL_RenderWindowToLogical({0}, {1}, {2}, {3}, {4})", renderer, windowX, windowY, Pointer.addressOf(logicalX), Pointer.addressOf(logicalY));
+	}
+
+	@:native("SDL_RenderLogicalToWindow")
+	static inline function renderLogicalToWindow(renderer:Renderer, logicalX:Float, logicalY:Float, windowX:Int, windowY:Int):Void {
+		untyped __cpp__("SDL_RenderWindowToLogical({0}, {1}, {2}, {3}, {4})", renderer, Pointer.addressOf(windowX), Pointer.addressOf(windowY), logicalX, logicalY);
+	}
+
+	@:native("SDL_SetRenderDrawColor")
+	static function setRenderDrawColor(renderer:Renderer, r:UInt8, g:UInt8, b:UInt8, a:UInt8):Int;
+
+	@:native("SDL_GetRenderDrawColor")
+	static inline function getRenderDrawColor(renderer:Renderer):Color {
+		var r:UInt8 = 0;
+		var g:UInt8 = 0;
+		var b:UInt8 = 0;
+		var a:UInt8 = 0;
+		untyped __cpp__("SDL_GetRenderDrawColor({0}, {1}, {2}, {3}, {4})", renderer, Pointer.addressOf(r), Pointer.addressOf(g), Pointer.addressOf(b), Pointer.addressOf(a));
+		return Color.create(r, g, b, a);
+	}
+
+	@:native("SDL_SetRenderDrawBlendMode")
+	static function setRenderDrawBlendMode(renderer:Renderer, blendMode:BlendMode):Int;
+
+	@:native("SDL_GetRenderDrawBlendMode")
+	static inline function getRenderDrawBlendMode(renderer:Renderer, blendMode:BlendMode):BlendMode {
+		var blendMode:BlendMode;
+		untyped __cpp__("SDL_GetRenderDrawBlendMode({0}, {1})", renderer, Pointer.addressOf(blendMode));
+		return blendMode;
+	}
+
+	@:native("SDL_RenderClear")
+	static function renderClear(renderer:Renderer):Int;
+
+	@:native("SDL_RenderDrawPoint")
+	static function renderDrawPoint(renderer:Renderer, x:Int, y:Int):Int;
+
+	@:native("SDL_RenderDrawPoints")
+	static inline function renderDrawPoints(renderer:Renderer, points:Array<Point>, count:Int):Int {
+		untyped __cpp__("
+		SDL_Point* _cArray = (SDL_Point*)malloc(sizeof(SDL_Point) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", points, points.length);
+
+		return untyped __cpp__("SDL_RenderDrawPoints({0}, _cArray, {1})", renderer, count);
+	}
+
+	@:native("SDL_RenderDrawLine")
+	static function renderDrawLine(renderer:Renderer, x1:Int, y1:Int, x2:Int, y2:Int):Int;
+
+	@:native("SDL_RenderDrawLines")
+	static inline function renderDrawLines(renderer:Renderer, points:Array<Point>, count:Int):Int {
+		untyped __cpp__("
+		SDL_Point* _cArray = (SDL_Point*)malloc(sizeof(SDL_Point) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", points, points.length);
+
+		return untyped __cpp__("SDL_RenderDrawLines({0}, _cArray, {1})", renderer, count);
+	}
+
+	@:native("SDL_RenderDrawRect")
+	static inline function renderDrawRect(renderer:Renderer, rect:Rectangle):Int {
+		return untyped __cpp__("SDL_RenderDrawRect({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
+
+	@:native("SDL_RenderDrawRects")
+	static inline function renderDrawRects(renderer:Renderer, rects:Array<Rectangle>, count:Int):Int {
+		untyped __cpp__("
+		SDL_Rect* _cArray = (SDL_Rect*)malloc(sizeof(SDL_Rect) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", rects, rects.length);
+
+		return untyped __cpp__("SDL_RenderDrawRects({0}, _cArray, {1})", renderer, count);
+	}
+
+	@:native("SDL_RenderFillRect")
+	static inline function renderFillRect(renderer:Renderer, rect:Rectangle):Int {
+		return untyped __cpp__("SDL_RenderFillRect({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
+
+	@:native("SDL_RenderFillRects")
+	static inline function renderFillRects(renderer:Renderer, rects:RawConstPointer<Rectangle>, count:Int):Int {
+		untyped __cpp__("
+		SDL_Rect* _cArray = (SDL_Rect*)malloc(sizeof(SDL_Rect) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", rects, rects.length);
+
+		return untyped __cpp__("SDL_RenderFillRects({0}, _cArray, {1})", renderer, count);
+	}
+
+	@:native("SDL_RenderCopy")
+	static inline function renderCopy(renderer:Renderer, texture:Texture, src:Rectangle, dst:Rectangle):Int {
+		return untyped __cpp__("SDL_RenderCopy({0}, {1}, {2}, {3})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst));
+	}
+
+	@:native("SDL_RenderCopyEx")
+	static inline function renderCopyEx(renderer:Renderer, texture:Texture, src:Rectangle, dst:Rectangle, angle:Double, center:Point, flip:RendererFlip = NONE):Int {
+		return untyped __cpp__("SDL_RenderCopyEx({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), untyped __cpp__("(SDL_RendererFlip){0}", flip));
+	}
+
+	@:native("SDL_RenderDrawPointF")
+	static function renderDrawPointF(renderer:Renderer, x:Float, y:Float):Int;
+
+	@:native("SDL_RenderDrawPointsF")
+	static inline function renderDrawPointsF(renderer:Renderer, points:Array<FPoint>, count:Int):Int {
+		untyped __cpp__("
+		SDL_FPoint* _cArray = (SDL_FPoint*)malloc(sizeof(SDL_FPoint) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", points, points.length);
+
+		return untyped __cpp__("SDL_RenderDrawPointsF({0}, _cArray, {1})", renderer, count);
+	}
+
+	@:native("SDL_RenderDrawLineF")
+	static function renderDrawLineF(renderer:Renderer, x1:Float, y1:Float, x2:Float, y2:Float):Int;
+
+	@:native("SDL_RenderDrawLinesF")
+	static inline function renderDrawLinesF(renderer:Renderer, points:Array<FPoint>, count:Int):Int {
+		untyped __cpp__("
+		SDL_FPoint* _cArray = (SDL_FPoint*)malloc(sizeof(SDL_FPoint) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", points, points.length);
+
+		return untyped __cpp__("SDL_RenderDrawLinesF({0}, _cArray, {1})", renderer, count);
+	}
+
+	@:native("SDL_RenderDrawRectF")
+	static inline function renderDrawRectF(renderer:Renderer, rect:FRectangle):Int {
+		return untyped __cpp__("SDL_RenderDrawRectF({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
+
+	@:native("SDL_RenderDrawRectsF")
+	static inline function renderDrawRectsF(renderer:Renderer, rects:Array<FRectangle>, count:Int):Int {
+		untyped __cpp__("
+		SDL_FRect* _cArray = (SDL_FRect*)malloc(sizeof(SDL_FRect) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", rects, rects.length);
+
+		return untyped __cpp__("SDL_RenderDrawRectsF({0}, _cArray, {1})", renderer, count);
+	}
+
+	@:native("SDL_RenderFillRectF")
+	static inline function renderFillRectF(renderer:Renderer, rect:FRectangle):Int {
+		return untyped __cpp__("SDL_RenderFillRectF({0}, {1})", renderer, RawConstPointer.addressOf(rect));
+	}
+
+	@:native("SDL_RenderFillRectsF")
+	static inline function renderFillRectsF(renderer:Renderer, rects:Array<FRectangle>, count:Int):Int {
+		untyped __cpp__("
+		SDL_FRect* _cArray = (SDL_FRect*)malloc(sizeof(SDL_FRect) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", rects, rects.length);
+
+		return untyped __cpp__("SDL_RenderFillRectsF({0}, _cArray, {1})", renderer, count);
+	}
+
+	@:native("SDL_RenderCopyF")
+	static inline function renderCopyF(renderer:Renderer, texture:Texture, src:Rectangle, dst:FRectangle):Int {
+		return untyped __cpp__("SDL_RenderCopyF({0}, {1}, {2}, {3})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst));
+	}
+
+	@:native("SDL_RenderCopyExF")
+	static inline function renderCopyExF(renderer:Renderer, texture:Texture, src:Rectangle, dst:FRectangle, angle:Double, center:FPoint, flip:RendererFlip = NONE):Int {
+		return untyped __cpp__("SDL_RenderCopyExF({0}, {1}, {2}, {3}, {4}, {5}, {6})", renderer, texture, RawConstPointer.addressOf(src), RawConstPointer.addressOf(dst), angle, RawConstPointer.addressOf(center), untyped __cpp__("(SDL_RendererFlip){0}", flip));
+	}
+
+	@:native("SDL_RenderGeometry")
+	static inline function renderGeometry(renderer:Renderer, texture:Texture, vertices:Array<Vertex>, numVertices:Int, indices:Array<Int>, numIndices:Int):Int {
+		untyped __cpp__("
+		SDL_Vertex* _cArray = (SDL_Vertex*)malloc(sizeof(SDL_Vertex) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", vertices, vertices.length);
+
+		untyped __cpp__("
+		int* _cArray2 = (int*)malloc(sizeof(int) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", indices, indices.length);
+
+		return untyped __cpp__("SDL_RenderGeometry({0}, {1}, _cArray, {2}, _cArray2, {3})", renderer, texture, numVertices, numIndices);
+	}
+
+	@:native("SDL_RenderGeometryRaw")
+	static inline function renderGeometryRaw(renderer:Renderer, texture:Texture, xy:Array<Float>, xyStride:Int, color:Array<Color>, colorStride:Int, uv:Array<Float>, uvStride:Int, numVertices:Int, indices:Array<Any>, numIndices:Int, sizeIndices:Int):Int {
+		untyped __cpp__("
+			SDL_Point* _xyArray = (SDL_Point*)malloc(sizeof(SDL_Point) * {1});
+			for (int i = 0; i < {1}; i++) {
+				_xyArray[i] = {0}->__get(i);
+			}", xy, xy.length);
+
+		untyped __cpp__("
+			SDL_Color* _colorArray = (SDL_Color*)malloc(sizeof(SDL_Color) * {1});
+			for (int i = 0; i < {1}; i++) {
+				_colorArray[i] = {0}->__get(i);
+			}", color, color.length);
+
+		untyped __cpp__("
+			float* _uvArray = (float*)malloc(sizeof(float) * {1});
+			for (int i = 0; i < {1}; i++) {
+				_uvArray[i] = {0}->__get(i);
+			}", uv, uv.length);
+
+		untyped __cpp__("
+			void** _indicesArray = (void**)malloc(sizeof(void*) * {1});
+			for (int i = 0; i < {1}; i++) {
+				_indicesArray[i] = {0}->__get(i);
+			}", indices, indices.length);
+
+		return untyped __cpp__("SDL_RenderGeometryRaw({0}, {1}, _xyArray, {2}, _colorArray, {3}, _uvArray, {4}, {5}, _indicesArray, {6}, {7})", renderer, texture, xyStride, colorStride, uvStride, numVertices, numIndices, sizeIndices);
+	}
+
+	@:native("SDL_RenderReadPixels")
+	static inline function renderReadPixels(renderer:Renderer, rect:Rectangle, format:PixelFormat, pixels:Array<Any>, pitch:Int):Int {
+		untyped __cpp__("
+		void** _cArray = (void**)malloc(sizeof(void*) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", pixels, pixels.length);
+
+		return untyped __cpp__("SDL_RenderReadPixels({0}, {1}, {2}, _cArray, {3})", renderer, RawConstPointer.addressOf(rect), format, pitch);
+	}
+
+	@:native("SDL_RenderPresent")
+	static function renderPresent(renderer:Renderer):Void;
+
+	@:native("SDL_DestroyTexture")
+	static function destroyTexture(texture:Texture):Void;
+
+	@:native("SDL_DestroyRenderer")
+	static function destroyRenderer(renderer:Renderer):Void;
+
+	@:native("SDL_RenderFlush")
+	static function renderFlush(renderer:Renderer):Int;
+
+	@:native("SDL_GL_BindTexture")
+	static inline function glBindTexture(texture:Texture):Int {
+		var texw:Float;
+		var texh:Float;
+		return untyped __cpp__("SDL_GL_BindTexture({0}, {1}, {2})", texture, Pointer.addressOf(texw), Pointer.addressOf(texh));
+	}
+
+	@:native("SDL_GL_UnbindTexture")
+	static function glUnbindTexture(texture:Texture):Int;
+
+	@:native("SDL_RenderGetMetalLayer")
+	static function renderGetMetalLayer(renderer:Renderer):Any;
+
+	@:native("SDL_RenderGetMetalCommandEncoder")
+	static function renderGetMetalCommandEncoder(renderer:Renderer):Any;
+
+	@:native("SDL_RenderSetVSync")
+	static function renderSetVSync(renderer:Renderer, vsync:Int):Int;
+
+	// SDL_pixels.h //
+
 	// haxe helper functions //
 	@:native("SDL_Event")
-	static inline function makeEventPtr():Event {
-		untyped __cpp__('SDL_Event __sdl_ev__');
+	static inline function makeEvent():Event {
+		untyped __cpp__('SDL_Event* __sdl_ev__');
 		return untyped __cpp__('__sdl_ev__');
 	}
 }
