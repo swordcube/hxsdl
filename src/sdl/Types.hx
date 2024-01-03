@@ -312,8 +312,6 @@ extern class Version {
 	public var patch:cpp.UInt8;
 }
 
-
-
 // SDL_video.h
 @:include("vendor/include/Headers.h")
 @:native("SDL_DisplayMode")
@@ -859,6 +857,7 @@ extern class FRectangle {
 // SDL_surface.h
 @:native("SDL_Surface")
 @:include("vendor/include/Headers.h")
+@:structAccess
 extern class SDL_Surface {
 	@:native("format")
 	public var format:PixelFormat;
@@ -885,5 +884,35 @@ enum abstract YUVConversionMode(Int) from Int to Int {
 @:include("vendor/include/Headers.h")
 extern class SDL_RWops {}
 typedef RWops = Pointer<SDL_RWops>;
+
+// SDL_syswm.h
+enum abstract SysWMType(Int) from Int to Int {
+	var UNKNOWN = 0;
+    var WINDOWS;
+    var X11;
+    var DIRECT_FB;
+    var COCOA;
+    var UI_KIT;
+    var WAYLAND;
+    var MIR;
+    var WIN_RT;
+    var ANDROID;
+    var VIVANTE;
+    var OS2;
+    var HAIKU;
+    var KMSDRM;
+    var RISC_OS;
+}
+
+@:native("SDL_SysWMinfo")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_SysWMinfo {
+	@:native("version")
+	public var version:Version;
+	@:native("subsystem")
+	public var subsystem:SysWMType;
+}
+typedef SysWMinfo = Pointer<SDL_SysWMinfo>;
 
 typedef Double = cpp.Float64;

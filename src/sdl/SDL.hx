@@ -1406,6 +1406,13 @@ extern class SDL {
 	@:native("SDL_GetYUVConversionModeForResolution")
 	static function getYUVConversionModeForResolution(width:Int, height:Int):YUVConversionMode;
 
+	// SDL_syswm.h //
+	@:native("SDL_GetWindowWMInfo")
+	static inline function getWindowWMInfo(window:Window) {
+		untyped __cpp__("SDL_SysWMinfo _info; SDL_GetWindowWMInfo({0}, &_info)", window);
+		return untyped __cpp__("_info");
+	}
+	
 	// haxe helper functions //
 	// @:native("SDL_Event")
 	// static inline function makeEvent():Event {
