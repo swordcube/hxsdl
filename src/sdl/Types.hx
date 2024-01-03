@@ -915,4 +915,128 @@ extern class SDL_SysWMinfo {
 }
 typedef SysWMinfo = Pointer<SDL_SysWMinfo>;
 
+// SDL_events.h
+enum abstract EventType(Int) from Int to Int {
+    var QUIT = 0x100;
+    var APP_TERMINATING;
+    var APP_LOWMEMORY;
+    var APP_WILLENTERBACKGROUND;
+    var APP_DIDENTERBACKGROUND;
+    var APP_WILLENTERFOREGROUND;
+    var APP_DIDENTERFOREGROUND;
+    var LOCALECHANGED;
+    var WindowEvent = 0x150;
+    var WINDOWEVENT = 0x200;
+    var SYSWMEVENT;
+    var KEYDOWN = 0x300;
+    var KEYUP;
+    var TEXTEDITING;
+    var TEXTINPUT;
+    var KEYMAPCHANGED;
+    var TEXTEDITING_EXT;
+    var MOUSEMOTION = 0x400;
+    var MOUSEBUTTONDOWN;
+    var MOUSEBUTTONUP;
+    var MOUSEWHEEL;
+    var JOYAXISMOTION = 0x600;
+    var JOYBALLMOTION;
+    var JOYHATMOTION;
+    var JOYBUTTONDOWN;
+    var JOYBUTTONUP;
+    var JOYDEVICEADDED;
+    var JOYDEVICEREMOVED;
+    var JOYBATTERYUPDATED;
+    var CONTROLLERAXISMOTION = 0x650;
+    var CONTROLLERBUTTONDOWN;
+    var CONTROLLERBUTTONUP;
+    var CONTROLLERDEVICEADDED;
+    var CONTROLLERDEVICEREMOVED;
+    var CONTROLLERDEVICEREMAPPED;
+    var CONTROLLERTOUCHPADDOWN;
+    var CONTROLLERTOUCHPADMOTION;
+    var CONTROLLERTOUCHPADUP;
+    var CONTROLLERSENSORUPDATE;
+    var CONTROLLERUPDATECOMPLETE_RESERVED_FOR_SDL3;
+    var CONTROLLERSTEAMHANDLEUPDATED;
+    var FINGERDOWN = 0x700;
+    var FINGERUP;
+    var FINGERMOTION;
+    var DOLLARGESTURE = 0x800;
+    var DOLLARRECORD;
+    var MULTIGESTURE;
+    var CLIPBOARDUPDATE = 0x900;
+    var DROPFILE = 0x1000;
+    var DROPTEXT;
+    var DROPBEGIN;
+    var DROPCOMPLETE;
+    var AUDIODEVICEADDED = 0x1100;
+    var AUDIODEVICEREMOVED;
+    var SENSORUPDATE = 0x1200;
+    var RENDER_TARGETS_RESET = 0x2000;
+    var RENDER_DEVICE_RESET;
+    var POLLSENTINEL = 0x7F00;
+    var USEREVENT    = 0x8000;
+    var LASTEVENT    = 0xFFFF;
+}
+
+@:native("SDL_CommonEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_CommonEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+}
+typedef CommonEvent = Pointer<SDL_CommonEvent>;
+
+@:native("SDL_DisplayEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_DisplayEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("display")
+	var display:UInt32;
+	@:native("event")
+	var event:UInt8;
+	@:native("padding1")
+	var padding1:UInt8;
+	@:native("padding2")
+	var padding2:UInt8;
+	@:native("padding3")
+	var padding3:UInt8;
+	@:native("data")
+	var data:Int;
+}
+typedef DisplayEvent = Pointer<SDL_DisplayEvent>;
+@:native("SDL_WindowEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_WindowEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	@:native("event")
+	var event:UInt8;
+	@:native("padding1")
+	var padding1:UInt8;
+	@:native("padding2")
+	var padding2:UInt8;
+	@:native("padding3")
+	var padding3:UInt8;
+	@:native("data")
+	var data:Int;
+}
+typedef WindowEvent = Pointer<SDL_WindowEvent>;
+
+// note to self for later
+// i'm going to bed
+// https://github.com/libsdl-org/SDL/blob/SDL2/include/SDL_events.h#L224C33-L224C33
+
 typedef Double = cpp.Float64;
