@@ -307,7 +307,7 @@ extern class SDL {
 	static function setWindowPosition(window:Window, x:Int, y:Int):Void;
 
 	@:native("SDL_GetWindowSize")
-	public static inline function getWindowSize(window:Window):Point {
+	static inline function getWindowSize(window:Window):Point {
 		var sizeX:Int = 0;
 		var sizeY:Int = 0;
 		untyped __cpp__("SDL_GetWindowSize({0}, {1}, {2})", window, Pointer.addressOf(sizeX), Pointer.addressOf(sizeY));
@@ -622,14 +622,14 @@ extern class SDL {
 	}
 
 	@:native("SDL_GetTextureScaleMode")
-	public static inline function getTextureScaleMode(texture:Texture):TextureScaleMode {
+	static inline function getTextureScaleMode(texture:Texture):TextureScaleMode {
 		var scaleMode:TextureScaleMode;
 		untyped __cpp__("SDL_ScaleMode output; SDL_GetTextureScaleMode({0}, &output); {1} = output", texture, scaleMode);
 		return scaleMode;
 	}
 
 	@:native("SDL_SetTextureScaleMode")
-	public static inline function setTextureScaleMode(texture:Texture, scaleMode:TextureScaleMode):Int {
+	static inline function setTextureScaleMode(texture:Texture, scaleMode:TextureScaleMode):Int {
 		return untyped __cpp__("SDL_SetTextureScaleMode({0}, (SDL_ScaleMode){1})", texture, scaleMode);
 	}
 
@@ -1014,9 +1014,7 @@ extern class SDL {
 
 	@:native("SDL_GL_BindTexture")
 	static inline function glBindTexture(texture:Texture):Int {
-		var texw:Float;
-		var texh:Float;
-		return untyped __cpp__("SDL_GL_BindTexture({0}, {1}, {2})", texture, Pointer.addressOf(texw), Pointer.addressOf(texh));
+		return untyped __cpp__("SDL_GL_BindTexture({0}, NULL, NULL)");
 	}
 
 	@:native("SDL_GL_UnbindTexture")
@@ -1032,11 +1030,218 @@ extern class SDL {
 	static function renderSetVSync(renderer:Renderer, vsync:Int):Int;
 
 	// SDL_pixels.h //
+	@:native("SDL_GetPixelFormatName")
+	static function getPixelFormatName(format:UInt32):ConstCharStar;
+
+	@:native("SDL_PixelFormatEnumToMasks")
+	static inline function pixelFormatEnumToMasks(format:UInt32, bitsPerPixel:Int, Rmask:UInt32, Gmask:UInt32, Bmask:UInt32, Amask:UInt32):Boolean {
+		return untyped __cpp__("SDL_PixelFormatEnumToMasks({0}, {1})", format, Pointer.addressOf(bitsPerPixel), Pointer.addressOf(Rmask), Pointer.addressOf(Gmask), Pointer.addressOf(Bmask), Pointer.addressOf(Amask));
+	}
+
+	@:native("SDL_MasksToPixelFormatEnum")
+	static function masksToPixelFormatEnum(bitsPerPixel:Int, Rmask:UInt32, Gmask:UInt32, Bmask:UInt32, Amask:UInt32):UInt32;
+
+	@:native("SDL_AllocFormat")
+	static function allocFormat(pixelFormat:PixelFormatEnum):PixelFormat;
+
+	@:native("SDL_FreeFormat")
+	static function freeFormat(format:PixelFormat):Void;
+
+	@:native("SDL_AllocPalette")
+	static function allocPalette(numColors:Int):Palette;
+
+	@:native("SDL_SetPixelFormatPalette")
+	static function setPixelFormatPalette(format:PixelFormat, palette:Palette):Int;
+
+	@:native("SDL_SetPaletteColors")
+	static inline function setPaletteColors(palette:Palette, colors:Array<Color>, firstColor:Int, numColors:Int):Int {
+		untyped __cpp__("
+			SDL_Color* _colors = (SDL_Color*)malloc({2} * sizeof(SDL_Color));
+			for (int i = 0; i < {2}; i++)
+				_colors[i] = {1}->__get(i);
+			int _result = SDL_SetPaletteColors({0}, _colors, {3}, {4});
+			free(_colors)", palette, colors, colors.length, firstColor, numColors);
+    	return untyped __cpp__("_result");
+	}
+
+	@:native("SDL_FreePalette")
+	static function freePalette(palette:Palette):Void;
+
+	@:native("SDL_MapRGB")
+	static function mapRGB(format:PixelFormat, r:UInt8, g:UInt8, b:UInt8):UInt32;
+
+	@:native("SDL_MapRGBA")
+	static function mapRGBA(format:PixelFormat, r:UInt8, g:UInt8, b:UInt8, a:UInt8):UInt32;
+
+	@:native("SDL_GetRGB")
+	static function getRGB(pixel:UInt32, format:PixelFormat, r:Pointer<UInt8>, g:Pointer<UInt8>, b:Pointer<UInt8>):Void;
+
+	@:native("SDL_GetRGBA")
+	static function getRGBA(pixel:UInt32, format:PixelFormat, r:Pointer<UInt8>, g:Pointer<UInt8>, b:Pointer<UInt8>, a:Pointer<UInt8>):Void;
+
+	@:native("SDL_CalculateGammaRamp")
+	static inline function calculateGammaRamp(gamma:Float):UInt16 {
+		untyped __cpp__("unsigned short _ramp; SDL_CalculateGammaRamp({0}, &_ramp)", gamma);
+		return untyped __cpp__("_ramp");
+	}
+
+	// SDL_rect.h
+	@:native("SDL_PointInRect")
+	static inline function pointInRect(point:Point, rect:Rectangle):Bool {
+		return untyped __cpp__("SDL_PointInRect(&{0}, &{1})", point, rect) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_RectEmpty")
+	static inline function rectEmpty(rect:Rectangle):Bool {
+		return untyped __cpp__("SDL_RectEmpty(&{0})", rect) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_RectEquals")
+	static inline function rectEquals(a:Rectangle, b:Rectangle):Bool {
+		return untyped __cpp__("SDL_RectEquals(&{0}, &{1})", a, b) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_HasIntersection")
+	static inline function hasIntersection(a:Rectangle, b:Rectangle):Bool {
+		return untyped __cpp__("SDL_HasIntersection(&{0}, &{1})", a, b) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_IntersectRect")
+	static inline function intersectRect(a:Rectangle, b:Rectangle, result:Rectangle):Bool {
+		return untyped __cpp__("SDL_IntersectRect(&{0}, &{1}, &{2})", a, b, result) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_UnionRect")
+	static inline function unionRect(a:Rectangle, b:Rectangle, result:Rectangle):Void {
+		untyped __cpp__("SDL_UnionRect(&{0}, &{1}, &{2})", a, b, result);
+	}
+	
+	@:native("SDL_EnclosePoints")
+	static inline function enclosePoints(points:Array<Point>, count:Int, clip:Rectangle, result:Rectangle):Int {
+		untyped __cpp__("
+		SDL_Point* _points = (SDL_Point*)malloc({1} * sizeof(SDL_Point));
+		for (int i = 0; i < {1}; i++)
+			_points[i] = {0}->__get(i);
+		int _result = SDL_EnclosePoints(_points, {2}, &{3}, &{4});
+		free(_points)", points, points.length, count, clip, result);
+    	return untyped __cpp__("_result");
+	}
+	
+	@:native("SDL_IntersectRectAndLine")
+	static inline function intersectRectAndLine(rect:Rectangle, x1:Int, y1:Int, x2:Int, y2:Int):Bool {
+		return untyped __cpp__("SDL_IntersectRectAndLine(&{0}, &{1}, &{2}, &{3}, &{4})", rect, x1, y1, x2, y2) == Boolean.TRUE;
+	}
+
+	@:native("SDL_PointInFRect")
+	static inline function pointInFRect(point:FPoint, rect:FRectangle):Bool {
+		return untyped __cpp__("SDL_PointInFRect(&{0}, &{1})", point, rect) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_FRectEmpty")
+	static inline function fRectEmpty(rect:FRectangle):Bool {
+		return untyped __cpp__("SDL_FRectEmpty(&{0})", rect) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_FRectEqualsEpsilon")
+	static inline function fRectEqualsEpsilon(a:FRectangle, b:FRectangle, epsilon:Float):Bool {
+		return untyped __cpp__("SDL_FRectEqualsEpsilon(&{0}, &{1}, {2})", a, b, epsilon) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_FRectEquals")
+	static inline function fRectEquals(a:FRectangle, b:FRectangle):Bool {
+		return untyped __cpp__("SDL_FRectEquals(&{0}, &{1})", a, b) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_HasIntersectionF")
+	static inline function hasIntersectionF(a:FRectangle, b:FRectangle):Bool {
+		return untyped __cpp__("SDL_HasIntersectionF(&{0}, &{1})", a, b) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_IntersectFRect")
+	static inline function intersectFRect(a:FRectangle, b:FRectangle, result:FRectangle):Bool {
+		return untyped __cpp__("SDL_IntersectFRect(&{0}, &{1}, &{2})", a, b, result) == Boolean.TRUE;
+	}
+	
+	@:native("SDL_UnionFRect")
+	static inline function unionFRect(a:FRectangle, b:FRectangle, result:FRectangle):Void {
+		untyped __cpp__("SDL_UnionFRect(&{0}, &{1}, &{2})", a, b, result);
+	}
+	
+	@:native("SDL_UnionFRect")
+	static inline function encloseFPoints(points:Array<FPoint>, count:Int, clip:FRectangle, result:FRectangle):Int {
+		untyped __cpp__("
+		SDL_FPoint* _points = (SDL_FPoint*)malloc({1} * sizeof(SDL_FPoint));
+		for (int i = 0; i < {1}; i++)
+			_points[i] = {0}->__get(i);
+		int _result = SDL_EncloseFPoints(_points, {2}, &{3}, &{4});
+		free(_points)", points, points.length, count, clip, result);
+    	return untyped __cpp__("_result");
+	}
+	
+	@:native("SDL_IntersectFRectAndLine")
+	static inline function intersectFRectAndLine(rect:FRectangle, x1:Float, y1:Float, x2:Float, y2:Float):Bool {
+		return untyped __cpp__("SDL_IntersectFRectAndLine(&{0}, &{1}, &{2}, &{3}, &{4})", rect, x1, y1, x2, y2) == Boolean.TRUE;
+	}
+
+	// SDL_surface.h //
+	@:native("SDL_CreateRGBSurface")
+	static inline function createRGBSurface(width:Int, height:Int, depth:Int, Rmask:UInt32, Gmask:UInt32, Bmask:UInt32):Surface {
+		return untyped __cpp__("SDL_CreateRGBSurface(0, {0}, {1}, {2}, {3}, {4}, {5})", width, height, depth, Rmask, Gmask, Bmask);
+	}
+
+	@:native("SDL_CreateRGBSurfaceWithFormat")
+	static inline function createRGBSurfaceWithFormat(width:Int, height:Int, depth:Int, format:PixelFormatEnum):Surface {
+		return untyped __cpp__("SDL_CreateRGBSurfaceWithFormat(0, {0}, {1}, {2}, {3})", width, height, depth, format);
+	}
+
+	@:native("SDL_CreateRGBSurfaceFrom")
+	static inline function createRGBSurfaceFrom(pixels:Array<Any>, width:Int, height:Int, depth:Int, pitch:Int, Rmask:UInt32, Gmask:UInt32, Bmask:UInt32):Surface {
+		untyped __cpp__("
+		void** _cArray = (void**)malloc(sizeof(void*) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", pixels, pixels.length);
+		return untyped __cpp__("SDL_CreateRGBSurfaceFrom(_cArray, {0}, {1}, {2}, {3}, {4}, {5}, {6})", width, height, depth, pitch, Rmask, Gmask, Bmask);
+	}
+
+	@:native("SDL_CreateRGBSurfaceWithFormatFrom")
+	static inline function createRGBSurfaceWithFormatFrom(pixels:Array<Any>, width:Int, height:Int, depth:Int, pitch:Int, format:PixelFormatEnum):Surface {
+		untyped __cpp__("
+		void** _cArray = (void**)malloc(sizeof(void*) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_cArray[i] = {0}->__get(i);
+		}", pixels, pixels.length);
+		return untyped __cpp__("SDL_CreateRGBSurfaceWithFormatFrom(_cArray, {0}, {1}, {2}, {3}, {4})", width, height, depth, pitch, format);
+	}
+
+	@:native("SDL_FreeSurface")
+	static function freeSurface(surface:Surface):Void;
+
+	@:native("SDL_SetSurfacePalette")
+	static function setSurfacePalette(surface:Surface, palette:Palette):Boolean;
+
+	@:native("SDL_LockSurface")
+	static function lockSurface(surface:Surface):Void;
+
+	@:native("SDL_UnlockSurface")
+	static function unlockSurface(surface:Surface):Void;
+
+	@:native("SDL_LoadBMP_RW")
+	static function loadBMPRW(src:RWops, freesrc:Int):Void;
+
+	@:native("SDL_LoadBMP")
+	static function loadBMP(file:ConstCharStar):Void;
+
+	@:native("SDL_SaveBMP_RW")
+	static function saveBMPRW(src:RWops, dst:RWops, freesrc:Int):Void;
+
+	@:native("SDL_SaveBMP")
+	static function saveBMP(surface:Surface, file:ConstCharStar):Void;
 
 	// haxe helper functions //
-	@:native("SDL_Event")
-	static inline function makeEvent():Event {
-		untyped __cpp__('SDL_Event* __sdl_ev__');
-		return untyped __cpp__('__sdl_ev__');
-	}
+	// @:native("SDL_Event")
+	// static inline function makeEvent():Event {
+	// 	untyped __cpp__('SDL_Event* __sdl_ev__');
+	// 	return untyped __cpp__('__sdl_ev__');
+	// }
 }
