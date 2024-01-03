@@ -1,5 +1,6 @@
 package sdl;
 
+import cpp.RawPointer;
 import cpp.UInt8;
 import cpp.UInt16;
 import cpp.UInt32;
@@ -1237,6 +1238,173 @@ extern class SDL {
 
 	@:native("SDL_SaveBMP")
 	static function saveBMP(surface:Surface, file:ConstCharStar):Void;
+	
+	@:native("SDL_SetSurfaceRLE")
+	static function setSurfaceRLE(surface:Surface, flag:Int):Int;
+
+	@:native("SDL_HasSurfaceRLE")
+	static function hasSurfaceRLE(surface:Surface):Boolean;
+
+	@:native("SDL_SetColorKey")
+	static function setColorKey(surface:Surface, flag:Int, key:UInt32):Int;
+
+	@:native("SDL_HasColorKey")
+	static function hasColorKey(surface:Surface):Boolean;
+
+	@:native("SDL_GetColorKey")
+	static inline function getColorKey(surface:Surface):UInt32 {
+		untyped __cpp__("unsigned int _key; SDL_GetColorKey({0}, &_key)", surface);
+		return untyped __cpp__("_key");
+	}
+
+	@:native("SDL_SetSurfaceColorMod")
+	static function setSurfaceColorMod(surface:Surface, r:UInt8, g:UInt8, b:UInt8):Int;
+
+	/**
+	 * Alpha in returned color will always be 255
+	 */
+	@:native("SDL_GetSurfaceColorMod")
+	static inline function getSurfaceColorMod(surface:Surface):Color {
+		var r:UInt8;
+		var g:UInt8;
+		var b:UInt8;
+		untyped __cpp__("SDL_GetSurfaceColorMod({0}, {1}, {2}, {3})", surface, Pointer.addressOf(r), Pointer.addressOf(g), Pointer.addressOf(b));
+		return Color.create(r, g, b, 255);
+	}
+
+	@:native("SDL_SetSurfaceAlphaMod")
+	static function setSurfaceAlphaMod(surface:Surface, alpha:UInt8):Int;
+
+	@:native("SDL_GetSurfaceAlphaMod")
+	static inline function getSurfaceAlphaMod(surface:Surface):UInt8 {
+		var a:UInt8;
+		untyped __cpp__("SDL_GetSurfaceAlphaMod({0}, {1})", surface, Pointer.addressOf(a));
+		return a;
+	}
+
+	@:native("SDL_SetSurfaceBlendMode")
+	static function setSurfaceBlendMode(surface:Surface, blend:BlendMode):Int;
+
+	@:native("SDL_GetSurfaceBlendMode")
+	static inline function getSurfaceBlendMode(surface:Surface):BlendMode {
+		var blend:BlendMode = INVALID;
+		untyped __cpp__("SDL_GetSurfaceBlendMode({0}, {1})", surface, Pointer.addressOf(blend));
+		return blend;
+	}
+
+	@:native("SDL_SetClipRect")
+	static inline function setClipRect(surface:Surface, rect:Rectangle):Bool {
+		return untyped __cpp__("SDL_SetClipRect({0}, {1})", surface, RawConstPointer.addressOf(rect)) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GetClipRect")
+	static inline function getClipRect(surface:Surface):Rectangle {
+		var rect:Rectangle;
+		untyped __cpp__("SDL_GetClipRect({0}, {1})", surface, Pointer.addressOf(rect));
+		return rect;
+	}
+
+	@:native("SDL_DuplicateSurface")
+	static function duplicateSurface(surface:Surface):Surface;
+
+	@:native("SDL_ConvertSurface")
+	static inline function convertSurface(surface:Surface, format:PixelFormat):Surface {
+		return untyped __cpp__("SDL_ConvertSurface({0}, {1}, 0)", surface, RawConstPointer.addressOf(format));
+	}
+
+	@:native("SDL_ConvertSurfaceFormat")
+	static inline function convertSurfaceFormat(surface:Surface, format:PixelFormatEnum):Surface {
+		return untyped __cpp__("SDL_ConvertSurfaceFormat({0}, {1}, 0)", surface, format);
+	}
+
+	@:native("SDL_ConvertPixels")
+	static inline function convertPixels(width:Int, height:Int, srcFormat:PixelFormatEnum, src:Array<Any>, srcPitch:Int, dstFormat:PixelFormatEnum, dst:Array<Any>, dstPitch:Int):Int {
+		untyped __cpp__("
+		void** _srcArr = (void**)malloc(sizeof(void*) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_srcArr[i] = {0}->__get(i);
+		}", src, src.length);
+
+		untyped __cpp__("
+		void** _dstArr = (void**)malloc(sizeof(void*) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_dstArr[i] = {0}->__get(i);
+		}", dst, dst.length);
+
+		return untyped __cpp__("SDL_ConvertPixels({0}, {1}, _srcArr, {2}, {3}, _dstArr, {4})", width, height, srcFormat, srcPitch, dstFormat, dstPitch);
+	}
+
+	@:native("SDL_PremultiplyAlpha")
+	static inline function premultiplyAlpha(width:Int, height:Int, srcFormat:PixelFormatEnum, src:Array<Any>, srcPitch:Int, dstFormat:PixelFormatEnum, dst:Array<Any>, dstPitch:Int):Int {
+		untyped __cpp__("
+		void** _srcArr = (void**)malloc(sizeof(void*) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_srcArr[i] = {0}->__get(i);
+		}", src, src.length);
+
+		untyped __cpp__("
+		void** _dstArr = (void**)malloc(sizeof(void*) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_dstArr[i] = {0}->__get(i);
+		}", dst, dst.length);
+
+		return untyped __cpp__("SDL_PremultiplyAlpha({0}, {1}, _srcArr, {2}, {3}, _dstArr, {4})", width, height, srcFormat, srcPitch, dstFormat, dstPitch);
+	}
+	
+	@:native("SDL_FillRect")
+	static inline function fillRect(dst:Surface, rect:Rectangle, color:UInt32):Int {
+		return untyped __cpp__("SDL_FillRect({0}, {1}, {2})", dst, RawConstPointer.addressOf(rect), color);
+	}
+
+	@:native("SDL_FillRects")
+	static inline function fillRects(dst:Surface, rects:Array<Rectangle>, count:Int, color:UInt32):Int {
+		untyped __cpp__("
+		void** _rects = (void**)malloc(sizeof(void*) * {1});
+		for (int i = 0; i < {1}; i++) {
+			_rects[i] = {0}->__get(i);
+		}", rects, rects.length);
+		
+		return untyped __cpp__("SDL_FillRects({0}, _rects, {1}, {2})", dst, count, color);
+	}
+
+	@:native("SDL_BlitSurface")
+	static inline function blitSurface(src:Surface, srcRect:Rectangle, dst:Surface, dstRect:Rectangle):Int {
+		return untyped __cpp__("SDL_BlitSurface({0}, {1}, {2}, {3})", src, RawConstPointer.addressOf(srcRect), dst, RawPointer.addressOf(dstRect));
+	}
+
+	@:native("SDL_LowerBlit")
+	static inline function lowerBlit(src:Surface, srcRect:Rectangle, dst:Surface, dstRect:Rectangle):Int {
+		return untyped __cpp__("SDL_LowerBlit({0}, {1}, {2}, {3})", src, RawPointer.addressOf(srcRect), dst, RawPointer.addressOf(dstRect));
+	}
+
+	@:native("SDL_SoftStretch")
+	static inline function softStretch(src:Surface, srcRect:Rectangle, dst:Surface, dstRect:Rectangle):Int {
+		return untyped __cpp__("SDL_SoftStretch({0}, {1}, {2}, {3})", src, RawConstPointer.addressOf(srcRect), dst, RawConstPointer.addressOf(dstRect));
+	}
+
+	@:native("SDL_SoftStretchLinear")
+	static inline function softStretchLinear(src:Surface, srcRect:Rectangle, dst:Surface, dstRect:Rectangle):Int {
+		return untyped __cpp__("SDL_SoftStretchLinear({0}, {1}, {2}, {3})", src, RawConstPointer.addressOf(srcRect), dst, RawConstPointer.addressOf(dstRect));
+	}
+
+	@:native("SDL_BlitScaled")
+	static inline function blitScaled(src:Surface, srcRect:Rectangle, dst:Surface, dstRect:Rectangle):Int {
+		return untyped __cpp__("SDL_BlitScaled({0}, {1}, {2}, {3})", src, RawConstPointer.addressOf(srcRect), dst, RawPointer.addressOf(dstRect));
+	}
+
+	@:native("SDL_LowerBlitScaled")
+	static inline function lowerBlitScaled(src:Surface, srcRect:Rectangle, dst:Surface, dstRect:Rectangle):Int {
+		return untyped __cpp__("SDL_LowerBlitScaled({0}, {1}, {2}, {3})", src, RawPointer.addressOf(srcRect), dst, RawPointer.addressOf(dstRect));
+	}
+
+	@:native("SDL_SetYUVConversionMode")
+	static function setYUVConversionMode(mode:YUVConversionMode):Void;
+
+	@:native("SDL_GetYUVConversionMode")
+	static function getYUVConversionMode():YUVConversionMode;
+
+	@:native("SDL_GetYUVConversionModeForResolution")
+	static function getYUVConversionModeForResolution(width:Int, height:Int):YUVConversionMode;
 
 	// haxe helper functions //
 	// @:native("SDL_Event")

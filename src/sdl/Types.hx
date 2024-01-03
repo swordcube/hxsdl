@@ -227,11 +227,8 @@ enum abstract Hints(ConstCharStar) to ConstCharStar from ConstCharStar {
 }
 
 extern enum abstract HintPriority(UInt32) from UInt32 to UInt32 {
-    @:native("SDL_HINT_DEFAULT")
-    var DEFAULT;
-    @:native("SDL_HINT_NORMAL")
+    var DEFAULT = 0;
     var NORMAL;
-    @:native("SDL_HINT_OVERRIDE")
     var OVERRIDE;
 }
 
@@ -876,7 +873,7 @@ extern class SDL_Surface {
 }
 typedef Surface = Pointer<SDL_Surface>;
 
-enum abstract YuvConversionMode(Int) from Int to Int {
+enum abstract YUVConversionMode(Int) from Int to Int {
 	var JPEG = 0;
     var BT601;
     var BT709;
