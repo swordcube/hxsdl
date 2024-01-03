@@ -43,22 +43,32 @@ extern class SDL {
 
 	// SDL_hints.h //
 	@:native("SDL_SetHintWithPriority")
-	static function setHintWithPriority(name:ConstCharStar, value:ConstCharStar, priority:HintPriority):Boolean;
+	static inline function setHintWithPriority(name:ConstCharStar, value:ConstCharStar, priority:HintPriority):Bool {
+		return untyped __cpp__("SDL_SetHintWithPriority({0}, {1}, (SDL_HintPriority){2})", name, value, priority) == Boolean.TRUE;
+	}
 
 	@:native("SDL_SetHint")
-	static function setHint(name:ConstCharStar, value:ConstCharStar):Boolean;
+	static inline function setHint(name:ConstCharStar, value:ConstCharStar):Bool {
+		return untyped __cpp__("SDL_SetHint({0}, {1})") == Boolean.TRUE;
+	}
 	
 	@:native("SDL_ResetHint")
-	static function resetHint(name:ConstCharStar):Boolean;
+	static inline function resetHint(name:ConstCharStar):Bool {
+		return untyped __cpp__("SDL_ResetHint({0})", name) == Boolean.TRUE;
+	}
 	
 	@:native("SDL_ResetHints")
-	static function resetHints():Boolean;
+	static inline function resetHints():Bool {
+		return untyped __cpp__("SDL_ResetHints()") == Boolean.TRUE;
+	}
 
 	@:native("SDL_GetHint")
 	static function getHint(name:ConstCharStar):ConstCharStar;
 
 	@:native("SDL_GetHintBoolean")
-	static function getHintBoolean(name:ConstCharStar, defaultValue:Boolean):Boolean;
+	static inline function getHintBoolean(name:ConstCharStar, defaultValue:Bool):Bool {
+		return untyped __cpp__("SDL_GetHintBoolean({0}, (SDL_bool){1})") == Boolean.TRUE;	
+	}
 
 	@:native("SDL_AddHintCallback")
 	static function addHintCallback(name:ConstCharStar, callback:HintCallback, userdata:Pointer<Void>):Void;
@@ -359,13 +369,19 @@ extern class SDL {
 	}
 
 	@:native("SDL_SetWindowBordered")
-	static function setWindowBordered(window:Window, bordered:Boolean):Void;
+	static inline function setWindowBordered(window:Window, bordered:Bool):Void {
+		untyped __cpp__("SDL_SetWindowBordered({0}, (SDL_bool){1})", window, bordered);
+	}
 
 	@:native("SDL_SetWindowResizable")
-	static function setWindowResizable(window:Window, resizable:Boolean):Void;
+	static inline function setWindowResizable(window:Window, resizable:Bool):Void {
+		untyped __cpp__("SDL_SetWindowResizable({0}, (SDL_bool){1})", window, resizable);
+	}
 
 	@:native("SDL_SetWindowAlwaysOnTop")
-	static function setWindowAlwaysOnTop(window:Window, onTop:Boolean):Void;
+	static inline function setWindowAlwaysOnTop(window:Window, onTop:Bool):Void {
+		untyped __cpp__("SDL_SetWindowAlwaysOnTop({0}, (SDL_bool){1})", window, onTop);
+	}
 
 	@:native("SDL_ShowWindow")
 	static function showWindow(window:Window):Void;
@@ -389,7 +405,9 @@ extern class SDL {
 	static function setWindowFullscreen(window:Window, flags:WindowInitFlags):Int;
 
 	@:native("SDL_HasWindowSurface")
-	static function hasWindowSurface(window:Window):Boolean;
+	static inline function hasWindowSurface(window:Window):Bool {
+		return untyped __cpp__("SDL_HasWindowSurface({0})", window) == Boolean.TRUE;
+	}
 
 	@:native("SDL_GetWindowSurface")
 	static function getWindowSurface(window:Window):Surface;
@@ -404,22 +422,34 @@ extern class SDL {
 	static function destroyWindowSurface(window:Window):Int;
 
 	@:native("SDL_SetWindowGrab")
-	static function setWindowGrab(window:Window, grabbed:Boolean):Void;
+	static inline function setWindowGrab(window:Window, grabbed:Bool):Void {
+		untyped __cpp__("SDL_SetWindowGrab({0}, (SDL_bool){1})", window, grabbed);
+	}
 
 	@:native("SDL_SetWindowKeyboardGrab")
-	static function setWindowKeyboardGrab(window:Window, grabbed:Boolean):Void;
-
+	static inline function setWindowKeyboardGrab(window:Window, grabbed:Bool):Void {
+		untyped __cpp__("SDL_SetWindowKeyboardGrab({0}, (SDL_bool){1})", window, grabbed);
+	}
+	
 	@:native("SDL_SetWindowMouseGrab")
-	static function setWindowMouseGrab(window:Window, grabbed:Boolean):Void;
+	static inline function setWindowMouseGrab(window:Window, grabbed:Bool):Void {
+		untyped __cpp__("SDL_SetWindowMouseGrab({0}, (SDL_bool){1})", window, grabbed);
+	}
 
 	@:native("SDL_GetWindowGrab")
-	static function getWindowGrab(window:Window):Boolean;
+	static inline function getWindowGrab(window:Window):Bool {
+		return untyped __cpp__("SDL_GetWindowGrab({0})", window) == Boolean.TRUE;
+	}
 
 	@:native("SDL_GetWindowKeyboardGrab")
-	static function getWindowKeyboardGrab(window:Window):Boolean;
+	static inline function getWindowKeyboardGrab(window:Window):Bool {
+		return untyped __cpp__("SDL_GetWindowKeyboardGrab({0})", window) == Boolean.TRUE;
+	}
 
 	@:native("SDL_GetWindowMouseGrab")
-	static function getWindowMouseGrab(window:Window):Boolean;
+	static inline function getWindowMouseGrab(window:Window):Bool {
+		return untyped __cpp__("SDL_GetWindowMouseGrab({0})", window) == Boolean.TRUE;
+	}
 
 	@:native("SDL_GetGrabbedWindow")
 	static function getGrabbedWindow():Window;
@@ -473,7 +503,9 @@ extern class SDL {
 	static function destroyWindow(window:Window):Void;
 
 	@:native("SDL_IsScreenSaverEnabled")
-	static function isScreenSaverEnabled():Boolean;
+	static inline function isScreenSaverEnabled():Bool {
+		return untyped __cpp__("SDL_IsScreenSaverEnabled()") == Boolean.TRUE;
+	}
 
 	@:native("SDL_EnableScreenSaver")
 	static function enableScreenSaver():Void;
@@ -493,7 +525,9 @@ extern class SDL {
 	static function glUnloadLibrary():Void;
 
 	@:native("SDL_GL_ExtensionSupported")
-	static function glExtensionSupported(extension:ConstCharStar):Boolean;
+	static inline function glExtensionSupported(extension:ConstCharStar):Bool {
+		return untyped __cpp__("SDL_GL_ExtensionSupported({0})", extension) == Boolean.TRUE;
+	}
 
 	@:native("SDL_GL_ResetAttributes")
 	static function glResetAttributes():Void;
@@ -705,7 +739,9 @@ extern class SDL {
 	static function unlockTexture(texture:Texture):Void;
 
 	@:native("SDL_RenderTargetSupported")
-	static function renderTargetSupported(renderer:Renderer):Boolean;
+	static inline function renderTargetSupported(renderer:Renderer):Bool {
+		return untyped __cpp__("SDL_RenderTargetSupported({0})", renderer) == Boolean.TRUE;
+	}
 
 	@:native("SDL_SetRenderTarget")
 	static function setRenderTarget(renderer:Renderer, texture:Texture):Int;
@@ -725,10 +761,14 @@ extern class SDL {
 	}
 
 	@:native("SDL_RenderSetIntegerScale")
-	static function renderSetIntegerScale(renderer:Renderer, enable:Boolean):Int;
+	static inline function renderSetIntegerScale(renderer:Renderer, enable:Bool):Int {
+		return untyped __cpp__("SDL_RenderSetIntegerScale({0}, (SDL_bool){1})", renderer, enable);
+	}
 
 	@:native("SDL_RenderGetIntegerScale")
-	static function renderGetIntegerScale(renderer:Renderer):Boolean;
+	static inline function renderGetIntegerScale(renderer:Renderer):Bool {
+		return untyped __cpp__("SDL_RenderGetIntegerScale({0})", renderer) == Boolean.TRUE;
+	}
 
 	@:native("SDL_RenderSetViewport")
 	static inline function renderSetViewport(renderer:Renderer, rect:Rectangle):Int {
@@ -755,7 +795,9 @@ extern class SDL {
 	}
 
 	@:native("SDL_RenderIsClipEnabled")
-	static function renderIsClipEnabled(renderer:Renderer):Boolean;
+	static inline function renderIsClipEnabled(renderer:Renderer):Bool {
+		return untyped __cpp__("SDL_RenderIsClipEnabled({0})", renderer) == Boolean.TRUE;
+	}
 
 	@:native("SDL_RenderSetScale")
 	static function renderSetScale(renderer:Renderer, scaleX:Float, scaleY:Float):Int;
@@ -1035,8 +1077,8 @@ extern class SDL {
 	static function getPixelFormatName(format:UInt32):ConstCharStar;
 
 	@:native("SDL_PixelFormatEnumToMasks")
-	static inline function pixelFormatEnumToMasks(format:UInt32, bitsPerPixel:Int, Rmask:UInt32, Gmask:UInt32, Bmask:UInt32, Amask:UInt32):Boolean {
-		return untyped __cpp__("SDL_PixelFormatEnumToMasks({0}, {1})", format, Pointer.addressOf(bitsPerPixel), Pointer.addressOf(Rmask), Pointer.addressOf(Gmask), Pointer.addressOf(Bmask), Pointer.addressOf(Amask));
+	static inline function pixelFormatEnumToMasks(format:UInt32, bitsPerPixel:Int, Rmask:UInt32, Gmask:UInt32, Bmask:UInt32, Amask:UInt32):Bool {
+		return untyped __cpp__("SDL_PixelFormatEnumToMasks({0}, {1})", format, Pointer.addressOf(bitsPerPixel), Pointer.addressOf(Rmask), Pointer.addressOf(Gmask), Pointer.addressOf(Bmask), Pointer.addressOf(Amask)) == Boolean.TRUE;
 	}
 
 	@:native("SDL_MasksToPixelFormatEnum")
@@ -1219,7 +1261,9 @@ extern class SDL {
 	static function freeSurface(surface:Surface):Void;
 
 	@:native("SDL_SetSurfacePalette")
-	static function setSurfacePalette(surface:Surface, palette:Palette):Boolean;
+	static inline function setSurfacePalette(surface:Surface, palette:Palette):Bool {
+		return untyped __cpp__("SDL_SetSurfacePalette({0}, {1})", surface, palette) == Boolean.TRUE;
+	}
 
 	@:native("SDL_LockSurface")
 	static function lockSurface(surface:Surface):Void;
@@ -1243,13 +1287,17 @@ extern class SDL {
 	static function setSurfaceRLE(surface:Surface, flag:Int):Int;
 
 	@:native("SDL_HasSurfaceRLE")
-	static function hasSurfaceRLE(surface:Surface):Boolean;
+	static inline function hasSurfaceRLE(surface:Surface):Bool {
+		return untyped __cpp__("SDL_HasSurfaceRLE({0})", surface) == Boolean.TRUE;
+	}
 
 	@:native("SDL_SetColorKey")
 	static function setColorKey(surface:Surface, flag:Int, key:UInt32):Int;
 
 	@:native("SDL_HasColorKey")
-	static function hasColorKey(surface:Surface):Boolean;
+	static inline function hasColorKey(surface:Surface):Bool {
+		return untyped __cpp__("SDL_HasColorKey({0})", surface) == Boolean.TRUE;
+	}
 
 	@:native("SDL_GetColorKey")
 	static inline function getColorKey(surface:Surface):UInt32 {
@@ -1411,6 +1459,18 @@ extern class SDL {
 	static inline function getWindowWMInfo(window:Window) {
 		untyped __cpp__("SDL_SysWMinfo _info; SDL_GetWindowWMInfo({0}, &_info)", window);
 		return untyped __cpp__("_info");
+	}
+
+	// SDL_clipboard.h //
+	@:native("SDL_SetClipboardText")
+	static function setClipboardText(text:ConstCharStar):Int;
+
+	@:native("SDL_GetClipboardText")
+	static function getClipboardText():ConstCharStar;
+
+	@:native("SDL_HasClipboardText")
+	static inline function hasClipboardText():Bool {
+		return untyped __cpp__("SDL_HasClipboardText()") == Boolean.TRUE;
 	}
 	
 	// haxe helper functions //
