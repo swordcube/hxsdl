@@ -1,5 +1,7 @@
 package sdl;
 
+import cpp.NativeArray;
+import cpp.Helpers;
 import cpp.RawPointer;
 import cpp.UInt8;
 import cpp.UInt16;
@@ -1472,6 +1474,189 @@ extern class SDL {
 	static inline function hasClipboardText():Bool {
 		return untyped __cpp__("SDL_HasClipboardText()") == Boolean.TRUE;
 	}
+
+	// SDL_events.h //
+	// TODO //
+	
+	// SDL_keyboard.h //
+	@:native("SDL_GetKeyboardFocus")
+	static function getKeyboardFocus():Window;
+
+	@:native("SDL_GetKeyboardState")
+	static inline function getKeyboardStates(numKeys:Int):Array<KeyState> {
+		var sdlKeyStates:CArray<KeyState> = untyped __cpp__("*SDL_GetKeyboardState({0})", RawPointer.addressOf(numKeys));
+		var stateCount:Int = Helpers.lengthOfArray(sdlKeyStates);
+
+		var haxeKeyStates:Array<KeyState> = NativeArray.create(stateCount);
+		for(i in 0...stateCount) 
+			haxeKeyStates[i] = sdlKeyStates[i];
+		
+		return haxeKeyStates;
+	}
+
+	@:native("SDL_ResetKeyboard")
+	static function resetKeyboard():Void;
+
+	@:native("SDL_GetModState")
+	static function getKeyModState():KeyMod; // mod = keyMod, explains the function better
+
+	@:native("SDL_SetModState")
+	static function setKeyModState(modState:KeyMod):Void; // mod = keyMod, explains the function better
+
+	@:native("SDL_GetKeyFromScancode")
+	static function getKeyFromScancode(scancode:ScanCode):KeyCode;
+
+	@:native("SDL_GetScancodeFromKey")
+	static function getScancodeFromKey(key:KeyCode):ScanCode;
+
+	@:native("SDL_GetScancodeName")
+	static function getScancodeName(scancode:ScanCode):ConstCharStar;
+
+	@:native("SDL_GetScancodeFromName")
+	static function getScancodeFromName(name:ConstCharStar):ScanCode;
+
+	@:native("SDL_GetKeyName")
+	static function getKeyName(key:KeyCode):ConstCharStar;
+
+	@:native("SDL_GetKeyFromName")
+	static function getKeyFromName(name:ConstCharStar):KeyCode;
+
+	@:native("SDL_StartTextInput")
+	static function startTextInput():Void;
+
+	@:native("SDL_IsTextInputActive")
+	static inline function isTextInputActive():Bool {
+		return untyped __cpp__("SDL_IsTextInputActive()") == Boolean.TRUE;
+	}
+
+	@:native("SDL_StopTextInput")
+	static function stopTextInput():Void;
+
+	@:native("SDL_ClearComposition")
+	static function clearComposition():Void;
+
+	@:native("SDL_IsTextInputShown")
+	static inline function isTextInputShown():Bool {
+		return untyped __cpp__("SDL_IsTextInputShown()") == Boolean.TRUE;
+	}
+
+	@:native("SDL_SetTextInputRect")
+	static inline function setTextInputRect(rect:Rectangle):Void {
+		untyped __cpp__("SDL_SetTextInputRect({0})", RawConstPointer.addressOf(rect));
+	}
+
+	@:native("SDL_HasScreenKeyboardSupport")
+	static inline function hasScreenKeyboardSupport():Bool {
+		return untyped __cpp__("SDL_HasScreenKeyboardSupport()") == Boolean.TRUE;
+	}
+
+	@:native("SDL_IsScreenKeyboardShown")
+	static inline function isScreenKeyboardShown(window:Window):Bool {
+		return untyped __cpp__("SDL_IsScreenKeyboardShown({0})", window) == Boolean.TRUE;
+	}
+
+	// SDL_mouse.h //
+	@:native("SDL_GetMouseFocus")
+	static function getMouseFocus():Window;
+
+	@:native("SDL_GetMouseState")
+	static inline function getMouseState(x:Int, y:Int):MouseButton {
+		return untyped __cpp__("SDL_GetMouseState({0}, {1})", Pointer.addressOf(x), Pointer.addressOf(y));
+	}
+
+	@:native("SDL_GetGlobalMouseState")
+	static inline function getGlobalMouseState(x:Int, y:Int):MouseButton {
+		return untyped __cpp__("SDL_GetGlobalMouseState({0}, {1})", Pointer.addressOf(x), Pointer.addressOf(y));
+	}
+
+	@:native("SDL_GetRelativeMouseState")
+	static inline function getRelativeMouseState(x:Int, y:Int):MouseButton {
+		return untyped __cpp__("SDL_GetRelativeMouseState({0}, {1})", Pointer.addressOf(x), Pointer.addressOf(y));
+	}
+
+	@:native("SDL_WarpMouseInWindow")
+	static function warpMouseInWindow(window:Window, x:Int, y:Int):Void;
+
+	@:native("SDL_WarpMouseGlobal")
+	static function warpMouseGlobal(x:Int, y:Int):Void;
+
+	@:native("SDL_SetRelativeMouseMode")
+	static inline function setRelativeMouseMode(enabled:Bool):Int {
+		return untyped __cpp__("SDL_SetRelativeMouseMode((SDL_bool){0})", enabled);
+	}
+
+	@:native("SDL_CaptureMouse")
+	static inline function captureMouse(enabled:Bool):Int {
+		return untyped __cpp__("SDL_CaptureMouse((SDL_bool){0})", enabled);
+	}
+
+	@:native("SDL_GetRelativeMouseMode")
+	static inline function getRelativeMouseMode():Bool {
+		return untyped __cpp__("SDL_GetRelativeMouseMode()") == Boolean.TRUE;
+	}
+	
+	@:native("SDL_CreateCursor")
+	static inline function createCursor(data:UInt8, mask:UInt8, width:Int, height:Int, hotX:Int, hotY:Int):Cursor {
+		return untyped __cpp__("SDL_CreateCursor({0}, {1}, {2}, {3}, {4}, {5})", Pointer.addressOf(data), Pointer.addressOf(mask), width, height, hotX, hotY);
+	}
+
+	@:native("SDL_CreateColorCursor")
+	static function createColorCursor(surface:Surface, hotX:Int, hotY:Int):Cursor;
+
+	@:native("SDL_CreateSystemCursor")
+	static function createSystemCursor(id:SystemCursor):Cursor;
+
+	@:native("SDL_SetCursor")
+	static function setCursor(cursor:Cursor):Void;
+
+	@:native("SDL_GetCursor")
+	static function getCursor():Cursor;
+
+	@:native("SDL_GetDefaultCursor")
+	static function getDefaultCursor():Cursor;
+
+	@:native("SDL_FreeCursor")
+	static function freeCursor(cursor:Cursor):Void;
+
+	/**
+	 * Shows/hides the cursor based on the given toggle boolean.
+	 */
+	@:native("SDL_ShowCursor")
+	static inline function toggleCursor(toggle:Bool):Bool { // renamed to toggleCursor bc that name makes more sense
+		return untyped __cpp__("SDL_ShowCursor((int){0})", toggle);
+	}
+
+	/**
+	 * Shows the cursor.
+	 */
+	@:native("SDL_ShowCursor")
+	static inline function showCursor():Bool {
+		return untyped __cpp__("SDL_ShowCursor(1)");
+	}
+
+	/**
+	 * Hides the cursor.
+	 */
+	@:native("SDL_ShowCursor")
+	static inline function hideCursor():Bool {
+		return untyped __cpp__("SDL_ShowCursor(0)");
+	}
+
+	// SDL_joystick.h //
+	@:native("SDL_LockJoysticks")
+	static function lockJoysticks():Void;
+
+	@:native("SDL_UnlockJoysticks")
+	static function unlockJoysticks():Void;
+
+	@:native("SDL_NumJoysticks")
+	static function numJoysticks():Int;
+
+	@:native("SDL_JoystickNameForIndex")
+	static function joystickNameForIndex(deviceIndex:Int):ConstCharStar;
+
+	// note for later
+	// https://github.com/libsdl-org/SDL/blob/SDL2/include/SDL_joystick.h#L201
 	
 	// haxe helper functions //
 	// @:native("SDL_Event")

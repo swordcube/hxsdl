@@ -1,5 +1,7 @@
 package sdl;
 
+import cpp.RawConstPointer;
+import cpp.CastCharStar;
 import cpp.Pointer;
 import cpp.UInt8;
 import cpp.UInt16;
@@ -7,6 +9,7 @@ import cpp.UInt32;
 import cpp.UInt64;
 import cpp.RawPointer;
 import cpp.ConstCharStar;
+import cpp.Helpers;
 
 class Types {}
 
@@ -916,7 +919,7 @@ extern class SDL_SysWMinfo {
 typedef SysWMinfo = Pointer<SDL_SysWMinfo>;
 
 // SDL_events.h
-enum abstract EventType(Int) from Int to Int {
+enum abstract EventType(UInt32) from UInt32 to UInt32 {
     var QUIT = 0x100;
     var APP_TERMINATING;
     var APP_LOWMEMORY;
@@ -925,7 +928,7 @@ enum abstract EventType(Int) from Int to Int {
     var APP_WILLENTERFOREGROUND;
     var APP_DIDENTERFOREGROUND;
     var LOCALECHANGED;
-    var WindowEvent = 0x150;
+    var DISPLAYEVENT = 0x150;
     var WINDOWEVENT = 0x200;
     var SYSWMEVENT;
     var KEYDOWN = 0x300;
@@ -1012,6 +1015,7 @@ extern class SDL_DisplayEvent {
 	var data:Int;
 }
 typedef DisplayEvent = Pointer<SDL_DisplayEvent>;
+
 @:native("SDL_WindowEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
@@ -1035,8 +1039,795 @@ extern class SDL_WindowEvent {
 }
 typedef WindowEvent = Pointer<SDL_WindowEvent>;
 
-// note to self for later
-// i'm going to bed
-// https://github.com/libsdl-org/SDL/blob/SDL2/include/SDL_events.h#L224C33-L224C33
+@:native("SDL_KeyboardEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_KeyboardEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	@:native("state")
+	var state:UInt8;
+	@:native("padding1")
+	var padding1:UInt8;
+	@:native("padding2")
+	var padding2:UInt8;
+	@:native("padding3")
+	var padding3:UInt8;
+	@:native("keysym")
+	var keysym:KeySym;
+}
+typedef KeyboardEvent = Pointer<SDL_KeyboardEvent>;
+
+@:native("SDL_TextEditingEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_TextEditingEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	/**
+	 * This string can only be 32 characters long!
+	 */
+	@:native("text")
+	var text:String;
+	@:native("start")
+	var start:Int;
+	@:native("length")
+	var length:Int;
+}
+typedef TextEditingEvent = Pointer<SDL_TextEditingEvent>;
+
+@:native("SDL_TextEditingExtEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_TextEditingExtEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	@:native("text")
+	var text:String;
+	@:native("start")
+	var start:Int;
+	@:native("length")
+	var length:Int;
+}
+typedef TextEditingExtEvent = Pointer<SDL_TextEditingExtEvent>;
+
+@:native("SDL_TextInputEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_TextInputEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	/**
+	 * This string can only be 32 characters long!
+	 */
+	@:native("text")
+	var text:String;
+}
+typedef TextInputEvent = Pointer<SDL_TextInputEvent>;
+
+@:native("SDL_MouseMotionEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_MouseMotionEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	@:native("which")
+	var which:UInt32;
+	@:native("state")
+	var state:MouseButton;
+	@:native("x")
+    var x:Int;
+	@:native("y")
+    var y:Int;
+    @:native("xrel")
+    var xRel:Int;
+	@:native("yrel")
+    var yRel:Int;
+}
+typedef MouseMotionEvent = Pointer<SDL_MouseMotionEvent>;
+
+@:native("SDL_MouseButtonEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_MouseButtonEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	@:native("which")
+	var which:UInt32;
+	@:native("button")
+	var button:MouseButton;
+	@:native("state")
+    var state:KeyState;
+    @:native("clicks")
+    var clicks:UInt8;
+    @:native("padding1")
+    var padding1:UInt8;
+    @:native("x")
+    var x:Int;
+	@:native("y")
+    var y:Int;
+    @:native("direction")
+    var direction:MouseWheelDirection;
+    @:native("preciseX")
+    var preciseX:Single;
+    @:native("preciseY")
+    var preciseY:Single;
+    @:native("mouseX")
+    var mouseX:Int;
+    @:native("mouseY")
+    var mouseY:Int;
+}
+typedef MouseButtonEvent = Pointer<SDL_MouseButtonEvent>;
+
+@:native("SDL_MouseWheelEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_MouseWheelEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	@:native("which")
+	var which:UInt32;
+    @:native("x")
+    var x:Int;
+	@:native("y")
+    var y:Int;
+}
+typedef MouseWheelEvent = Pointer<SDL_MouseWheelEvent>;
+
+// SDL_keyboard.h
+enum abstract ScanCode(UInt32) from UInt32 to UInt32 {
+    var UNKNOWN = 0;
+    var A = 4;
+    var B = 5;
+    var C = 6;
+    var D = 7;
+    var E = 8;
+    var F = 9;
+    var G = 10;
+    var H = 11;
+    var I = 12;
+    var J = 13;
+    var K = 14;
+    var L = 15;
+    var M = 16;
+    var N = 17;
+    var O = 18;
+    var P = 19;
+    var Q = 20;
+    var R = 21;
+    var S = 22;
+    var T = 23;
+    var U = 24;
+    var V = 25;
+    var W = 26;
+    var X = 27;
+    var Y = 28;
+    var Z = 29;
+
+    var ONE = 30;
+    var TWO = 31;
+    var THREE = 32;
+    var FOUR = 33;
+    var FIVE = 34;
+    var SIX = 35;
+    var SEVEN = 36;
+    var EIGHT = 37;
+    var NINE = 38;
+    var ZERO = 39;
+    var RETURN = 40;
+    var ESCAPE = 41;
+    var BACKSPACE = 42;
+    var TAB = 43;
+    var SPACE = 44;
+    var MINUS = 45;
+    var EQUALS = 46;
+    var LEFTBRACKET = 47;
+    var RIGHTBRACKET = 48;
+    var BACKSLASH = 49;
+    var NONUSHASH = 50;
+    var SEMICOLON = 51;
+    var APOSTROPHE = 52;
+    var GRAVE = 53;
+    var COMMA = 54;
+    var PERIOD = 55;
+    var SLASH = 56;
+    var CAPSLOCK = 57;
+    var F1 = 58;
+    var F2 = 59;
+    var F3 = 60;
+    var F4 = 61;
+    var F5 = 62;
+    var F6 = 63;
+    var F7 = 64;
+    var F8 = 65;
+    var F9 = 66;
+    var F10 = 67;
+    var F11 = 68;
+    var F12 = 69;
+    var PRINTSCREEN = 70;
+    var SCROLLLOCK = 71;
+    var PAUSE = 72;
+    var INSERT = 73;
+    var HOME = 74;
+    var PAGEUP = 75;
+    var DELETE = 76;
+    var END = 77;
+    var PAGEDOWN = 78;
+    var RIGHT = 79;
+    var LEFT = 80;
+    var DOWN = 81;
+    var UP = 82;
+    var NUMLOCKCLEAR = 83;
+    var KP_DIVIDE = 84;
+    var KP_MULTIPLY = 85;
+    var KP_MINUS = 86;
+    var KP_PLUS = 87;
+    var KP_ENTER = 88;
+    var KP_ONE = 89;
+    var KP_TWO = 90;
+    var KP_THREE = 91;
+    var KP_FOUR = 92;
+    var KP_FIVE = 93;
+    var KP_SIX = 94;
+    var KP_SEVEN = 95;
+    var KP_EIGHT = 96;
+    var KP_NINE = 97;
+    var KP_ZERO = 98;
+    var KP_PERIOD = 99;
+    var NONUSBACKSLASH = 100;
+    var APPLICATION = 101;
+    var POWER = 102;
+    var KP_EQUALS = 103;
+    var F13 = 104;
+    var F14 = 105;
+    var F15 = 106;
+    var F16 = 107;
+    var F17 = 108;
+    var F18 = 109;
+    var F19 = 110;
+    var F20 = 111;
+    var F21 = 112;
+    var F22 = 113;
+    var F23 = 114;
+    var F24 = 115;
+    var EXECUTE = 116;
+    var HELP = 117;
+    var MENU = 118;
+    var SELECT = 119;
+    var STOP = 120;
+    var AGAIN = 121;
+    var UNDO = 122;
+    var CUT = 123;
+    var COPY = 124;
+    var PASTE = 125;
+    var FIND = 126;
+    var MUTE = 127;
+    var VOLUMEUP = 128;
+    var VOLUMEDOWN = 129;
+    var KP_COMMA = 133;
+    var KP_EQUALSAS400 = 134;
+    var INTERNATIONAL1 = 135;
+    var INTERNATIONAL2 = 136;
+    var INTERNATIONAL3 = 137;
+    var INTERNATIONAL4 = 138;
+    var INTERNATIONAL5 = 139;
+    var INTERNATIONAL6 = 140;
+    var INTERNATIONAL7 = 141;
+    var INTERNATIONAL8 = 142;
+    var INTERNATIONAL9 = 143;
+    var LANG1 = 144;
+    var LANG2 = 145;
+    var LANG3 = 146;
+    var LANG4 = 147;
+    var LANG5 = 148;
+    var LANG6 = 149;
+    var LANG7 = 150;
+    var LANG8 = 151;
+    var LANG9 = 152;
+    var ALTERASE = 153;
+    var SYSREQ = 154;
+    var CANCEL = 155;
+    var CLEAR = 156;
+    var PRIOR = 157;
+    var RETURN2 = 158;
+    var SEPARATOR = 159;
+    var OUT = 160;
+    var OPER = 161;
+    var CLEARAGAIN = 162;
+    var CRSEL = 163;
+    var EXSEL = 164;
+    var KP_00 = 176;
+    var KP_000 = 177;
+    var THOUSANDSSEPARATOR = 178;
+    var DECIMALSEPARATOR = 179;
+    var CURRENCYUNIT = 180;
+    var CURRENCYSUBUNIT = 181;
+    var KP_LEFTPAREN = 182;
+    var KP_RIGHTPAREN = 183;
+    var KP_LEFTBRACE = 184;
+    var KP_RIGHTBRACE = 185;
+    var KP_TAB = 186;
+    var KP_BACKSPACE = 187;
+    var KP_A = 188;
+    var KP_B = 189;
+    var KP_C = 190;
+    var KP_D = 191;
+    var KP_E = 192;
+    var KP_F = 193;
+    var KP_XOR = 194;
+    var KP_POWER = 195;
+    var KP_PERCENT = 196;
+    var KP_LESS = 197;
+    var KP_GREATER = 198;
+    var KP_AMPERSAND = 199;
+    var KP_DBLAMPERSAND = 200;
+    var KP_VERTICALBAR = 201;
+    var KP_DBLVERTICALBAR = 202;
+    var KP_COLON = 203;
+    var KP_HASH = 204;
+    var KP_SPACE = 205;
+    var KP_AT = 206;
+    var KP_EXCLAM = 207;
+    var KP_MEMSTORE = 208;
+    var KP_MEMRECALL = 209;
+    var KP_MEMCLEAR = 210;
+    var KP_MEMADD = 211;
+    var KP_MEMSUBTRACT = 212;
+    var KP_MEMMULTIPLY = 213;
+    var KP_MEMDIVIDE = 214;
+    var KP_PLUSMINUS = 215;
+    var KP_CLEAR = 216;
+    var KP_CLEARENTRY = 217;
+    var KP_BINARY = 218;
+    var KP_OCTAL = 219;
+    var KP_DECIMAL = 220;
+    var KP_HEXADECIMAL = 221;
+    var LCTRL = 224;
+    var LSHIFT = 225;
+    var LALT = 226;
+    var LGUI = 227;
+    var RCTRL = 228;
+    var RSHIFT = 229;
+    var RALT = 230;
+    var RGUI = 231;
+    var MODE = 257;
+    var AUDIONEXT = 258;
+    var AUDIOPREV = 259;
+    var AUDIOSTOP = 260;
+    var AUDIOPLAY = 261;
+    var AUDIOMUTE = 262;
+    var MEDIASELECT = 263;
+    var WWW = 264;
+    var MAIL = 265;
+    var CALCULATOR = 266;
+    var COMPUTER = 267;
+    var AC_SEARCH = 268;
+    var AC_HOME = 269;
+    var AC_BACK = 270;
+    var AC_FORWARD = 271;
+    var AC_STOP = 272;
+    var AC_REFRESH = 273;
+    var AC_BOOKMARKS = 274;
+    var BRIGHTNESSDOWN = 275;
+    var BRIGHTNESSUP = 276;
+    var DISPLAYSWITCH = 277;
+    var KBDILLUMTOGGLE = 278;
+    var KBDILLUMDOWN = 279;
+    var KBDILLUMUP = 280;
+    var EJECT = 281;
+    var SLEEP = 282;
+    var APP1 = 283;
+    var APP2 = 284;
+    var AUDIOREWIND = 285;
+    var AUDIOFASTFORWARD = 286;
+    var SOFTLEFT = 287;
+    var SOFTRIGHT = 288;
+    var CALL = 289;
+    var ENDCALL = 290;
+
+    var NUM_SCANCODES = 512;
+}
+
+enum abstract KeyCode(UInt32) from UInt32 to UInt32 {
+    private var K_SCANCODE_MASK = 1<<30;
+
+    var UNKNOWN = 0 | K_SCANCODE_MASK;
+    var A = 4 | K_SCANCODE_MASK;
+    var B = 5 | K_SCANCODE_MASK;
+    var C = 6 | K_SCANCODE_MASK;
+    var D = 7 | K_SCANCODE_MASK;
+    var E = 8 | K_SCANCODE_MASK;
+    var F = 9 | K_SCANCODE_MASK;
+    var G = 10 | K_SCANCODE_MASK;
+    var H = 11 | K_SCANCODE_MASK;
+    var I = 12 | K_SCANCODE_MASK;
+    var J = 13 | K_SCANCODE_MASK;
+    var K = 14 | K_SCANCODE_MASK;
+    var L = 15 | K_SCANCODE_MASK;
+    var M = 16 | K_SCANCODE_MASK;
+    var N = 17 | K_SCANCODE_MASK;
+    var O = 18 | K_SCANCODE_MASK;
+    var P = 19 | K_SCANCODE_MASK;
+    var Q = 20 | K_SCANCODE_MASK;
+    var R = 21 | K_SCANCODE_MASK;
+    var S = 22 | K_SCANCODE_MASK;
+    var T = 23 | K_SCANCODE_MASK;
+    var U = 24 | K_SCANCODE_MASK;
+    var V = 25 | K_SCANCODE_MASK;
+    var W = 26 | K_SCANCODE_MASK;
+    var X = 27 | K_SCANCODE_MASK;
+    var Y = 28 | K_SCANCODE_MASK;
+    var Z = 29 | K_SCANCODE_MASK;
+
+    var ONE = 30 | K_SCANCODE_MASK;
+    var TWO = 31 | K_SCANCODE_MASK;
+    var THREE = 32 | K_SCANCODE_MASK;
+    var FOUR = 33 | K_SCANCODE_MASK;
+    var FIVE = 34 | K_SCANCODE_MASK;
+    var SIX = 35 | K_SCANCODE_MASK;
+    var SEVEN = 36 | K_SCANCODE_MASK;
+    var EIGHT = 37 | K_SCANCODE_MASK;
+    var NINE = 38 | K_SCANCODE_MASK;
+    var ZERO = 39 | K_SCANCODE_MASK;
+    var RETURN = 40 | K_SCANCODE_MASK;
+    var ESCAPE = 41 | K_SCANCODE_MASK;
+    var BACKSPACE = 42 | K_SCANCODE_MASK;
+    var TAB = 43 | K_SCANCODE_MASK;
+    var SPACE = 44 | K_SCANCODE_MASK;
+    var MINUS = 45 | K_SCANCODE_MASK;
+    var EQUALS = 46 | K_SCANCODE_MASK;
+    var LEFTBRACKET = 47 | K_SCANCODE_MASK;
+    var RIGHTBRACKET = 48 | K_SCANCODE_MASK;
+    var BACKSLASH = 49 | K_SCANCODE_MASK;
+    var NONUSHASH = 50 | K_SCANCODE_MASK;
+    var SEMICOLON = 51 | K_SCANCODE_MASK;
+    var APOSTROPHE = 52 | K_SCANCODE_MASK;
+    var GRAVE = 53 | K_SCANCODE_MASK;
+    var COMMA = 54 | K_SCANCODE_MASK;
+    var PERIOD = 55 | K_SCANCODE_MASK;
+    var SLASH = 56 | K_SCANCODE_MASK;
+    var CAPSLOCK = 57 | K_SCANCODE_MASK;
+    var F1 = 58 | K_SCANCODE_MASK;
+    var F2 = 59 | K_SCANCODE_MASK;
+    var F3 = 60 | K_SCANCODE_MASK;
+    var F4 = 61 | K_SCANCODE_MASK;
+    var F5 = 62 | K_SCANCODE_MASK;
+    var F6 = 63 | K_SCANCODE_MASK;
+    var F7 = 64 | K_SCANCODE_MASK;
+    var F8 = 65 | K_SCANCODE_MASK;
+    var F9 = 66 | K_SCANCODE_MASK;
+    var F10 = 67 | K_SCANCODE_MASK;
+    var F11 = 68 | K_SCANCODE_MASK;
+    var F12 = 69 | K_SCANCODE_MASK;
+    var PRINTSCREEN = 70 | K_SCANCODE_MASK;
+    var SCROLLLOCK = 71 | K_SCANCODE_MASK;
+    var PAUSE = 72 | K_SCANCODE_MASK;
+    var INSERT = 73 | K_SCANCODE_MASK;
+    var HOME = 74 | K_SCANCODE_MASK;
+    var PAGEUP = 75 | K_SCANCODE_MASK;
+    var DELETE = 76 | K_SCANCODE_MASK;
+    var END = 77 | K_SCANCODE_MASK;
+    var PAGEDOWN = 78 | K_SCANCODE_MASK;
+    var RIGHT = 79 | K_SCANCODE_MASK;
+    var LEFT = 80 | K_SCANCODE_MASK;
+    var DOWN = 81 | K_SCANCODE_MASK;
+    var UP = 82 | K_SCANCODE_MASK;
+    var NUMLOCKCLEAR = 83 | K_SCANCODE_MASK;
+    var KP_DIVIDE = 84 | K_SCANCODE_MASK;
+    var KP_MULTIPLY = 85 | K_SCANCODE_MASK;
+    var KP_MINUS = 86 | K_SCANCODE_MASK;
+    var KP_PLUS = 87 | K_SCANCODE_MASK;
+    var KP_ENTER = 88 | K_SCANCODE_MASK;
+    var KP_ONE = 89 | K_SCANCODE_MASK;
+    var KP_TWO = 90 | K_SCANCODE_MASK;
+    var KP_THREE = 91 | K_SCANCODE_MASK;
+    var KP_FOUR = 92 | K_SCANCODE_MASK;
+    var KP_FIVE = 93 | K_SCANCODE_MASK;
+    var KP_SIX = 94 | K_SCANCODE_MASK;
+    var KP_SEVEN = 95 | K_SCANCODE_MASK;
+    var KP_EIGHT = 96 | K_SCANCODE_MASK;
+    var KP_NINE = 97 | K_SCANCODE_MASK;
+    var KP_ZERO = 98 | K_SCANCODE_MASK;
+    var KP_PERIOD = 99 | K_SCANCODE_MASK;
+    var NONUSBACKSLASH = 100 | K_SCANCODE_MASK;
+    var APPLICATION = 101 | K_SCANCODE_MASK;
+    var POWER = 102 | K_SCANCODE_MASK;
+    var KP_EQUALS = 103 | K_SCANCODE_MASK;
+    var F13 = 104 | K_SCANCODE_MASK;
+    var F14 = 105 | K_SCANCODE_MASK;
+    var F15 = 106 | K_SCANCODE_MASK;
+    var F16 = 107 | K_SCANCODE_MASK;
+    var F17 = 108 | K_SCANCODE_MASK;
+    var F18 = 109 | K_SCANCODE_MASK;
+    var F19 = 110 | K_SCANCODE_MASK;
+    var F20 = 111 | K_SCANCODE_MASK;
+    var F21 = 112 | K_SCANCODE_MASK;
+    var F22 = 113 | K_SCANCODE_MASK;
+    var F23 = 114 | K_SCANCODE_MASK;
+    var F24 = 115 | K_SCANCODE_MASK;
+    var EXECUTE = 116 | K_SCANCODE_MASK;
+    var HELP = 117 | K_SCANCODE_MASK;
+    var MENU = 118 | K_SCANCODE_MASK;
+    var SELECT = 119 | K_SCANCODE_MASK;
+    var STOP = 120 | K_SCANCODE_MASK;
+    var AGAIN = 121 | K_SCANCODE_MASK;
+    var UNDO = 122 | K_SCANCODE_MASK;
+    var CUT = 123 | K_SCANCODE_MASK;
+    var COPY = 124 | K_SCANCODE_MASK;
+    var PASTE = 125 | K_SCANCODE_MASK;
+    var FIND = 126 | K_SCANCODE_MASK;
+    var MUTE = 127 | K_SCANCODE_MASK;
+    var VOLUMEUP = 128 | K_SCANCODE_MASK;
+    var VOLUMEDOWN = 129 | K_SCANCODE_MASK;
+    var KP_COMMA = 133 | K_SCANCODE_MASK;
+    var KP_EQUALSAS400 = 134 | K_SCANCODE_MASK;
+    var INTERNATIONAL1 = 135 | K_SCANCODE_MASK;
+    var INTERNATIONAL2 = 136 | K_SCANCODE_MASK;
+    var INTERNATIONAL3 = 137 | K_SCANCODE_MASK;
+    var INTERNATIONAL4 = 138 | K_SCANCODE_MASK;
+    var INTERNATIONAL5 = 139 | K_SCANCODE_MASK;
+    var INTERNATIONAL6 = 140 | K_SCANCODE_MASK;
+    var INTERNATIONAL7 = 141 | K_SCANCODE_MASK;
+    var INTERNATIONAL8 = 142 | K_SCANCODE_MASK;
+    var INTERNATIONAL9 = 143 | K_SCANCODE_MASK;
+    var LANG1 = 144 | K_SCANCODE_MASK;
+    var LANG2 = 145 | K_SCANCODE_MASK;
+    var LANG3 = 146 | K_SCANCODE_MASK;
+    var LANG4 = 147 | K_SCANCODE_MASK;
+    var LANG5 = 148 | K_SCANCODE_MASK;
+    var LANG6 = 149 | K_SCANCODE_MASK;
+    var LANG7 = 150 | K_SCANCODE_MASK;
+    var LANG8 = 151 | K_SCANCODE_MASK;
+    var LANG9 = 152 | K_SCANCODE_MASK;
+    var ALTERASE = 153 | K_SCANCODE_MASK;
+    var SYSREQ = 154 | K_SCANCODE_MASK;
+    var CANCEL = 155 | K_SCANCODE_MASK;
+    var CLEAR = 156 | K_SCANCODE_MASK;
+    var PRIOR = 157 | K_SCANCODE_MASK;
+    var RETURN2 = 158 | K_SCANCODE_MASK;
+    var SEPARATOR = 159 | K_SCANCODE_MASK;
+    var OUT = 160 | K_SCANCODE_MASK;
+    var OPER = 161 | K_SCANCODE_MASK;
+    var CLEARAGAIN = 162 | K_SCANCODE_MASK;
+    var CRSEL = 163 | K_SCANCODE_MASK;
+    var EXSEL = 164 | K_SCANCODE_MASK;
+    var KP_00 = 176 | K_SCANCODE_MASK;
+    var KP_000 = 177 | K_SCANCODE_MASK;
+    var THOUSANDSSEPARATOR = 178 | K_SCANCODE_MASK;
+    var DECIMALSEPARATOR = 179 | K_SCANCODE_MASK;
+    var CURRENCYUNIT = 180 | K_SCANCODE_MASK;
+    var CURRENCYSUBUNIT = 181 | K_SCANCODE_MASK;
+    var KP_LEFTPAREN = 182 | K_SCANCODE_MASK;
+    var KP_RIGHTPAREN = 183 | K_SCANCODE_MASK;
+    var KP_LEFTBRACE = 184 | K_SCANCODE_MASK;
+    var KP_RIGHTBRACE = 185 | K_SCANCODE_MASK;
+    var KP_TAB = 186 | K_SCANCODE_MASK;
+    var KP_BACKSPACE = 187 | K_SCANCODE_MASK;
+    var KP_A = 188 | K_SCANCODE_MASK;
+    var KP_B = 189 | K_SCANCODE_MASK;
+    var KP_C = 190 | K_SCANCODE_MASK;
+    var KP_D = 191 | K_SCANCODE_MASK;
+    var KP_E = 192 | K_SCANCODE_MASK;
+    var KP_F = 193 | K_SCANCODE_MASK;
+    var KP_XOR = 194 | K_SCANCODE_MASK;
+    var KP_POWER = 195 | K_SCANCODE_MASK;
+    var KP_PERCENT = 196 | K_SCANCODE_MASK;
+    var KP_LESS = 197 | K_SCANCODE_MASK;
+    var KP_GREATER = 198 | K_SCANCODE_MASK;
+    var KP_AMPERSAND = 199 | K_SCANCODE_MASK;
+    var KP_DBLAMPERSAND = 200 | K_SCANCODE_MASK;
+    var KP_VERTICALBAR = 201 | K_SCANCODE_MASK;
+    var KP_DBLVERTICALBAR = 202 | K_SCANCODE_MASK;
+    var KP_COLON = 203 | K_SCANCODE_MASK;
+    var KP_HASH = 204 | K_SCANCODE_MASK;
+    var KP_SPACE = 205 | K_SCANCODE_MASK;
+    var KP_AT = 206 | K_SCANCODE_MASK;
+    var KP_EXCLAM = 207 | K_SCANCODE_MASK;
+    var KP_MEMSTORE = 208 | K_SCANCODE_MASK;
+    var KP_MEMRECALL = 209 | K_SCANCODE_MASK;
+    var KP_MEMCLEAR = 210 | K_SCANCODE_MASK;
+    var KP_MEMADD = 211 | K_SCANCODE_MASK;
+    var KP_MEMSUBTRACT = 212 | K_SCANCODE_MASK;
+    var KP_MEMMULTIPLY = 213 | K_SCANCODE_MASK;
+    var KP_MEMDIVIDE = 214 | K_SCANCODE_MASK;
+    var KP_PLUSMINUS = 215 | K_SCANCODE_MASK;
+    var KP_CLEAR = 216 | K_SCANCODE_MASK;
+    var KP_CLEARENTRY = 217 | K_SCANCODE_MASK;
+    var KP_BINARY = 218 | K_SCANCODE_MASK;
+    var KP_OCTAL = 219 | K_SCANCODE_MASK;
+    var KP_DECIMAL = 220 | K_SCANCODE_MASK;
+    var KP_HEXADECIMAL = 221 | K_SCANCODE_MASK;
+    var LCTRL = 224 | K_SCANCODE_MASK;
+    var LSHIFT = 225 | K_SCANCODE_MASK;
+    var LALT = 226 | K_SCANCODE_MASK;
+    var LGUI = 227 | K_SCANCODE_MASK;
+    var RCTRL = 228 | K_SCANCODE_MASK;
+    var RSHIFT = 229 | K_SCANCODE_MASK;
+    var RALT = 230 | K_SCANCODE_MASK;
+    var RGUI = 231 | K_SCANCODE_MASK;
+    var MODE = 257 | K_SCANCODE_MASK;
+    var AUDIONEXT = 258 | K_SCANCODE_MASK;
+    var AUDIOPREV = 259 | K_SCANCODE_MASK;
+    var AUDIOSTOP = 260 | K_SCANCODE_MASK;
+    var AUDIOPLAY = 261 | K_SCANCODE_MASK;
+    var AUDIOMUTE = 262 | K_SCANCODE_MASK;
+    var MEDIASELECT = 263 | K_SCANCODE_MASK;
+    var WWW = 264 | K_SCANCODE_MASK;
+    var MAIL = 265 | K_SCANCODE_MASK;
+    var CALCULATOR = 266 | K_SCANCODE_MASK;
+    var COMPUTER = 267 | K_SCANCODE_MASK;
+    var AC_SEARCH = 268 | K_SCANCODE_MASK;
+    var AC_HOME = 269 | K_SCANCODE_MASK;
+    var AC_BACK = 270 | K_SCANCODE_MASK;
+    var AC_FORWARD = 271 | K_SCANCODE_MASK;
+    var AC_STOP = 272 | K_SCANCODE_MASK;
+    var AC_REFRESH = 273 | K_SCANCODE_MASK;
+    var AC_BOOKMARKS = 274 | K_SCANCODE_MASK;
+    var BRIGHTNESSDOWN = 275 | K_SCANCODE_MASK;
+    var BRIGHTNESSUP = 276 | K_SCANCODE_MASK;
+    var DISPLAYSWITCH = 277 | K_SCANCODE_MASK;
+    var KBDILLUMTOGGLE = 278 | K_SCANCODE_MASK;
+    var KBDILLUMDOWN = 279 | K_SCANCODE_MASK;
+    var KBDILLUMUP = 280 | K_SCANCODE_MASK;
+    var EJECT = 281 | K_SCANCODE_MASK;
+    var SLEEP = 282 | K_SCANCODE_MASK;
+    var APP1 = 283 | K_SCANCODE_MASK;
+    var APP2 = 284 | K_SCANCODE_MASK;
+    var AUDIOREWIND = 285 | K_SCANCODE_MASK;
+    var AUDIOFASTFORWARD = 286 | K_SCANCODE_MASK;
+    var SOFTLEFT = 287 | K_SCANCODE_MASK;
+    var SOFTRIGHT = 288 | K_SCANCODE_MASK;
+    var CALL = 289 | K_SCANCODE_MASK;
+    var ENDCALL = 290 | K_SCANCODE_MASK;
+
+    var NUM_KEYCODES = 512 | K_SCANCODE_MASK;
+}
+
+enum abstract KeyMod(UInt32) from UInt32 to UInt32 {
+    var KMOD_NONE = 0x0000;
+    var KMOD_LSHIFT = 0x0001;
+    var KMOD_RSHIFT = 0x0002;
+    var KMOD_LCTRL = 0x0040;
+    var KMOD_RCTRL = 0x0080;
+    var KMOD_LALT = 0x0100;
+    var KMOD_RALT = 0x0200;
+    var KMOD_LGUI = 0x0400;
+    var KMOD_RGUI = 0x0800;
+    var KMOD_NUM = 0x1000;
+    var KMOD_CAPS = 0x2000;
+    var KMOD_MODE = 0x4000;
+    var KMOD_SCROLL = 0x8000;
+
+    var KMOD_CTRL = KMOD_LCTRL | KMOD_RCTRL;
+    var KMOD_SHIFT = KMOD_LSHIFT | KMOD_RSHIFT;
+    var KMOD_ALT = KMOD_LALT | KMOD_RALT;
+    var KMOD_GUI = KMOD_LGUI | KMOD_RGUI;
+
+    var KMOD_RESERVED = KMOD_SCROLL;
+}
+
+enum abstract KeyState(UInt8) from UInt8 to UInt8 {
+    var RELEASED = 0;
+    var PRESSED = 1;
+}
+
+@:native("SDL_Keysym")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class KeySym {
+	@:native("scancode")
+    public var scancode:ScanCode; // physical keycode
+	@:native("sym")
+    public var sym:KeyCode; // virtual keycode
+	@:native("mod")
+    public var mod:KeyMod; // key mods
+}
+
+// SDL_mouse.h
+@:native("SDL_Cursor")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_Cursor {}
+typedef Cursor = Pointer<SDL_Cursor>;
+
+enum abstract SystemCursor(UInt32) from UInt32 to UInt32 {
+	var ARROW = 0;
+    var IBEAM;
+    var WAIT;
+    var CROSSHAIR;
+    var WAITARROW;
+    var SIZENWSE;
+    var SIZENESW;
+    var SIZEWE;
+    var SIZENS;
+    var SIZEALL;
+    var NO;
+    var HAND;
+    var NUM_SYSTEM_CURSORS;
+}
+
+enum abstract MouseWheelDirection(UInt32) from UInt32 to UInt32 {
+	var NORMAL = 0;
+	var FLIPPED;
+}
+
+enum abstract MouseButton(UInt32) from UInt32 to UInt32 {
+	private static inline function mask(x:UInt32) {
+		return (1 << ((x)-1));
+	}
+
+	var LEFT = 1;
+	var MIDDLE;
+	var RIGHT;
+	var X1;
+	var X2;
+	var LMASK = mask(LEFT);
+	var MMASK = mask(MIDDLE);
+	var RMASK = mask(RIGHT);
+	var X1MASK = mask(X1);
+	var X2MASK = mask(X2);
+}
+
+// SDL_joystick.h
+@:native("SDL_Joystick")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_Joystick {}
+typedef Joystick = Pointer<SDL_Joystick>;
+
+enum abstract JoystickType(UInt32) from UInt32 from UInt32 {
+    var UNKNOWN = 0;
+    var GAMECONTROLLER;
+    var WHEEL;
+    var ARCADE_STICK;
+    var FLIGHT_STICK;
+    var DANCE_PAD;
+    var GUITAR;
+    var DRUM_KIT;
+    var ARCADE_PAD;
+    var THROTTLE;
+}
+
+enum abstract JoystickPowerLevel(UInt32) from UInt32 to UInt32 {
+    var UNKNOWN = -1;
+    /** <= 5% */
+    var EMPTY;
+    /** <= 20% */
+    var LOW;
+    /** <= 70% */
+    var MEDIUM;
+    /** <= 100% */
+    var FULL;
+    var WIRED;
+    var MAX;
+}
 
 typedef Double = cpp.Float64;
