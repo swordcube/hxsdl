@@ -2213,6 +2213,36 @@ extern class SDL {
 	@:native("SDL_SensorUpdate")
 	static function sensorUpdate(sensor:Sensor):Void;
 
+	// SDL_timer.h
+	@:native("SDL_GetTicks")
+	static function getTicks():UInt32;
+
+	@:native("SDL_GetTicks64")
+	static function getTicks64():UInt64;
+
+	static inline function ticksPassed(tickA:UInt32, tickB:UInt32):Bool {
+		return (cast(tickB, Int) - cast(tickA, Int) <= 0);
+	}
+
+	@:native("SDL_GetPerformanceCounter")
+	static function getPerformanceCounter():UInt64;
+
+	@:native("SDL_GetPerformanceFrequency")
+	static function getPerformanceFrequency():UInt64;
+
+	@:native("SDL_Delay")
+	static function delay(ms:UInt32):Void; // funny how i mistook "ms" for a float value in seconds when i first made this library
+
+	@:native("SDL_AddTimer")
+	static inline function addTimer(intervalMS:UInt32, callback:TimerCallback, param:Any):TimerID {
+		return untyped __cpp__("SDL_AddTimer({0}, {1}, (void*){2})", intervalMS, callback, param);
+	}
+
+	@:native("SDL_RemoveTimer")
+	static inline function removeTimer(timerID:TimerID):Bool {
+		return untyped __cpp__("SDL_RemoveTimer({0})", timerID) == Boolean.TRUE;
+	}
+
 	// haxe helper functions //
 	@:native("SDL_Event")
 	static inline function makeEvent():Event {

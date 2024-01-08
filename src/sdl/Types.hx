@@ -2494,3 +2494,7 @@ typedef FingerID = Int;
 
 // SDL_gesture.h
 typedef GestureID = Int;
+
+// SDL_timer.h
+typedef TimerCallback = cpp.Callable<(interval:UInt32, param:RawPointer<cpp.Void>) -> UInt32>;
+typedef TimerID = Int;
