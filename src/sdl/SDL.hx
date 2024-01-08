@@ -621,7 +621,7 @@ extern class SDL {
 	static function createTextureFromSurface(renderer:Renderer, surface:Surface):Texture;
 
 	@:native("SDL_QueryTexture")
-	static function queryTexture(texture:Texture, format:RawPointer<PixelFormat>, access:RawPointer<Int>, width:RawPointer<Int>, height:RawPointer<Int>):Int;
+	static function queryTexture(texture:Texture, format:RawPointer<PixelFormatEnum>, access:RawPointer<Int>, width:RawPointer<Int>, height:RawPointer<Int>):Int;
 
 	/**
 	 * A convienience function not found in base SDL
@@ -629,10 +629,11 @@ extern class SDL {
 	 * 
 	 * @return A `Point` set to the width and height of the texture.
 	 */
+	@:native("SDL_QueryTexture")
 	static inline function getTextureSize(texture:Texture):Point {
 		var w:Int = 0;
 		var h:Int = 0;
-		queryTexture(texture, null, null, Pointer.addressOf(w), Pointer.addressOf(h));
+		untyped __cpp__("SDL_QueryTexture({0}, NULL, NULL, {1}, {2})", texture, RawPointer.addressOf(w), RawPointer.addressOf(h));
 		return Point.create(w, h);
 	}
 
@@ -2259,7 +2260,8 @@ extern class SDL {
 	// haxe helper functions //
 	@:native("SDL_Event")
 	static inline function makeEvent():Event {
-		untyped __cpp__('SDL_Event* __sdl_ev__');
-		return untyped __cpp__('__sdl_ev__');
+		var event:Event = null;
+		untyped __cpp__('SDL_Event __sdl_ev__; {0} = &__sdl_ev__', event);
+		return event;
 	}
 }
