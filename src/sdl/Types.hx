@@ -7,6 +7,7 @@ import cpp.UInt8;
 import cpp.UInt16;
 import cpp.UInt32;
 import cpp.UInt64;
+import cpp.Pointer;
 import cpp.RawPointer;
 import cpp.ConstCharStar;
 import cpp.Helpers;
@@ -335,7 +336,7 @@ extern class DisplayMode {
 @:native("SDL_Window")
 @:include("vendor/include/Headers.h")
 extern class SDL_Window {}
-typedef Window = RawPointer<SDL_Window>;
+typedef Window = Pointer<SDL_Window>;
 
 enum abstract WindowInitFlags(UInt32) from UInt32 to UInt32 {
 	var FULLSCREEN = 0x00000001;
@@ -418,7 +419,7 @@ enum abstract FlashOperation(UInt32) from UInt32 to UInt32 {
     var UNTIL_FOCUSED;             /**< Flash the window until it gets focus */
 }
 
-typedef GlContext = RawPointer<cpp.Void>;
+typedef GlContext = Pointer<cpp.Void>;
 
 enum abstract GlAttribute(UInt32) from UInt32 to UInt32 {
 	var RED_SIZE = 0;
@@ -611,12 +612,12 @@ enum abstract RendererFlip(UInt32) to UInt32 from UInt32 {
 @:native("SDL_Renderer")
 @:include("vendor/include/Headers.h")
 extern class SDL_Renderer {}
-typedef Renderer = RawPointer<SDL_Renderer>;
+typedef Renderer = Pointer<SDL_Renderer>;
 
 @:native("SDL_Texture")
 @:include("vendor/include/Headers.h")
 extern class SDL_Texture {}
-typedef Texture = RawPointer<SDL_Texture>;
+typedef Texture = Pointer<SDL_Texture>;
 
 
 
@@ -755,7 +756,7 @@ extern class SDL_Palette {
 	@:native("refcount")
 	public var refCount:Int;
 }
-typedef Palette = RawPointer<SDL_Palette>;
+typedef Palette = Pointer<SDL_Palette>;
 
 @:native("SDL_Palette")
 @:include("vendor/include/Headers.h")
@@ -800,7 +801,7 @@ extern class SDL_PixelFormat {
 	@:native("next")
 	public var next:PixelFormat;
 }
-typedef PixelFormat = RawPointer<SDL_PixelFormat>;
+typedef PixelFormat = Pointer<SDL_PixelFormat>;
 
 
 
@@ -873,7 +874,7 @@ extern class SDL_Surface {
 	@:native("pixels")
 	public var pixels:RawPointer<cpp.Void>;
 }
-typedef Surface = RawPointer<SDL_Surface>;
+typedef Surface = Pointer<SDL_Surface>;
 
 enum abstract YUVConversionMode(Int) from Int to Int {
 	var JPEG = 0;
@@ -886,7 +887,7 @@ enum abstract YUVConversionMode(Int) from Int to Int {
 @:native("SDL_RWops")
 @:include("vendor/include/Headers.h")
 extern class SDL_RWops {}
-typedef RWops = RawPointer<SDL_RWops>;
+typedef RWops = Pointer<SDL_RWops>;
 
 // SDL_syswm.h
 enum abstract SysWMType(Int) from Int to Int {
@@ -916,7 +917,7 @@ extern class SDL_SysWMinfo {
 	@:native("subsystem")
 	public var subsystem:SysWMType;
 }
-typedef SysWMinfo = RawPointer<SDL_SysWMinfo>;
+typedef SysWMinfo = Pointer<SDL_SysWMinfo>;
 
 // SDL_events.h
 enum abstract EventType(UInt32) from UInt32 to UInt32 {
@@ -997,7 +998,7 @@ extern class SDL_CommonEvent {
 	@:native("timestamp")
 	var timestamp:UInt32;
 }
-typedef CommonEvent = RawPointer<SDL_CommonEvent>;
+typedef CommonEvent = Pointer<SDL_CommonEvent>;
 
 @:native("SDL_DisplayEvent")
 @:include("vendor/include/Headers.h")
@@ -1020,7 +1021,7 @@ extern class SDL_DisplayEvent {
 	@:native("data")
 	var data:Int;
 }
-typedef DisplayEvent = RawPointer<SDL_DisplayEvent>;
+typedef DisplayEvent = Pointer<SDL_DisplayEvent>;
 
 @:native("SDL_WindowEvent")
 @:include("vendor/include/Headers.h")
@@ -1043,7 +1044,7 @@ extern class SDL_WindowEvent {
 	@:native("data")
 	var data:Int;
 }
-typedef WindowEvent = RawPointer<SDL_WindowEvent>;
+typedef WindowEvent = Pointer<SDL_WindowEvent>;
 
 @:native("SDL_KeyboardEvent")
 @:include("vendor/include/Headers.h")
@@ -1066,7 +1067,7 @@ extern class SDL_KeyboardEvent {
 	@:native("keysym")
 	var keysym:KeySym;
 }
-typedef KeyboardEvent = RawPointer<SDL_KeyboardEvent>;
+typedef KeyboardEvent = Pointer<SDL_KeyboardEvent>;
 
 @:native("SDL_TextEditingEvent")
 @:include("vendor/include/Headers.h")
@@ -1088,7 +1089,7 @@ extern class SDL_TextEditingEvent {
 	@:native("length")
 	var length:Int;
 }
-typedef TextEditingEvent = RawPointer<SDL_TextEditingEvent>;
+typedef TextEditingEvent = Pointer<SDL_TextEditingEvent>;
 
 @:native("SDL_TextEditingExtEvent")
 @:include("vendor/include/Headers.h")
@@ -1107,7 +1108,7 @@ extern class SDL_TextEditingExtEvent {
 	@:native("length")
 	var length:Int;
 }
-typedef TextEditingExtEvent = RawPointer<SDL_TextEditingExtEvent>;
+typedef TextEditingExtEvent = Pointer<SDL_TextEditingExtEvent>;
 
 @:native("SDL_TextInputEvent")
 @:include("vendor/include/Headers.h")
@@ -1125,7 +1126,7 @@ extern class SDL_TextInputEvent {
 	@:native("text")
 	var text:String;
 }
-typedef TextInputEvent = RawPointer<SDL_TextInputEvent>;
+typedef TextInputEvent = Pointer<SDL_TextInputEvent>;
 
 @:native("SDL_MouseMotionEvent")
 @:include("vendor/include/Headers.h")
@@ -1150,7 +1151,7 @@ extern class SDL_MouseMotionEvent {
 	@:native("yrel")
     var yRel:Int;
 }
-typedef MouseMotionEvent = RawPointer<SDL_MouseMotionEvent>;
+typedef MouseMotionEvent = Pointer<SDL_MouseMotionEvent>;
 
 @:native("SDL_MouseButtonEvent")
 @:include("vendor/include/Headers.h")
@@ -1187,7 +1188,7 @@ extern class SDL_MouseButtonEvent {
     @:native("mouseY")
     var mouseY:Int;
 }
-typedef MouseButtonEvent = RawPointer<SDL_MouseButtonEvent>;
+typedef MouseButtonEvent = Pointer<SDL_MouseButtonEvent>;
 
 @:native("SDL_MouseWheelEvent")
 @:include("vendor/include/Headers.h")
@@ -1206,7 +1207,7 @@ extern class SDL_MouseWheelEvent {
 	@:native("y")
     var y:Int;
 }
-typedef MouseWheelEvent = RawPointer<SDL_MouseWheelEvent>;
+typedef MouseWheelEvent = Pointer<SDL_MouseWheelEvent>;
 
 @:native("SDL_JoyAxisEvent")
 @:include("vendor/include/Headers.h")
@@ -1231,7 +1232,7 @@ extern class SDL_JoyAxisEvent {
     @:native("padding4")
     var padding4:UInt16;
 }
-typedef JoyAxisEvent = RawPointer<SDL_JoyAxisEvent>;
+typedef JoyAxisEvent = Pointer<SDL_JoyAxisEvent>;
 
 @:native("SDL_JoyBallEvent")
 @:include("vendor/include/Headers.h")
@@ -1256,7 +1257,7 @@ extern class SDL_JoyBallEvent {
     @:native("yrel")
     var yRel:Int16;
 }
-typedef JoyBallEvent = RawPointer<SDL_JoyBallEvent>;
+typedef JoyBallEvent = Pointer<SDL_JoyBallEvent>;
 
 @:native("SDL_JoyHatEvent")
 @:include("vendor/include/Headers.h")
@@ -1277,7 +1278,7 @@ extern class SDL_JoyHatEvent {
     @:native("padding2")
     var padding2:UInt8;
 }
-typedef JoyHatEvent = RawPointer<SDL_JoyHatEvent>;
+typedef JoyHatEvent = Pointer<SDL_JoyHatEvent>;
 
 @:native("SDL_JoyButtonEvent")
 @:include("vendor/include/Headers.h")
@@ -1298,7 +1299,7 @@ extern class SDL_JoyButtonEvent {
     @:native("padding2")
     var padding2:UInt8;
 }
-typedef JoyButtonEvent = RawPointer<SDL_JoyButtonEvent>;
+typedef JoyButtonEvent = Pointer<SDL_JoyButtonEvent>;
 
 @:native("SDL_JoyDeviceEvent")
 @:include("vendor/include/Headers.h")
@@ -1311,7 +1312,7 @@ extern class SDL_JoyDeviceEvent {
 	@:native("which")
 	var which:JoystickID;
 }
-typedef JoyDeviceEvent = RawPointer<SDL_JoyDeviceEvent>;
+typedef JoyDeviceEvent = Pointer<SDL_JoyDeviceEvent>;
 
 @:native("SDL_JoyBatteryEvent")
 @:include("vendor/include/Headers.h")
@@ -1326,7 +1327,7 @@ extern class SDL_JoyBatteryEvent {
     @:native("level")
     var level:JoystickPowerLevel;
 }
-typedef JoyBatteryEvent = RawPointer<SDL_JoyBatteryEvent>;
+typedef JoyBatteryEvent = Pointer<SDL_JoyBatteryEvent>;
 
 @:native("SDL_ControllerAxisEvent")
 @:include("vendor/include/Headers.h")
@@ -1351,7 +1352,7 @@ extern class SDL_ControllerAxisEvent {
     @:native("padding4")
     var padding4:UInt16;
 }
-typedef ControllerAxisEvent = RawPointer<SDL_ControllerAxisEvent>;
+typedef ControllerAxisEvent = Pointer<SDL_ControllerAxisEvent>;
 
 @:native("SDL_ControllerButtonEvent")
 @:include("vendor/include/Headers.h")
@@ -1372,7 +1373,7 @@ extern class SDL_ControllerButtonEvent {
     @:native("padding2")
     var padding2:UInt8;
 }
-typedef ControllerButtonEvent = RawPointer<SDL_ControllerButtonEvent>;
+typedef ControllerButtonEvent = Pointer<SDL_ControllerButtonEvent>;
 
 @:native("SDL_ControllerDeviceEvent")
 @:include("vendor/include/Headers.h")
@@ -1385,7 +1386,7 @@ extern class SDL_ControllerDeviceEvent {
 	@:native("which")
 	var which:JoystickID;
 }
-typedef ControllerDeviceEvent = RawPointer<SDL_ControllerDeviceEvent>;
+typedef ControllerDeviceEvent = Pointer<SDL_ControllerDeviceEvent>;
 
 @:native("SDL_ControllerTouchpadEvent")
 @:include("vendor/include/Headers.h")
@@ -1408,7 +1409,7 @@ extern class SDL_ControllerTouchpadEvent {
     @:native("pressure")
     var pressure:Single;
 }
-typedef ControllerTouchpadEvent = RawPointer<SDL_ControllerTouchpadEvent>;
+typedef ControllerTouchpadEvent = Pointer<SDL_ControllerTouchpadEvent>;
 
 @:native("SDL_ControllerSensorEvent")
 @:include("vendor/include/Headers.h")
@@ -1428,7 +1429,7 @@ extern class SDL_ControllerSensorEvent {
     @:native("data")
     var data:CArray<Single>;
 }
-typedef ControllerSensorEvent = RawPointer<SDL_ControllerSensorEvent>;
+typedef ControllerSensorEvent = Pointer<SDL_ControllerSensorEvent>;
 
 @:native("SDL_TouchFingerEvent")
 @:include("vendor/include/Headers.h")
@@ -1455,7 +1456,7 @@ extern class SDL_TouchFingerEvent {
     @:native("windowID")
     var windowID:UInt32;
 }
-typedef TouchFingerEvent = RawPointer<SDL_TouchFingerEvent>;
+typedef TouchFingerEvent = Pointer<SDL_TouchFingerEvent>;
 
 @:native("SDL_MultiGestureEvent")
 @:include("vendor/include/Headers.h")
@@ -1480,7 +1481,7 @@ extern class SDL_MultiGestureEvent {
     @:native("padding")
     var padding:UInt16;
 }
-typedef MultiGestureEvent = RawPointer<SDL_MultiGestureEvent>;
+typedef MultiGestureEvent = Pointer<SDL_MultiGestureEvent>;
 
 @:native("SDL_DollarGestureEvent")
 @:include("vendor/include/Headers.h")
@@ -1503,7 +1504,7 @@ extern class SDL_DollarGestureEvent {
     @:native("y")
     var y:Single;
 }
-typedef DollarGestureEvent = RawPointer<SDL_DollarGestureEvent>;
+typedef DollarGestureEvent = Pointer<SDL_DollarGestureEvent>;
 
 @:native("SDL_DropEvent")
 @:include("vendor/include/Headers.h")
@@ -1518,7 +1519,7 @@ extern class SDL_DropEvent {
     @:native("windowID")
     var windowID:UInt32;
 }
-typedef DropEvent = RawPointer<SDL_DropEvent>;
+typedef DropEvent = Pointer<SDL_DropEvent>;
 
 @:native("SDL_SensorEvent")
 @:include("vendor/include/Headers.h")
@@ -1538,7 +1539,7 @@ extern class SDL_SensorEvent {
     @:native("timestamp_us")
 	var timestampUS:UInt64;
 }
-typedef SensorEvent = RawPointer<SDL_SensorEvent>;
+typedef SensorEvent = Pointer<SDL_SensorEvent>;
 
 @:native("SDL_QuitEvent")
 @:include("vendor/include/Headers.h")
@@ -1549,7 +1550,7 @@ extern class SDL_QuitEvent {
 	@:native("timestamp")
 	var timestamp:UInt32;
 }
-typedef QuitEvent = RawPointer<SDL_QuitEvent>;
+typedef QuitEvent = Pointer<SDL_QuitEvent>;
 
 @:native("SDL_UserEvent")
 @:include("vendor/include/Headers.h")
@@ -1568,13 +1569,13 @@ extern class SDL_UserEvent {
     @:native("data2")
     var data2:RawPointer<cpp.Void>;
 }
-typedef UserEvent = RawPointer<SDL_UserEvent>;
+typedef UserEvent = Pointer<SDL_UserEvent>;
 
 @:native("SDL_SysWMmsg")
 @:include("vendor/include/Headers.h")
 @:structAccess
 extern class SDL_SysWMmsg {}
-typedef SysWMmsg = RawPointer<SDL_SysWMmsg>;
+typedef SysWMmsg = Pointer<SDL_SysWMmsg>;
 
 @:native("SDL_SysWMEvent")
 @:include("vendor/include/Headers.h")
@@ -1587,7 +1588,7 @@ extern class SDL_SysWMEvent {
     @:native("msg")
 	var msg:SysWMmsg;
 }
-typedef SysWMEvent = RawPointer<SDL_SysWMEvent>;
+typedef SysWMEvent = Pointer<SDL_SysWMEvent>;
 
 // gonna space out my @:native blocks for this
 // i usually don't because idc enough to
@@ -1696,7 +1697,7 @@ extern class SDL_Event {
     @:native("padding")
     var padding:UInt8;
 }
-typedef Event = RawPointer<SDL_Event>;
+typedef Event = Pointer<SDL_Event>;
 
 typedef EventFilter = cpp.Callable<(userdata:RawPointer<cpp.Void>, event:Event) -> Int>;
 
@@ -2261,7 +2262,7 @@ extern class KeySym {
 @:include("vendor/include/Headers.h")
 @:structAccess
 extern class SDL_Cursor {}
-typedef Cursor = RawPointer<SDL_Cursor>;
+typedef Cursor = Pointer<SDL_Cursor>;
 
 enum abstract SystemCursor(UInt32) from UInt32 to UInt32 {
 	var ARROW = 0;
@@ -2315,7 +2316,7 @@ extern class GUID {
 @:include("vendor/include/Headers.h")
 @:structAccess
 extern class SDL_Joystick {}
-typedef Joystick = RawPointer<SDL_Joystick>;
+typedef Joystick = Pointer<SDL_Joystick>;
 
 @:native("SDL_VirtualJoystickDesc")
 @:include("vendor/include/Headers.h")
@@ -2346,7 +2347,7 @@ extern class SDL_VirtualJoystickDesc {
     @:native("userdata")
     var userdata:RawPointer<cpp.Void>;
 }
-typedef VirtualJoystickDesc = RawPointer<SDL_VirtualJoystickDesc>;
+typedef VirtualJoystickDesc = Pointer<SDL_VirtualJoystickDesc>;
 
 typedef JoystickGUID = GUID;
 typedef JoystickID = Int;
@@ -2395,7 +2396,7 @@ enum abstract JoystickHatPosition(UInt32) from UInt32 to UInt32 {
 @:include("vendor/include/Headers.h")
 @:structAccess
 extern class SDL_GameController {}
-typedef GameController = RawPointer<SDL_GameController>;
+typedef GameController = Pointer<SDL_GameController>;
 
 enum abstract GameControllerType(UInt32) from UInt32 to UInt32 {
     var UNKNOWN = 0;
@@ -2429,7 +2430,7 @@ extern class SDL_GameControllerButtonBind {
     @:native("bindType")
     var bindType:GameControllerBindType;
 }
-typedef GameControllerButtonBind = RawPointer<SDL_GameControllerButtonBind>;
+typedef GameControllerButtonBind = Pointer<SDL_GameControllerButtonBind>;
 
 enum abstract GameControllerAxis(UInt32) from UInt32 to UInt32 {
     var INVALID = -1;
@@ -2473,7 +2474,7 @@ enum abstract GameControllerButton(UInt32) from UInt32 to UInt32 {
 @:include("vendor/include/Headers.h")
 @:structAccess
 extern class SDL_Sensor {}
-typedef Sensor = RawPointer<SDL_Sensor>;
+typedef Sensor = Pointer<SDL_Sensor>;
 
 typedef SensorID = Int;
 

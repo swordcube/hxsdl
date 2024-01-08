@@ -16,7 +16,7 @@ import cpp.Rest;
 import cpp.VarArg;
 
 import sdl.Types;
-import sdl.Types.*;
+import sdl.Types.InitFlags;
 
 @:include("vendor/include/Headers.h")
 @:buildXml("<include name=\"${haxelib:hxsdl}/include.xml\"/>")
@@ -194,14 +194,14 @@ extern class SDL {
 	
 	@:native("SDL_GetDisplayBounds")
 	static inline function getDisplayBounds(displayIndex:Int):Rectangle {
-		var result:Int;
+		var result:Int = 0;
 		untyped __cpp__("SDL_Rect _rect; {1} = SDL_GetDisplayBounds({0}, &_rect)", displayIndex, result);
 		return (result == 0) ? untyped __cpp__("_rect") : null;
 	}
 
 	@:native("SDL_GetDisplayUsableBounds")
 	static inline function getDisplayUsableBounds(displayIndex:Int):Rectangle {
-		var result:Int;
+		var result:Int = 0;
 		untyped __cpp__("SDL_Rect _rect; {1} = SDL_GetDisplayUsableBounds({0}, &_rect)", displayIndex, result);
 		return (result == 0) ? untyped __cpp__("_rect") : null;
 	}
@@ -217,21 +217,21 @@ extern class SDL {
 
 	@:native("SDL_GetDisplayMode")
 	static inline function getDisplayMode(displayIndex:Int, modeIndex:Int):DisplayMode {
-		var result:Int;
+		var result:Int = 0;
 		untyped __cpp__("SDL_DisplayMode _mode; {0} = SDL_GetDisplayMode({1}, {2}, &_mode)", result, displayIndex, modeIndex);
 		return (result == 0) ? untyped __cpp__("_mode") : null;
 	}
 
 	@:native("SDL_GetDesktopDisplayMode")
 	static inline function getDesktopDisplayMode(displayIndex:Int):DisplayMode {
-		var result:Int;
+		var result:Int = 0;
 		untyped __cpp__("SDL_DisplayMode _mode; {0} = SDL_GetDesktopDisplayMode({1}, &_mode)", result, displayIndex);
 		return (result == 0) ? untyped __cpp__("_mode") : null;
 	}
 
 	@:native("SDL_GetCurrentDisplayMode")
 	static inline function getCurrentDisplayMode(displayIndex:Int):DisplayMode {
-		var result:Int;
+		var result:Int = 0;
 		untyped __cpp__("SDL_DisplayMode _mode; {0} = SDL_GetCurrentDisplayMode({1}, &_mode)", result, displayIndex);
 		return (result == 0) ? untyped __cpp__("_mode") : null;
 	}
@@ -259,7 +259,7 @@ extern class SDL {
 
 	@:native("SDL_GetWindowDisplayMode")
 	static inline function getWindowDisplayMode(window:Window):DisplayMode {
-		var result:Int;
+		var result:Int = 0;
 		untyped __cpp__("SDL_DisplayMode _mode; {0} = SDL_GetWindowDisplayMode({1}, &_mode)", result, window);
 		return (result == 0) ? untyped __cpp__("_mode") : null;
 	}
@@ -332,18 +332,18 @@ extern class SDL {
 
 	@:native("SDL_GetWindowBordersSize")
 	static inline function getWindowBordersSize(window:Window):Rectangle {
-		var top:Int;
-		var left:Int;
-		var bottom:Int;
-		var right:Int;
+		var top:Int = 0;
+		var left:Int = 0;
+		var bottom:Int = 0;
+		var right:Int = 0;
 		untyped __cpp__("SDL_GetWindowBordersSize({0}, {1}, {2}, {3})", RawPointer.addressOf(top), RawPointer.addressOf(left), RawPointer.addressOf(bottom), RawPointer.addressOf(right));
 		return Rectangle.create(top, left, bottom, right);
 	}
 
 	@:native("SDL_GetWindowSizeInPixels")
 	static inline function getWindowSizeInPixels(window:Window):Point {
-		var width:Int;
-		var height:Int;
+		var width:Int = 0;
+		var height:Int = 0;
 		untyped __cpp__("SDL_GetWindowSizeInPixels({0}, {1}, {2})", window, RawPointer.addressOf(width), RawPointer.addressOf(height));
 		return Point.create(width, height);
 	}
@@ -353,8 +353,8 @@ extern class SDL {
 
 	@:native("SDL_GetWindowMinimumSize")
 	static inline function getWindowMinimumSize(window:Window):Point {
-		var width:Int;
-		var height:Int;
+		var width:Int = 0;
+		var height:Int = 0;
 		untyped __cpp__("SDL_GetWindowMinimumSize({0}, {1}, {2})", window, RawPointer.addressOf(width), RawPointer.addressOf(height));
 		return Point.create(width, height);
 	}
@@ -364,8 +364,8 @@ extern class SDL {
 
 	@:native("SDL_GetWindowMaximumSize")
 	static inline function getWindowMaximumSize(window:Window):Point {
-		var width:Int;
-		var height:Int;
+		var width:Int = 0;
+		var height:Int = 0;
 		untyped __cpp__("SDL_GetWindowMaximumSize({0}, {1}, {2})", window, RawPointer.addressOf(width), RawPointer.addressOf(height));
 		return Point.create(width, height);
 	}
@@ -538,8 +538,8 @@ extern class SDL {
 	static function glSetAttribute(attr:GlAttribute, value:Int):Int;
 
 	@:native("SDL_GL_GetAttribute")
-	static inline function glGetAttribute(attr:GlAttribute):Int {
-		var result:Int;
+	static inline function glGetAttribute(attr:GlAttribute):Null<Int> {
+		var result:Int = 0;
 		untyped __cpp__("int _val; {0} = SDL_GL_GetAttribute({1}, &_val)", result, attr);
 		return (result == 0) ? untyped __cpp__("_val") : null;
 	}
@@ -558,8 +558,8 @@ extern class SDL {
 
 	@:native("SDL_GL_GetDrawableSize")
 	static inline function glGetDrawableSize(window:Window):Point {
-		var width:Int;
-		var height:Int;
+		var width:Int = 0;
+		var height:Int = 0;
 		untyped __cpp__("SDL_GL_GetDrawableSize({0}, {1}, {2})", window, RawPointer.addressOf(width), RawPointer.addressOf(height));
 		return Point.create(width, height);
 	}
@@ -582,7 +582,7 @@ extern class SDL {
 	
 	@:native("SDL_GetRenderDriverInfo")
 	static inline function getRenderDriverInfo(displayIndex:Int):RendererInfo {
-		var result:Int;
+		var result:Int = 0;
 		untyped __cpp__("SDL_RendererInfo _info; {1} = SDL_GetRenderDriverInfo({0}, &_info)", displayIndex, result);
 		return (result == 0) ? untyped __cpp__("_info") : null;
 	}
@@ -601,15 +601,15 @@ extern class SDL {
 
 	@:native("SDL_GetRendererInfo")
 	static inline function getRendererInfo(renderer:Renderer):RendererInfo {
-		var result:Int;
+		var result:Int = 0;
 		untyped __cpp__("SDL_RendererInfo _info; {1} = SDL_GetRendererInfo({0}, &_info)", renderer, result);
 		return (result == 0) ? untyped __cpp__("_info") : null;
 	}
 
 	@:native("SDL_GetRendererOutputSize")
 	static inline function getRendererOutputSize(renderer:Renderer):Point {
-		var width:Int;
-		var height:Int;
+		var width:Int = 0;
+		var height:Int = 0;
 		untyped __cpp__("SDL_GetRendererOutputSize({0}, {1}, {2})", renderer, RawPointer.addressOf(width), RawPointer.addressOf(height));
 		return Point.create(width, height);
 	}
@@ -631,9 +631,9 @@ extern class SDL {
 	 */
 	@:native("SDL_GetTextureColorMod")
 	static inline function getTextureColorMod(texture:Texture):Color {
-		var r:UInt8;
-		var g:UInt8;
-		var b:UInt8;
+		var r:UInt8 = 0;
+		var g:UInt8 = 0;
+		var b:UInt8 = 0;
 		untyped __cpp__("SDL_GetTextureColorMod({0}, {1}, {2}, {3})", texture, RawPointer.addressOf(r), RawPointer.addressOf(g), RawPointer.addressOf(b));
 		return Color.create(r, g, b, 255);
 	}
@@ -643,7 +643,7 @@ extern class SDL {
 
 	@:native("SDL_GetTextureAlphaMod")
 	static inline function getTextureAlphaMod(texture:Texture):UInt8 {
-		var a:UInt8;
+		var a:UInt8 = 0;
 		untyped __cpp__("SDL_GetTextureAlphaMod({0}, {1})", texture, RawPointer.addressOf(a));
 		return a;
 	}
@@ -660,7 +660,7 @@ extern class SDL {
 
 	@:native("SDL_GetTextureScaleMode")
 	static inline function getTextureScaleMode(texture:Texture):TextureScaleMode {
-		var scaleMode:TextureScaleMode;
+		var scaleMode:TextureScaleMode = NEAREST;
 		untyped __cpp__("SDL_ScaleMode output; SDL_GetTextureScaleMode({0}, &output); {1} = output", texture, scaleMode);
 		return scaleMode;
 	}
@@ -756,8 +756,8 @@ extern class SDL {
 
 	@:native("SDL_RenderGetLogicalSize")
 	static inline function renderGetLogicalSize(renderer:Renderer):Point {
-		var width:Int;
-		var height:Int;
+		var width:Int = 0;
+		var height:Int = 0;
 		untyped __cpp__("SDL_RenderGetLogicalSize({0}, {1}, {2})", renderer, RawPointer.addressOf(width), RawPointer.addressOf(height));
 		return Point.create(width, height);
 	}
@@ -779,7 +779,7 @@ extern class SDL {
 
 	@:native("SDL_RenderGetViewport")
 	static inline function renderGetViewport(renderer:Renderer):Rectangle {
-		var rect:Rectangle;
+		var rect:Rectangle = null;
 		untyped __cpp__("SDL_RenderGetViewport({0}, {1})", renderer, RawPointer.addressOf(rect));
 		return rect;
 	}
@@ -791,7 +791,7 @@ extern class SDL {
 
 	@:native("SDL_RenderGetClipRect")
 	static inline function renderGetClipRect(renderer:Renderer):Rectangle {
-		var rect:Rectangle;
+		var rect:Rectangle = null;
 		untyped __cpp__("SDL_RenderGetClipRect({0}, {1})", renderer, RawPointer.addressOf(rect));
 		return rect;
 	}
@@ -806,8 +806,8 @@ extern class SDL {
 
 	@:native("SDL_RenderGetScale")
 	static inline function renderGetScale(renderer:Renderer):FPoint {
-		var scaleX:Float;
-		var scaleY:Float;
+		var scaleX:Float = 0;
+		var scaleY:Float = 0;
 		untyped __cpp__("SDL_RenderGetScale({0}, {1}, {2})", renderer, RawPointer.addressOf(scaleX), RawPointer.addressOf(scaleY));
 		return FPoint.create(scaleX, scaleY);
 	}
@@ -840,7 +840,7 @@ extern class SDL {
 
 	@:native("SDL_GetRenderDrawBlendMode")
 	static inline function getRenderDrawBlendMode(renderer:Renderer, blendMode:BlendMode):BlendMode {
-		var blendMode:BlendMode;
+		var blendMode:BlendMode = INVALID;
 		untyped __cpp__("SDL_GetRenderDrawBlendMode({0}, {1})", renderer, RawPointer.addressOf(blendMode));
 		return blendMode;
 	}
@@ -1315,9 +1315,9 @@ extern class SDL {
 	 */
 	@:native("SDL_GetSurfaceColorMod")
 	static inline function getSurfaceColorMod(surface:Surface):Color {
-		var r:UInt8;
-		var g:UInt8;
-		var b:UInt8;
+		var r:UInt8 = 0;
+		var g:UInt8 = 0;
+		var b:UInt8 = 0;
 		untyped __cpp__("SDL_GetSurfaceColorMod({0}, {1}, {2}, {3})", surface, RawPointer.addressOf(r), RawPointer.addressOf(g), RawPointer.addressOf(b));
 		return Color.create(r, g, b, 255);
 	}
@@ -1327,7 +1327,7 @@ extern class SDL {
 
 	@:native("SDL_GetSurfaceAlphaMod")
 	static inline function getSurfaceAlphaMod(surface:Surface):UInt8 {
-		var a:UInt8;
+		var a:UInt8 = 0;
 		untyped __cpp__("SDL_GetSurfaceAlphaMod({0}, {1})", surface, RawPointer.addressOf(a));
 		return a;
 	}
@@ -1349,7 +1349,7 @@ extern class SDL {
 
 	@:native("SDL_GetClipRect")
 	static inline function getClipRect(surface:Surface):Rectangle {
-		var rect:Rectangle;
+		var rect:Rectangle = null;
 		untyped __cpp__("SDL_GetClipRect({0}, {1})", surface, RawPointer.addressOf(rect));
 		return rect;
 	}
@@ -1822,10 +1822,10 @@ extern class SDL {
 
 	@:native("SDL_getJoystickGUIDInfo")
 	static inline function getJoystickGUIDInfo(guid:JoystickGUID):{vendor:UInt16, product:UInt16, version:UInt16, crc16:UInt16} {
-		var vendor:UInt16;
-		var product:UInt16;
-		var version:UInt16;
-		var crc16:UInt16;
+		var vendor:UInt16 = 0;
+		var product:UInt16 = 0;
+		var version:UInt16 = 0;
+		var crc16:UInt16 = 0;
 		untyped __cpp__("SDL_GetJoystickGUIDInfo({0}, {1}, {2}, {3}, {4})", guid, RawPointer.addressOf(vendor), RawPointer.addressOf(product), RawPointer.addressOf(version), RawPointer.addressOf(crc16));
 		return {
 			vendor: vendor,
@@ -1866,7 +1866,7 @@ extern class SDL {
 
 	@:native("SDL_JoystickGetAxisInitialState")
 	static inline function joystickGetAxisInitialState(joystick:Joystick, axis:Int):Int16 {
-		var state:Int16;
+		var state:Int16 = 0;
 		untyped __cpp__("SDL_JoystickGetAxisInitialState({0}, {1}, {2})", joystick, axis, RawPointer.addressOf(state));
 		return state;
 	}
@@ -1876,8 +1876,8 @@ extern class SDL {
 
 	@:native("SDL_JoystickGetBall")
 	static inline function joystickGetBall(joystick:Joystick, ball:Int):Point {
-		var dx:Int;
-		var dy:Int;
+		var dx:Int = 0;
+		var dy:Int = 0;
 		untyped __cpp__("SDL_JoystickGetBall({0}, {1}, {2})", joystick, RawPointer.addressOf(dx), RawPointer.addressOf(dy));
 		return Point.create(dx, dy);
 	}
@@ -2095,15 +2095,15 @@ extern class SDL {
 
 	@:native("SDL_GameControllerGetSensorData")
 	static inline function gameControllerGetSensorData(gameController:GameController, type:SensorType, numValues:Int):Single {
-		var data:Single;
+		var data:Single = 0;
 		untyped __cpp__("SDL_GameControllerGetSensorData({0}, (SDL_SensorType){1}, {2}, {3})", gameController, type, RawPointer.addressOf(data), numValues);
 		return data;
 	}
 
 	@:native("SDL_GameControllerGetSensorDataWithTimestamp")
 	static inline function gameControllerGetSensorDataWithTimestamp(gameController:GameController, type:SensorType, numValues:Int):{data:Single, timestamp:UInt64} {
-		var data:Single;
-		var timestamp:UInt64;
+		var data:Single = 0;
+		var timestamp:UInt64 = 0;
 		untyped __cpp__("SDL_GameControllerGetSensorDataWithTimestamp({0}, (SDL_SensorType){1}, {2}, {3}, {4})", gameController, type, RawPointer.addressOf(timestamp), RawPointer.addressOf(data), numValues);
 		return {
 			data: data,
@@ -2191,15 +2191,15 @@ extern class SDL {
 
 	@:native("SDL_SensorGetData")
 	static inline function sensorGetData(sensor:Sensor, numValues:Int):Single {
-		var data:Single;
+		var data:Single = 0;
 		untyped __cpp__("SDL_SensorGetData({0}, {1}, {2})", gameController, RawPointer.addressOf(data), numValues);
 		return data;
 	}
 
 	@:native("SDL_SensorGetDataWithTimestamp")
 	static inline function sensorGetDataWithTimestamp(sensor:Sensor, numValues:Int):{data:Single, timestamp:UInt64} {
-		var data:Single;
-		var timestamp:UInt64;
+		var data:Single = 0;
+		var timestamp:UInt64 = 0;
 		untyped __cpp__("SDL_SensorGetDataWithTimestamp({0}, {1}, {2}, {3})", sensor, RawPointer.addressOf(timestamp), RawPointer.addressOf(data), numValues);
 		return {
 			data: data,
