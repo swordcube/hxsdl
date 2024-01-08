@@ -623,6 +623,19 @@ extern class SDL {
 	@:native("SDL_QueryTexture")
 	static function queryTexture(texture:Texture, format:RawPointer<PixelFormat>, access:RawPointer<Int>, width:RawPointer<Int>, height:RawPointer<Int>):Int;
 
+	/**
+	 * A convienience function not found in base SDL
+	 * to get the size of a texture.
+	 * 
+	 * @return A `Point` set to the width and height of the texture.
+	 */
+	static inline function getTextureSize(texture:Texture):Point {
+		var w:Int = 0;
+		var h:Int = 0;
+		queryTexture(texture, null, null, Pointer.addressOf(w), Pointer.addressOf(h));
+		return Point.create(w, h);
+	}
+
 	@:native("SDL_SetTextureColorMod")
 	static function setTextureColorMod(texture:Texture, r:UInt8, g:UInt8, b:UInt8):Int;
 
