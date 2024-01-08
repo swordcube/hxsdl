@@ -1,5 +1,6 @@
 package sdl;
 
+import cpp.Int16;
 import cpp.NativeArray;
 import cpp.Helpers;
 import cpp.RawPointer;
@@ -1655,9 +1656,286 @@ extern class SDL {
 	@:native("SDL_JoystickNameForIndex")
 	static function joystickNameForIndex(deviceIndex:Int):ConstCharStar;
 
-	// note for later
-	// https://github.com/libsdl-org/SDL/blob/SDL2/include/SDL_joystick.h#L201
+	@:native("SDL_JoystickPathForIndex")
+	static function joystickPathForIndex(deviceIndex:Int):ConstCharStar;
+
+	@:native("SDL_JoystickGetDevicePlayerIndex")
+	static function joystickGetDevicePlayerIndex(deviceIndex:Int):Int;
+
+	@:native("SDL_JoystickGetDeviceGUID")
+	static function joystickGetDeviceGUID(deviceIndex:Int):JoystickGUID;
+
+	@:native("SDL_JoystickGetDeviceVendor")
+	static function joystickGetDeviceVendor(deviceIndex:Int):UInt16;
+
+	@:native("SDL_JoystickGetDeviceProduct")
+	static function joystickGetDeviceProduct(deviceIndex:Int):UInt16;
+
+	@:native("SDL_JoystickGetDeviceProductVersion")
+	static function joystickGetDeviceProductVersion(deviceIndex:Int):UInt16;
+
+	@:native("SDL_JoystickGetDeviceType")
+	static function joystickGetDeviceType(deviceIndex:Int):JoystickType;
+
+	@:native("SDL_JoystickGetDeviceInstanceID")
+	static function joystickGetDeviceInstanceID(deviceIndex:Int):JoystickID;
+
+	@:native("SDL_JoystickOpen")
+	static function joystickOpen(deviceIndex:Int):Joystick;
+
+	@:native("SDL_JoystickFromInstanceID")
+	static function joystickFromInstanceID(instanceIndex:Int):Joystick;
+
+	@:native("SDL_JoystickFromPlayerIndex")
+	static function joystickFromPlayerIndex(playerIndex:Int):Joystick;
+
+	@:native("SDL_JoystickAttachVirtual")
+	static function joystickAttachVirtual(type:JoystickType, nAxes:Int, nButtons:Int, nHats:Int):Int;
 	
+	@:native("SDL_JoystickAttachVirtualEx")
+	static function joystickAttachVirtualEx(desc:RawConstPointer<SDL_VirtualJoystickDesc>):Int;
+
+	@:native("SDL_JoystickDetachVirtual")
+	static function joystickDetachVirtual(deviceIndex:Int):Int;
+
+	@:native("SDL_JoystickIsVirtual")
+	static inline function joystickIsVirtual(deviceIndex:Int):Bool {
+		return untyped __cpp__("SDL_JoystickIsVirtual({0})", deviceIndex) == Boolean.TRUE;
+	}
+
+	@:native("SDL_JoystickSetVirtualAxis")
+	static function joystickSetVirtualAxis(joystick:Joystick, axis:Int, value:Int16):Int;
+
+	@:native("SDL_JoystickSetVirtualButton")
+	static function joystickSetVirtualButton(joystick:Joystick, button:Int, value:Int16):Int;
+
+	@:native("SDL_JoystickSetVirtualHat")
+	static function joystickSetVirtualHat(joystick:Joystick, hat:Int, value:Int16):Int;
+	
+	@:native("SDL_JoystickName")
+	static function joystickName(joystick:Joystick):ConstCharStar;
+
+	@:native("SDL_JoystickPath")
+	static function joystickPath(joystick:Joystick):ConstCharStar;
+
+	@:native("SDL_JoystickGetPlayerIndex")
+	static function joystickGetPlayerIndex(joystick:Joystick):Int;
+
+	@:native("SDL_JoystickSetPlayerIndex")
+	static function joystickSetPlayerIndex(joystick:Joystick, playerIndex:Int):Void;
+
+	@:native("SDL_JoystickGetGUID")
+	static function joystickGetGUID(joystick:Joystick):JoystickGUID;
+
+	@:native("SDL_JoystickGetVendor")
+	static function joystickGetVendor(joystick:Joystick):UInt16;
+
+	@:native("SDL_JoystickGetProduct")
+	static function joystickGetProduct(joystick:Joystick):UInt16;
+
+	@:native("SDL_JoystickGetProductVersion")
+	static function joystickGetProductVersion(joystick:Joystick):UInt16;
+
+	@:native("SDL_JoystickGetFirmwareVersion")
+	static function joystickGetFirmwareVersion(joystick:Joystick):UInt16;
+
+	@:native("SDL_JoystickGetSerial")
+	static function joystickGetSerial(joystick:Joystick):ConstCharStar;
+
+	@:native("SDL_JoystickGetType")
+	static function joystickGetType(joystick:Joystick):JoystickType;
+
+	@:native("SDL_JoystickGetGUIDString")
+	static inline function joystickGetGUIDString(guid:JoystickGUID):CastCharStar {
+		untyped __cpp__("char *pszGUID[33];
+			SDL_JoystickGetGUIDString({0}, pszGUID, 33)", guid);
+		return untyped __cpp__("pszGUID");
+	}
+
+	@:native("SDL_JoystickGetGUIDFromString")
+	static function joystickGetGUIDFromString(pchGUID:ConstCharStar):JoystickGUID;
+
+	@:native("SDL_getJoystickGUIDInfo")
+	static inline function getJoystickGUIDInfo(guid:JoystickGUID):{vendor:UInt16, product:UInt16, version:UInt16, crc16:UInt16} {
+		var vendor:UInt16;
+		var product:UInt16;
+		var version:UInt16;
+		var crc16:UInt16;
+		untyped __cpp__("SDL_GetJoystickGUIDInfo({0}, {1}, {2}, {3}, {4})", guid, Pointer.addressOf(vendor), Pointer.addressOf(product), Pointer.addressOf(version), Pointer.addressOf(crc16));
+		return {
+			vendor: vendor,
+			product: product,
+			version: version,
+			crc16: crc16
+		};
+	}
+
+	@:native("SDL_JoystickGetAttached")
+	static inline function joystickGetAttached(joystick:Joystick):Bool {
+		return untyped __cpp__("SDL_JoystickGetAttached({0})", joystick) == Boolean.TRUE;
+	}
+
+	@:native("SDL_JoystickInstanceID")
+	static function joystickInstanceID(joystick:Joystick):JoystickID;
+
+	@:native("SDL_JoystickNumAxes")
+	static function joystickNumAxes(joystick:Joystick):Int;
+
+	@:native("SDL_JoystickNumBalls")
+	static function joystickNumBalls(joystick:Joystick):Int;
+
+	@:native("SDL_JoystickNumHats")
+	static function joystickNumHats(joystick:Joystick):Int;
+
+	@:native("SDL_JoystickNumButtons")
+	static function joystickNumButtons(joystick:Joystick):Int;
+
+	@:native("SDL_JoystickUpdate")
+	static function joystickUpdate():Void;
+
+	@:native("SDL_JoystickEventState")
+	static function joystickEventState(state:Int):Int;
+
+	@:native("SDL_JoystickGetAxis")
+	static function joystickGetAxis(joystick:Joystick, axis:Int):Int16;
+
+	@:native("SDL_JoystickGetAxisInitialState")
+	static inline function joystickGetAxisInitialState(joystick:Joystick, axis:Int):Int16 {
+		var state:Int16;
+		untyped __cpp__("SDL_JoystickGetAxisInitialState({0}, {1}, {2})", joystick, axis, Pointer.addressOf(state));
+		return state;
+	}
+
+	@:native("SDL_JoystickGetHat")
+	static function joystickGetHat(joystick:Joystick, hat:Int):UInt8;
+
+	@:native("SDL_JoystickGetBall")
+	static inline function joystickGetBall(joystick:Joystick, ball:Int):Point {
+		var dx:Int;
+		var dy:Int;
+		untyped __cpp__("SDL_JoystickGetBall({0}, {1}, {2})", joystick, Pointer.addressOf(dx), Pointer.addressOf(dy));
+		return Point.create(dx, dy);
+	}
+
+	@:native("SDL_JoystickGetButton")
+	static function joystickGetButton(joystick:Joystick, button:Int):UInt8;
+
+	@:native("SDL_JoystickRumble")
+	static function joystickRumble(joystick:Joystick, lowFrequencyRumble:UInt16, highFrequencyRumble:UInt16, durationMS:UInt32):UInt8;
+
+	@:native("SDL_JoystickHasLED")
+	static inline function joystickHasLED(joystick:Joystick):Bool {
+		return untyped __cpp__("SDL_JoystickHasLED({0})", joystick) == Boolean.TRUE;
+	}
+
+	@:native("SDL_JoystickHasRumble")
+	static inline function joystickHasRumble(joystick:Joystick):Bool {
+		return untyped __cpp__("SDL_JoystickHasRumble({0})", joystick) == Boolean.TRUE;
+	}
+
+	@:native("SDL_JoystickHasRumbleTriggers")
+	static inline function joystickHasRumbleTriggers(joystick:Joystick):Bool {
+		return untyped __cpp__("SDL_JoystickHasRumbleTriggers({0})", joystick) == Boolean.TRUE;
+	}
+
+	@:native("SDL_JoystickSetLED")
+	static function joystickSetLED(joystick:Joystick, red:UInt8, green:UInt8, blue:UInt8):Int;
+
+	@:native("SDL_JoystickSendEffect")
+	static inline function joystickSendEffect(joystick:Joystick, data:Any, size:Int):Int {
+		return untyped __cpp__("SDL_JoystickSendEffect({0}, (const void*){1}, {2})", joystick, data, size);
+	}
+
+	@:native("SDL_JoystickClose")
+	static function joystickClose(joystick:Joystick):Void;
+
+	@:native("SDL_JoystickCurrentPowerLevel")
+	static function joystickCurrentPowerLevel(joystick:Joystick):JoystickPowerLevel;
+
+	// SDL_gamecontroller.h //
+	/**
+	 * Returns the amount of game controllers connected.
+	 * 
+	 * This is not a function in SDL itself, but was added
+	 * for convienience.
+	 */
+	@:native("SDL_NumJoysticks")
+	@:native("SDL_IsGameController")
+	static inline function numGameControllers():Int {
+		untyped __cpp__("int nJoysticks = SDL_NumJoysticks();
+			int nGameControllers = 0;
+			for(int i = 0; i < nJoysticks; i++) {
+				if(SDL_IsGameController(i))
+					nGameControllers++;
+			}");
+		return untyped __cpp__("nGameControllers");
+	}
+
+	@:native("SDL_GameControllerAddMappingsFromRW")
+	static function gameControllerAddMappingsFromRW(rw:RWops, freerw:Int):Int;
+
+	@:native("SDL_GameControllerAddMappingsFromFile")
+	static function gameControllerAddMappingsFromFile(file:ConstCharStar):Int;
+
+	@:native("SDL_GameControllerAddMapping")
+	static function gameControllerAddMapping(file:ConstCharStar):Int;
+
+	@:native("SDL_GameControllerNumMappings")
+	static function gameControllerNumMappings():Int;
+
+	@:native("SDL_GameControllerMappingForIndex")
+	static function gameControllerMappingForIndex(mappingIndex:Int):CastCharStar;
+
+	@:native("SDL_GameControllerMappingForGUID")
+	static function gameControllerMappingForGUID(guid:JoystickGUID):CastCharStar;
+
+	@:native("SDL_GameControllerMapping")
+	static function gameControllerMapping(gameController:GameController):CastCharStar;
+
+	@:native("SDL_IsGameController")
+	static inline function isGameController(joystickIndex:Int):Bool {
+		return untyped __cpp__("SDL_IsGameController({0})", joystickIndex) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GameControllerNameForIndex")
+	static function gameControllerNameForIndex(joystickIndex:Int):ConstCharStar;
+
+	@:native("SDL_GameControllerPathForIndex")
+	static function gameControllerPathForIndex(joystickIndex:Int):ConstCharStar;
+
+	@:native("SDL_GameControllerTypeForIndex")
+	static function gameControllerTypeForIndex(joystickIndex:Int):GameControllerType;
+
+	@:native("SDL_GameControllerMappingForDeviceIndex")
+	static function gameControllerMappingForDeviceIndex(deviceIndex:Int):CastCharStar;
+
+	@:native("SDL_GameControllerOpen")
+	static function gameControllerOpen(joystickIndex:Int):GameController;
+
+	@:native("SDL_GameControllerFromInstanceID")
+	static function gameControllerFromInstanceID(joystickID:JoystickID):GameController;
+
+	@:native("SDL_GameControllerFromPlayerIndex")
+	static function gameControllerFromPlayerIndex(playerIndex:Int):GameController;
+
+	@:native("SDL_GameControllerName")
+	static function gameControllerName(gameController:GameController):ConstCharStar;
+
+	@:native("SDL_GameControllerPath")
+	static function gameControllerPath(gameController:GameController):ConstCharStar;
+
+	@:native("SDL_GameControllerGetType")
+	static function gameControllerGetType(gameController:GameController):GameControllerType;
+
+	@:native("SDL_GameControllerGetPlayerIndex")
+	static function gameControllerGetPlayerIndex(gameController:GameController):Int;
+
+	@:native("SDL_GameControllerSetPlayerIndex")
+	static function gameControllerSetPlayerIndex(gameController:GameController, playerIndex:Int):Void;
+
+	// note for later . . ... . :3
+	// https://github.com/libsdl-org/SDL/blob/SDL2/include/SDL_gamecontroller.h#L476
+
 	// haxe helper functions //
 	// @:native("SDL_Event")
 	// static inline function makeEvent():Event {

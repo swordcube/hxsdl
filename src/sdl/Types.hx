@@ -1,5 +1,6 @@
 package sdl;
 
+import cpp.Int16;
 import cpp.RawConstPointer;
 import cpp.CastCharStar;
 import cpp.Pointer;
@@ -1202,6 +1203,101 @@ extern class SDL_MouseWheelEvent {
 }
 typedef MouseWheelEvent = Pointer<SDL_MouseWheelEvent>;
 
+@:native("SDL_JoyAxisEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_JoyAxisEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("which")
+	var which:JoystickID;
+    @:native("axis")
+    var axis:UInt8;
+    @:native("padding1")
+    var padding1:UInt8;
+    @:native("padding2")
+    var padding2:UInt8;
+    @:native("padding3")
+    var padding3:UInt8;
+    @:native("value")
+    var value:Int16;
+    @:native("padding4")
+    var padding4:UInt16;
+}
+typedef JoyAxisEvent = Pointer<SDL_JoyAxisEvent>;
+
+@:native("SDL_JoyHatEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_JoyHatEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("which")
+	var which:JoystickID;
+    @:native("hat")
+    var hat:UInt8;
+    @:native("value")
+    var value:UInt8;
+    @:native("padding1")
+    var padding1:UInt8;
+    @:native("padding2")
+    var padding2:UInt8;
+}
+typedef JoyHatEvent = Pointer<SDL_JoyHatEvent>;
+
+@:native("SDL_JoyButtonEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_JoyButtonEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("which")
+	var which:JoystickID;
+    @:native("button")
+    var button:UInt8;
+    @:native("state")
+    var state:UInt8;
+    @:native("padding1")
+    var padding1:UInt8;
+    @:native("padding2")
+    var padding2:UInt8;
+}
+typedef JoyButtonEvent = Pointer<SDL_JoyButtonEvent>;
+
+@:native("SDL_JoyDeviceEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_JoyDeviceEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("which")
+	var which:JoystickID;
+}
+typedef JoyDeviceEvent = Pointer<SDL_JoyDeviceEvent>;
+
+@:native("SDL_JoyBatteryEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_JoyBatteryEvent {
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("which")
+	var which:JoystickID;
+    @:native("level")
+    var level:JoystickPowerLevel;
+}
+typedef JoyBatteryEvent = Pointer<SDL_JoyBatteryEvent>;
+
 // SDL_keyboard.h
 enum abstract ScanCode(UInt32) from UInt32 to UInt32 {
     var UNKNOWN = 0;
@@ -1796,12 +1892,55 @@ enum abstract MouseButton(UInt32) from UInt32 to UInt32 {
 	var X2MASK = mask(X2);
 }
 
+// SDL_guid.h
+@:native("SDL_GUID")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class GUID {
+    @:native("data")
+    var data:UInt8;
+}
+
 // SDL_joystick.h
 @:native("SDL_Joystick")
 @:include("vendor/include/Headers.h")
 @:structAccess
 extern class SDL_Joystick {}
 typedef Joystick = Pointer<SDL_Joystick>;
+
+@:native("SDL_VirtualJoystickDesc")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_VirtualJoystickDesc {
+    @:native("version")
+    var version:UInt16;
+    @:native("type")
+    var type:JoystickType;
+    @:native("naxes")
+    var nAxes:UInt16;
+    @:native("nbuttons")
+    var nButtons:UInt16;
+    @:native("nhats")
+    var nHats:UInt16;
+    @:native("vendor_id")
+    var vendorID:UInt16;
+    @:native("product_id")
+    var productID:UInt16;
+    @:native("padding")
+    var padding:UInt16;
+    @:native("button_mask")
+    var buttonMask:GameControllerButton;
+    @:native("axis_mask")
+    var axisMask:GameControllerAxis;
+    @:native("name")
+    var name:ConstCharStar;
+    @:native("userdata")
+    var userdata:Pointer<cpp.Void>;
+}
+typedef VirtualJoystickDesc = Pointer<SDL_VirtualJoystickDesc>;
+
+typedef JoystickGUID = GUID;
+typedef JoystickID = Int;
 
 enum abstract JoystickType(UInt32) from UInt32 from UInt32 {
     var UNKNOWN = 0;
@@ -1827,6 +1966,96 @@ enum abstract JoystickPowerLevel(UInt32) from UInt32 to UInt32 {
     /** <= 100% */
     var FULL;
     var WIRED;
+    var MAX;
+}
+
+enum abstract JoystickHatPosition(UInt32) from UInt32 to UInt32 {
+    var CENTERED = 0x00;
+    var UP = 0x01;
+    var RIGHT = 0x02;
+    var DOWN = 0x04;
+    var LEFT = 0x08;
+    var RIGHTUP = (RIGHT | UP);
+    var RIGHTDOWN = (RIGHT | DOWN);
+    var LEFTUP = (LEFT | UP);
+    var LEFTDOWN = (LEFT | DOWN);
+}
+
+// SDL_gamecontroller.h
+@:native("SDL_GameController")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_GameController {}
+typedef GameController = Pointer<SDL_GameController>;
+
+enum abstract GameControllerType(UInt32) from UInt32 to UInt32 {
+    var UNKNOWN = 0;
+    var XBOX360;
+    var XBOXONE;
+    var PS3;
+    var PS4;
+    var NINTENDO_SWITCH_PRO;
+    var VIRTUAL;
+    var PS5;
+    var AMAZON_LUNA;
+    var GOOGLE_STADIA;
+    var NVIDIA_SHIELD;
+    var NINTENDO_SWITCH_JOYCON_LEFT;
+    var NINTENDO_SWITCH_JOYCON_RIGHT;
+    var NINTENDO_SWITCH_JOYCON_PAIR;
+    var MAX;
+}
+
+enum abstract GameControllerBindType(UInt32) from UInt32 to UInt32 {
+    var NONE = 0;
+    var BUTTON;
+    var AXIS;
+    var HAT;
+}
+
+@:native("SDL_GameControllerButtonBind")
+@:include("vendor/include/Headers.h")
+@:structAccess
+extern class SDL_GameControllerButtonBind {
+    @:native("bindType")
+    var bindType:GameControllerBindType;
+}
+typedef GameControllerButtonBind = Pointer<SDL_GameControllerButtonBind>;
+
+enum abstract GameControllerAxis(UInt32) from UInt32 to UInt32 {
+    var INVALID = -1;
+    var LEFTX;
+    var LEFTY;
+    var RIGHTX;
+    var RIGHTY;
+    var TRIGGERLEFT;
+    var TRIGGERRIGHT;
+    var MAX;
+}
+
+enum abstract GameControllerButton(UInt32) from UInt32 to UInt32 {
+    var INVALID = -1;
+    var A;
+    var B;
+    var X;
+    var Y;
+    var BACK;
+    var GUIDE;
+    var START;
+    var LEFTSTICK;
+    var RIGHTSTICK;
+    var LEFTSHOULDER;
+    var RIGHTSHOULDER;
+    var DPAD_UP;
+    var DPAD_DOWN;
+    var DPAD_LEFT;
+    var DPAD_RIGHT;
+    var MISC1;    /* Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button */
+    var PADDLE1;  /* Xbox Elite paddle P1 (upper left, facing the back) */
+    var PADDLE2;  /* Xbox Elite paddle P3 (upper right, facing the back) */
+    var PADDLE3;  /* Xbox Elite paddle P2 (lower left, facing the back) */
+    var PADDLE4;  /* Xbox Elite paddle P4 (lower right, facing the back) */
+    var TOUCHPAD; /* PS4/PS5 touchpad button */
     var MAX;
 }
 

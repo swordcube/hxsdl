@@ -20,11 +20,15 @@ typedef CArray<T> = RawPointer<T>;
 typedef CConstArray<T> = RawConstPointer<T>;
 
 class Helpers {
-    public static function lengthOfArray<T>(array:CArray<T>):Int {
+    public static inline function lengthOfArray<T>(array:CArray<T>):Int {
         return untyped __cpp__("(int)(sizeof({0}) / sizeof({0}[0]))", array);
     }
 
-    public static function lengthOfConstArray<T>(array:CConstArray<T>):Int {
+    public static inline function lengthOfConstArray<T>(array:CConstArray<T>):Int {
         return untyped __cpp__("(int)(sizeof({0}) / sizeof({0}[0]))", array);
+    }
+
+    public static inline function free(ptr:Any) {
+        return untyped __cpp__("free({0})", ptr);
     }
 }
