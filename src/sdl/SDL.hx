@@ -1933,6 +1933,159 @@ extern class SDL {
 	@:native("SDL_GameControllerSetPlayerIndex")
 	static function gameControllerSetPlayerIndex(gameController:GameController, playerIndex:Int):Void;
 
+	@:native("SDL_GameControllerGetVendor")
+	static function gameControllerGetVendor(gameController:GameController):UInt16;
+
+	@:native("SDL_GameControllerGetProduct")
+	static function gameControllerGetProduct(gameController:GameController):UInt16;
+
+	@:native("SDL_GameControllerGetProductVersion")
+	static function gameControllerGetProductVersion(gameController:GameController):UInt16;
+
+	@:native("SDL_GameControllerGetFirmwareVersion")
+	static function gameControllerGetFirmwareVersion(gameController:GameController):UInt16;
+
+	@:native("SDL_GameControllerGetSerial")
+	static function gameControllerGetSerial(gameController:GameController):ConstCharStar;
+
+	@:native("SDL_GameControllerGetSteamHandle")
+	static function gameControllerGetSteamHandle(gameController:GameController):UInt64;
+
+	@:native("SDL_GameControllerGetAttached")
+	static inline function gameControllerGetAttached(gameController:GameController):Bool {
+		return untyped __cpp__("SDL_GameControllerGetAttached({0})", gameController) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GameControllerGetJoystick")
+	static function gameControllerGetJoystick(gameController:GameController):Joystick;
+
+	@:native("SDL_GameControllerEventState")
+	static function gameControllerEventState(state:Int):Int;
+
+	@:native("SDL_GameControllerUpdate")
+	static function gameControllerUpdate():Void;
+
+	@:native("SDL_GameControllerGetAxisFromString")
+	static function gameControllerGetAxisFromString(str:ConstCharStar):GameControllerAxis;
+
+	@:native("SDL_GameControllerGetStringForAxis")
+	static function gameControllerGetStringForAxis(axis:GameControllerAxis):ConstCharStar;
+
+	@:native("SDL_GameControllerGetBindForAxis")
+	static function gameControllerGetBindForAxis(gameController:GameController, axis:GameControllerAxis):GameControllerButtonBind;
+
+	@:native("SDL_GameControllerHasAxis")
+	static inline function gameControllerHasAxis(gameController:GameController, axis:GameControllerAxis):Bool {
+		return untyped __cpp__("SDL_GameControllerHasAxis({0}, (SDL_GameControllerAxis){1})", gameController, axis) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GameControllerGetAxis")
+	static function gameControllerGetAxis(gameController:GameController, axis:GameControllerAxis):Int16;
+
+	@:native("SDL_GameControllerGetButtonFromString")
+	static function gameControllerGetButtonFromString(str:ConstCharStar):GameControllerButton;
+
+	@:native("SDL_GameControllerGetStringForButton")
+	static function gameControllerGetStringForButton(button:GameControllerButton):ConstCharStar;
+
+	@:native("SDL_GameControllerGetBindForButton")
+	static function gameControllerGetBindForButton(gameController:GameController, button:GameControllerButton):GameControllerButtonBind;
+
+	@:native("SDL_GameControllerHasButton")
+	static inline function gameControllerHasButton(gameController:GameController, button:GameControllerButton):Bool {
+		return untyped __cpp__("SDL_GameControllerHasButton({0}, (SDL_GameControllerButton){1})", gameController, button) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GameControllerGetButton")
+	static function gameControllerGetButton(gameController:GameController, button:GameControllerButton):Int16;
+
+	@:native("SDL_GameControllerGetNumTouchpads")
+	static function gameControllerGetNumTouchpads(gameController:GameController):Int;
+
+	@:native("SDL_GameControllerGetNumTouchpadFingers")
+	static function gameControllerGetNumTouchpadFingers(gameController:GameController, touchpad:Int):Int;
+
+	@:native("SDL_GameControllerGetNumTouchpadFinger")
+	static function gameControllerGetNumTouchpadFinger(gameController:GameController, touchpad:Int, finger:Int):Int;
+
+	@:native("SDL_GameControllerHasSensor")
+	static inline function gameControllerHasSensor(gameController:GameController, type:SensorType):Bool {
+		return untyped __cpp__("SDL_GameControllerHasSensor({0}, (SDL_SensorType){1})", gameController, type) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GameControllerSetSensor")
+	static inline function gameControllerSetSensor(gameController:GameController, type:SensorType, enabled:Bool):Int {
+		return untyped __cpp__("SDL_GameControllerSetSensor({0}, (SDL_SensorType){1}, (SDL_bool){2})", gameController, type, enabled);
+	}
+
+	@:native("SDL_GameControllerIsSensorEnabled")
+	static inline function gameControllerIsSensorEnabled(gameController:GameController, type:SensorType):Bool {
+		return untyped __cpp__("SDL_GameControllerIsSensorEnabled({0}, (SDL_SensorType){1})", gameController, type) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GameControllerGetSensorDataRate")
+	static inline function gameControllerGetSensorDataRate(gameController:GameController, type:SensorType):Single {
+		return untyped __cpp__("SDL_GameControllerGetSensorDataRate({0}, (SDL_SensorType){1})", gameController, type);
+	}
+
+	@:native("SDL_GameControllerGetSensorData")
+	static inline function gameControllerGetSensorData(gameController:GameController, type:SensorType, numValues:Int):Single {
+		var data:Single;
+		untyped __cpp__("SDL_GameControllerGetSensorData({0}, (SDL_SensorType){1}, {2}, {3})", gameController, type, Pointer.addressOf(data), numValues);
+		return data;
+	}
+
+	@:native("SDL_GameControllerGetSensorDataWithTimestamp")
+	static inline function gameControllerGetSensorDataWithTimestamp(gameController:GameController, type:SensorType, numValues:Int):{data:Single, timestamp:UInt64} {
+		var data:Single;
+		var timestamp:UInt64;
+		untyped __cpp__("SDL_GameControllerGetSensorDataWithTimestamp({0}, (SDL_SensorType){1}, {2}, {3}, {4})", gameController, type, Pointer.addressOf(timestamp), Pointer.addressOf(data), numValues);
+		return {
+			data: data,
+			timestamp: timestamp
+		};
+	}
+
+	@:native("SDL_GameControllerRumble")
+	static function gameControllerRumble(gameController:GameController, lowFrequencyRumble:UInt16, highFrequencyRumble:UInt16, durationMS:UInt32):Int;
+
+	@:native("SDL_GameControllerRumbleTriggers")
+	static function gameControllerRumbleTriggers(gameController:GameController, leftRumble:UInt16, rightRumble:UInt16, durationMS:UInt32):Int;
+
+	@:native("SDL_GameControllerHasLED")
+	static inline function gameControllerHasLED(gameController:GameController):Bool {
+		return untyped __cpp__("SDL_GameControllerHasLED({0})", gameController) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GameControllerHasRumble")
+	static inline function gameControllerHasRumble(gameController:GameController):Bool {
+		return untyped __cpp__("SDL_GameControllerHasRumble({0})", gameController) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GameControllerHasRumbleTriggers")
+	static inline function gameControllerHasRumbleTriggers(gameController:GameController):Bool {
+		return untyped __cpp__("SDL_GameControllerHasRumbleTriggers({0})", gameController) == Boolean.TRUE;
+	}
+
+	@:native("SDL_GameControllerSetLED")
+	static function gameControllerSetLED(gameController:GameController, red:UInt8, green:UInt8, blue:UInt8):Int;
+
+	@:native("SDL_GameControllerSendEffect")
+	static inline function gameControllerSendEffect(gameController:GameController, data:Any, size:Int):Int {
+		return untyped __cpp__("SDL_GameControllerSendEffect({0}, (const void*){1}, {2})", gameController, data, size);
+	}
+
+	@:native("SDL_GameControllerClose")
+	static function gameControllerClose(gameController:GameController):Void;
+	
+	@:native("SDL_GameControllerGetAppleSFSymbolsNameForButton")
+	static function gameControllerGetAppleSFSymbolsNameForButton(gameController:GameController, button:GameControllerButton):ConstCharStar;
+	
+	@:native("SDL_GameControllerGetAppleSFSymbolsNameForAxis")
+	static function gameControllerGetAppleSFSymbolsNameForAxis(gameController:GameController, axis:GameControllerAxis):ConstCharStar;
+
+	// SDL_sensor.h //
+
 	// note for later . . ... . :3
 	// https://github.com/libsdl-org/SDL/blob/SDL2/include/SDL_gamecontroller.h#L476
 

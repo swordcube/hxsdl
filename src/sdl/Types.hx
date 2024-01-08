@@ -2059,4 +2059,6 @@ enum abstract GameControllerButton(UInt32) from UInt32 to UInt32 {
     var MAX;
 }
 
+// SDL_sensor.h
+
 typedef Double = cpp.Float64;
