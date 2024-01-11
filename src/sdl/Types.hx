@@ -844,7 +844,7 @@ extern class Rectangle {
 	}
 }
 
-@:native("SDL_Rect")
+@:native("SDL_FRect")
 @:include("vendor/include/Headers.h")
 @:structAccess
 extern class FRectangle {

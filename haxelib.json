@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
     "description": "A haxelib containing hxcpp bindings for SDL.",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "classPath": "src/",
-    "releasenote": "MacOS Support is now fully working, Thank you JonnycatMeow!",
+    "releasenote": "Library reworked, which means a lot more functions are ported!\n\nAll enums and structs go in Types.hx, All functions go in SDL.hx",
     "contributors": ["swordcube"],
     "dependencies": {
         "hxcpp": ""
