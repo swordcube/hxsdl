@@ -2,6 +2,7 @@ package cpp;
 
 import cpp.RawConstPointer;
 import cpp.RawPointer;
+import cpp.UInt64;
 
 /**
  * C Arrays can be used somewhat like Haxe arrays,
@@ -19,20 +20,33 @@ typedef CArray<T> = RawPointer<T>;
  */
 typedef CConstArray<T> = RawConstPointer<T>;
 
-class Helpers {
-    public static inline function lengthOfArray<T>(array:CArray<T>):Int {
+@:include("stdio.h")
+extern class Helpers {
+    static inline function lengthOfArray<T>(array:CArray<T>):Int {
         return untyped __cpp__("(int)(sizeof({0}) / sizeof({0}[0]))", array);
     }
 
-    public static inline function sizeof(a:Any):Int {
+    static inline function malloc<T>(count:Int, starClass:Any):T {
+		return cast untyped __cpp__("malloc({0} * sizeof({1}))", count, starClass);
+	}
+
+    static inline function sizeof(a:Any):Int {
         return untyped __cpp__("(int)sizeof({0})", a);
     }
 
-    public static inline function lengthOfConstArray<T>(array:CConstArray<T>):Int {
+    static inline function lengthOfConstArray<T>(array:CConstArray<T>):Int {
         return untyped __cpp__("(int)(sizeof({0}) / sizeof({0}[0]))", array);
     }
 
-    public static inline function free(ptr:Any) {
+    static inline function free(ptr:Any) {
         return untyped __cpp__("free({0})", ptr);
     }
+
+    static inline function nativeTrace(toTrace:ConstCharStar, formatParams:cpp.Rest<Any>):Void {
+		return untyped __cpp__("printf({0}, {1})", toTrace, formatParams);
+	}
+
+    static inline function tempPointer<T>(value:Any):T {
+		return untyped __cpp__("&{0}", value);
+	}
 }
