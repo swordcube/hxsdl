@@ -992,18 +992,17 @@ enum abstract EventAction(UInt32) from UInt32 to UInt32 {
 @:native("SDL_CommonEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_CommonEvent {
+extern class CommonEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
 	var timestamp:UInt32;
 }
-typedef CommonEvent = Pointer<SDL_CommonEvent>;
 
 @:native("SDL_DisplayEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_DisplayEvent {
+extern class DisplayEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1021,12 +1020,11 @@ extern class SDL_DisplayEvent {
 	@:native("data")
 	var data:Int;
 }
-typedef DisplayEvent = Pointer<SDL_DisplayEvent>;
 
 @:native("SDL_WindowEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_WindowEvent {
+extern class WindowEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1041,15 +1039,16 @@ extern class SDL_WindowEvent {
 	var padding2:UInt8;
 	@:native("padding3")
 	var padding3:UInt8;
-	@:native("data")
-	var data:Int;
+	@:native("data1")
+	var data1:Int;
+    @:native("data1")
+	var data2:Int;
 }
-typedef WindowEvent = Pointer<SDL_WindowEvent>;
 
 @:native("SDL_KeyboardEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_KeyboardEvent {
+extern class KeyboardEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1067,12 +1066,11 @@ extern class SDL_KeyboardEvent {
 	@:native("keysym")
 	var keysym:KeySym;
 }
-typedef KeyboardEvent = Pointer<SDL_KeyboardEvent>;
 
 @:native("SDL_TextEditingEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_TextEditingEvent {
+extern class TextEditingEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1089,12 +1087,11 @@ extern class SDL_TextEditingEvent {
 	@:native("length")
 	var length:Int;
 }
-typedef TextEditingEvent = Pointer<SDL_TextEditingEvent>;
 
 @:native("SDL_TextEditingExtEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_TextEditingExtEvent {
+extern class TextEditingExtEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1108,12 +1105,11 @@ extern class SDL_TextEditingExtEvent {
 	@:native("length")
 	var length:Int;
 }
-typedef TextEditingExtEvent = Pointer<SDL_TextEditingExtEvent>;
 
 @:native("SDL_TextInputEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_TextInputEvent {
+extern class TextInputEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1126,12 +1122,11 @@ extern class SDL_TextInputEvent {
 	@:native("text")
 	var text:String;
 }
-typedef TextInputEvent = Pointer<SDL_TextInputEvent>;
 
 @:native("SDL_MouseMotionEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_MouseMotionEvent {
+extern class MouseMotionEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1151,12 +1146,11 @@ extern class SDL_MouseMotionEvent {
 	@:native("yrel")
     var yRel:Int;
 }
-typedef MouseMotionEvent = Pointer<SDL_MouseMotionEvent>;
 
 @:native("SDL_MouseButtonEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_MouseButtonEvent {
+extern class MouseButtonEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1188,12 +1182,11 @@ extern class SDL_MouseButtonEvent {
     @:native("mouseY")
     var mouseY:Int;
 }
-typedef MouseButtonEvent = Pointer<SDL_MouseButtonEvent>;
 
 @:native("SDL_MouseWheelEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_MouseWheelEvent {
+extern class MouseWheelEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1207,12 +1200,11 @@ extern class SDL_MouseWheelEvent {
 	@:native("y")
     var y:Int;
 }
-typedef MouseWheelEvent = Pointer<SDL_MouseWheelEvent>;
 
 @:native("SDL_JoyAxisEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_JoyAxisEvent {
+extern class JoyAxisEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1232,12 +1224,11 @@ extern class SDL_JoyAxisEvent {
     @:native("padding4")
     var padding4:UInt16;
 }
-typedef JoyAxisEvent = Pointer<SDL_JoyAxisEvent>;
 
 @:native("SDL_JoyBallEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_JoyBallEvent {
+extern class JoyBallEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1257,12 +1248,11 @@ extern class SDL_JoyBallEvent {
     @:native("yrel")
     var yRel:Int16;
 }
-typedef JoyBallEvent = Pointer<SDL_JoyBallEvent>;
 
 @:native("SDL_JoyHatEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_JoyHatEvent {
+extern class JoyHatEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1278,12 +1268,11 @@ extern class SDL_JoyHatEvent {
     @:native("padding2")
     var padding2:UInt8;
 }
-typedef JoyHatEvent = Pointer<SDL_JoyHatEvent>;
 
 @:native("SDL_JoyButtonEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_JoyButtonEvent {
+extern class JoyButtonEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1299,12 +1288,11 @@ extern class SDL_JoyButtonEvent {
     @:native("padding2")
     var padding2:UInt8;
 }
-typedef JoyButtonEvent = Pointer<SDL_JoyButtonEvent>;
 
 @:native("SDL_JoyDeviceEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_JoyDeviceEvent {
+extern class JoyDeviceEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1312,12 +1300,11 @@ extern class SDL_JoyDeviceEvent {
 	@:native("which")
 	var which:JoystickID;
 }
-typedef JoyDeviceEvent = Pointer<SDL_JoyDeviceEvent>;
 
 @:native("SDL_JoyBatteryEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_JoyBatteryEvent {
+extern class JoyBatteryEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1327,12 +1314,11 @@ extern class SDL_JoyBatteryEvent {
     @:native("level")
     var level:JoystickPowerLevel;
 }
-typedef JoyBatteryEvent = Pointer<SDL_JoyBatteryEvent>;
 
 @:native("SDL_ControllerAxisEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_ControllerAxisEvent {
+extern class ControllerAxisEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1352,12 +1338,11 @@ extern class SDL_ControllerAxisEvent {
     @:native("padding4")
     var padding4:UInt16;
 }
-typedef ControllerAxisEvent = Pointer<SDL_ControllerAxisEvent>;
 
 @:native("SDL_ControllerButtonEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_ControllerButtonEvent {
+extern class ControllerButtonEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1373,12 +1358,11 @@ extern class SDL_ControllerButtonEvent {
     @:native("padding2")
     var padding2:UInt8;
 }
-typedef ControllerButtonEvent = Pointer<SDL_ControllerButtonEvent>;
 
 @:native("SDL_ControllerDeviceEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_ControllerDeviceEvent {
+extern class ControllerDeviceEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1386,12 +1370,11 @@ extern class SDL_ControllerDeviceEvent {
 	@:native("which")
 	var which:JoystickID;
 }
-typedef ControllerDeviceEvent = Pointer<SDL_ControllerDeviceEvent>;
 
 @:native("SDL_ControllerTouchpadEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_ControllerTouchpadEvent {
+extern class ControllerTouchpadEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1409,12 +1392,11 @@ extern class SDL_ControllerTouchpadEvent {
     @:native("pressure")
     var pressure:Single;
 }
-typedef ControllerTouchpadEvent = Pointer<SDL_ControllerTouchpadEvent>;
 
 @:native("SDL_ControllerSensorEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_ControllerSensorEvent {
+extern class ControllerSensorEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1429,12 +1411,11 @@ extern class SDL_ControllerSensorEvent {
     @:native("data")
     var data:CArray<Single>;
 }
-typedef ControllerSensorEvent = Pointer<SDL_ControllerSensorEvent>;
 
 @:native("SDL_TouchFingerEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_TouchFingerEvent {
+extern class TouchFingerEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1456,12 +1437,11 @@ extern class SDL_TouchFingerEvent {
     @:native("windowID")
     var windowID:UInt32;
 }
-typedef TouchFingerEvent = Pointer<SDL_TouchFingerEvent>;
 
 @:native("SDL_MultiGestureEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_MultiGestureEvent {
+extern class MultiGestureEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1481,12 +1461,11 @@ extern class SDL_MultiGestureEvent {
     @:native("padding")
     var padding:UInt16;
 }
-typedef MultiGestureEvent = Pointer<SDL_MultiGestureEvent>;
 
 @:native("SDL_DollarGestureEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_DollarGestureEvent {
+extern class DollarGestureEvent {
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1504,12 +1483,11 @@ extern class SDL_DollarGestureEvent {
     @:native("y")
     var y:Single;
 }
-typedef DollarGestureEvent = Pointer<SDL_DollarGestureEvent>;
 
 @:native("SDL_DropEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_DropEvent {
+extern class DropEvent {
     @:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1519,12 +1497,11 @@ extern class SDL_DropEvent {
     @:native("windowID")
     var windowID:UInt32;
 }
-typedef DropEvent = Pointer<SDL_DropEvent>;
 
 @:native("SDL_SensorEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_SensorEvent {
+extern class SensorEvent {
     @:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1539,23 +1516,21 @@ extern class SDL_SensorEvent {
     @:native("timestamp_us")
 	var timestampUS:UInt64;
 }
-typedef SensorEvent = Pointer<SDL_SensorEvent>;
 
 @:native("SDL_QuitEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_QuitEvent {
+extern class QuitEvent {
     @:native("type")
 	var type:UInt32;
 	@:native("timestamp")
 	var timestamp:UInt32;
 }
-typedef QuitEvent = Pointer<SDL_QuitEvent>;
 
 @:native("SDL_UserEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_UserEvent {
+extern class UserEvent {
     @:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1569,18 +1544,16 @@ extern class SDL_UserEvent {
     @:native("data2")
     var data2:RawPointer<cpp.Void>;
 }
-typedef UserEvent = Pointer<SDL_UserEvent>;
 
 @:native("SDL_SysWMmsg")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_SysWMmsg {}
-typedef SysWMmsg = Pointer<SDL_SysWMmsg>;
+extern class SysWMmsg {}
 
 @:native("SDL_SysWMEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_SysWMEvent {
+extern class SysWMEvent {
     @:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1588,7 +1561,6 @@ extern class SDL_SysWMEvent {
     @:native("msg")
 	var msg:SysWMmsg;
 }
-typedef SysWMEvent = Pointer<SDL_SysWMEvent>;
 
 // gonna space out my @:native blocks for this
 // i usually don't because idc enough to

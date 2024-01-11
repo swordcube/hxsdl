@@ -24,6 +24,10 @@ class Helpers {
         return untyped __cpp__("(int)(sizeof({0}) / sizeof({0}[0]))", array);
     }
 
+    public static inline function sizeof(a:Any):Int {
+        return untyped __cpp__("(int)sizeof({0})", a);
+    }
+
     public static inline function lengthOfConstArray<T>(array:CConstArray<T>):Int {
         return untyped __cpp__("(int)(sizeof({0}) / sizeof({0}[0]))", array);
     }
