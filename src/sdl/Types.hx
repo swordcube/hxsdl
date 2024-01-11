@@ -1011,7 +1011,7 @@ extern class SDL_DisplayEvent {
 	@:native("display")
 	var display:UInt32;
 	@:native("event")
-	var event:UInt8;
+	var event:DisplayEventID;
 	@:native("padding1")
 	var padding1:UInt8;
 	@:native("padding2")
@@ -1034,7 +1034,7 @@ extern class SDL_WindowEvent {
 	@:native("windowID")
 	var windowID:UInt32;
 	@:native("event")
-	var event:UInt8;
+	var event:WindowEventID;
 	@:native("padding1")
 	var padding1:UInt8;
 	@:native("padding2")
@@ -1057,7 +1057,7 @@ extern class SDL_KeyboardEvent {
 	@:native("windowID")
 	var windowID:UInt32;
 	@:native("state")
-	var state:UInt8;
+	var state:KeyState;
 	@:native("padding1")
 	var padding1:UInt8;
 	@:native("padding2")
