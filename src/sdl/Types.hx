@@ -854,7 +854,7 @@ extern class FRectangle {
 	public var h:Float;
 
 	public static inline function create(x:Float, y:Float, w:Float, h:Float):FRectangle {
-		return cast untyped __cpp__("SDL_Rect{ (float){0}, (float){1}, (float){2}, (float){3} }", x, y, w, h);
+		return cast untyped __cpp__("SDL_FRect{ (float){0}, (float){1}, (float){2}, (float){3} }", x, y, w, h);
 	}
 }
 
