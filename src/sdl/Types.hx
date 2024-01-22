@@ -1571,7 +1571,7 @@ extern class SysWMEvent {
 @:structAccess
 extern class SDL_Event {
     @:native("type")
-    var type:UInt32;
+    var type:EventType;
     
     @:native("common")
     var common:CommonEvent;
