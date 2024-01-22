@@ -1041,7 +1041,7 @@ extern class WindowEvent {
 	var padding3:UInt8;
 	@:native("data1")
 	var data1:Int;
-    @:native("data1")
+    @:native("data2")
 	var data2:Int;
 }
 
