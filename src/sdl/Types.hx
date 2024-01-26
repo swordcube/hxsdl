@@ -592,7 +592,7 @@ enum abstract ScaleMode(UInt32) from UInt32 to UInt32 {
 }
 
 enum abstract TextureAccess(UInt32) from UInt32 to UInt32 {
-    var STAIC = 0;
+    var STATIC = 0;
     var STREAMING;
     var TARGET;
 }
