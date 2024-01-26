@@ -682,51 +682,133 @@ enum abstract PackedLayout(UInt32) from UInt32 to UInt32 {
 	var LAYOUT_1010102;
 }
 
-// i almost went insane making this fucking enum
-// hello sqwordccube
+@:native("SDL_PixelFormatEnum")
 enum abstract PixelFormatEnum(UInt32) from UInt32 to UInt32 {
-	private static inline function definePixelFormat(type:Int, order:Int, layout:Int, bits:Int, bytes:Int) {
-		return (1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | ((bits) << 8) | ((bytes) << 0);
-	}
+    @:native("SDL_PIXELFORMAT_UNKNOWN")
+	var UNKNOWN;
 
-	var UNKNOWN = 0;
-	var INDEX1LSB = definePixelFormat(PixelType.INDEX1, BitmapOrder.ORDER_4321, 0, 1, 0);
-	var INDEX1MSB = definePixelFormat(PixelType.INDEX1, BitmapOrder.ORDER_1234, 0, 1, 0);
-	var INDEX4LSB = definePixelFormat(PixelType.INDEX4, BitmapOrder.ORDER_4321, 0, 4, 0);
-	var INDEX4MSB = definePixelFormat(PixelType.INDEX4, BitmapOrder.ORDER_1234, 0, 4, 0);
-	var INDEX8 = definePixelFormat(PixelType.INDEX8, 0, 0, 8, 1);
-	var RGB332 = definePixelFormat(PixelType.PACKED8, PackedOrder.XRGB, PackedLayout.LAYOUT_332, 8, 1);
-	var XRGB4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.XRGB, PackedLayout.LAYOUT_4444, 12, 2);
-	var RGB444 = XRGB4444;
-	var XBGR4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.XBGR, PackedLayout.LAYOUT_4444, 12, 2);
-	var BGR444 = XBGR4444;
-	var XRGB1555 = definePixelFormat(PixelType.PACKED16, PackedOrder.XRGB, PackedLayout.LAYOUT_1555, 15, 2);
-	var RGB555 = XRGB1555;
-	var XBGR1555 = definePixelFormat(PixelType.PACKED16, PackedOrder.XBGR, PackedLayout.LAYOUT_1555, 15, 2);
-	var BGR555 = XBGR1555;
-	var ARGB4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.ARGB, PackedLayout.LAYOUT_4444, 16, 2);
-	var RGBA4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.RGBA, PackedLayout.LAYOUT_4444, 16, 2);
-	var ABGR4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.ABGR, PackedLayout.LAYOUT_4444, 16, 2);
-	var BGRA4444 = definePixelFormat(PixelType.PACKED16, PackedOrder.BGRA, PackedLayout.LAYOUT_4444, 16, 2);
-	var ARGB1555 = definePixelFormat(PixelType.PACKED16, PackedOrder.ARGB, PackedLayout.LAYOUT_1555, 16, 2);
-	var RGBA5551 = definePixelFormat(PixelType.PACKED16, PackedOrder.RGBA, PackedLayout.LAYOUT_5551, 16, 2);
-	var ABGR1555 = definePixelFormat(PixelType.PACKED16, PackedOrder.ABGR, PackedLayout.LAYOUT_1555, 16, 2);
-	var BGRA5551 = definePixelFormat(PixelType.PACKED16, PackedOrder.BGRA, PackedLayout.LAYOUT_5551, 16, 2);
-	var RGB565 = definePixelFormat(PixelType.PACKED16, PackedOrder.XRGB, PackedLayout.LAYOUT_565, 16, 2);
-	var BGR565 = definePixelFormat(PixelType.PACKED16, PackedOrder.XBGR, PackedLayout.LAYOUT_565, 16, 2);
-	var RGB24 = definePixelFormat(PixelType.ARRAYU8, ArrayOrder.RGB, 0, 24, 3);
-	var BGR24 = definePixelFormat(PixelType.ARRAYU8, ArrayOrder.BGR, 0, 24, 3);
-	var XRGB8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.XRGB, PackedLayout.LAYOUT_8888, 24, 4);
-	var RGB888 = XRGB8888;
-	var RGBX8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.RGBX, PackedLayout.LAYOUT_8888, 24, 4);
-	var XBGR8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.XBGR, PackedLayout.LAYOUT_8888, 24, 4);
-	var BGR888 = XBGR8888;
-	var BGRX8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.BGRX, PackedLayout.LAYOUT_8888, 24, 4);
-	var ARGB8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.ARGB, PackedLayout.LAYOUT_8888, 32, 4);
-	var RGBA8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.RGBA, PackedLayout.LAYOUT_8888, 32, 4);
-	var ABGR8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.ABGR, PackedLayout.LAYOUT_8888, 32, 4);
-	var BGRA8888 = definePixelFormat(PixelType.PACKED32, PackedOrder.BGRA, PackedLayout.LAYOUT_8888, 32, 4);
-	var ARGB2101010 = definePixelFormat(PixelType.PACKED32, PackedOrder.ARGB, PackedLayout.LAYOUT_2101010, 32, 4);
+    @:native("SDL_PIXELFORMAT_INDEX1LSB")
+	var INDEX1LSB;
+
+    @:native("SDL_PIXELFORMAT_INDEX1MSB")
+	var INDEX1MSB;
+
+    @:native("SDL_PIXELFORMAT_INDEX4LSB")
+	var INDEX4LSB;
+
+    @:native("SDL_PIXELFORMAT_INDEX4MSB")
+	var INDEX4MSB;
+
+    @:native("SDL_PIXELFORMAT_INDEX8")
+	var INDEX8;
+
+    @:native("SDL_PIXELFORMAT_RGB332")
+	var RGB332;
+
+    @:native("SDL_PIXELFORMAT_XRGB4444")
+	var XRGB4444;
+
+    @:native("SDL_PIXELFORMAT_RGB4444")
+	var RGB444;
+    
+    @:native("SDL_PIXELFORMAT_XBGR4444")
+	var XBGR4444;
+
+    @:native("SDL_PIXELFORMAT_BGR4444")
+	var BGR444;
+    
+    @:native("SDL_PIXELFORMAT_XRGB1555")
+	var XRGB1555;
+
+    @:native("SDL_PIXELFORMAT_RGB555")
+	var RGB555;
+
+    @:native("SDL_PIXELFORMAT_XBGR1555")
+	var XBGR1555;
+
+    @:native("SDL_PIXELFORMAT_BGR555")
+	var BGR555;
+
+    @:native("SDL_PIXELFORMAT_ARGB4444")
+	var ARGB4444;
+
+    @:native("SDL_PIXELFORMAT_RGBA4444")
+	var RGBA4444;
+
+    @:native("SDL_PIXELFORMAT_ABGR4444")
+	var ABGR4444;
+
+    @:native("SDL_PIXELFORMAT_BGRA4444")
+	var BGRA4444;
+
+    @:native("SDL_PIXELFORMAT_ARGB1555")
+	var ARGB1555;
+
+    @:native("SDL_PIXELFORMAT_RGBA5551")
+	var RGBA5551;
+
+    @:native("SDL_PIXELFORMAT_ABGR1555")
+	var ABGR1555;
+
+    @:native("SDL_PIXELFORMAT_BGRA5551")
+	var BGRA5551;
+
+    @:native("SDL_PIXELFORMAT_RGB565")
+	var RGB565;
+
+    @:native("SDL_PIXELFORMAT_BGR565")
+	var BGR565;
+
+    @:native("SDL_PIXELFORMAT_RGB24")
+	var RGB24;
+
+    @:native("SDL_PIXELFORMAT_BGR24")
+	var BGR24;
+
+    @:native("SDL_PIXELFORMAT_XRGB8888")
+	var XRGB8888;
+	
+    @:native("SDL_PIXELFORMAT_RGB888")
+    var RGB888;
+
+    @:native("SDL_PIXELFORMAT_RGBX8888")
+	var RGBX8888;
+
+    @:native("SDL_PIXELFORMAT_XBGR8888")
+	var XBGR8888;
+
+    @:native("SDL_PIXELFORMAT_BGR888")
+	var BGR888;
+
+    @:native("SDL_PIXELFORMAT_BGRX8888")
+	var BGRX8888;
+
+    @:native("SDL_PIXELFORMAT_ARGB8888")
+	var ARGB8888;
+
+    @:native("SDL_PIXELFORMAT_RGBA8888")
+	var RGBA8888;
+
+    @:native("SDL_PIXELFORMAT_ABGR8888")
+	var ABGR8888;
+
+    @:native("SDL_PIXELFORMAT_BGRA8888")
+	var BGRA8888;
+
+    @:native("SDL_PIXELFORMAT_ARGB2101010")
+	var ARGB2101010;
+
+    @:native("SDL_PIXELFORMAT_RGBA32")
+    var RGBA32;
+
+    @:native("SDL_PIXELFORMAT_ARGB32")
+    var ARGB32;
+
+    @:native("SDL_PIXELFORMAT_BGRA32")
+    var BGRA32;
+
+    @:native("SDL_PIXELFORMAT_ABGR32")
+    var ABGR32;
 }
 
 @:native("SDL_Color")
