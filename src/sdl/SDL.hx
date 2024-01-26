@@ -691,8 +691,8 @@ extern class SDL {
 	static function getTextureUserData(texture:Texture):Any;
 
 	@:native("SDL_UpdateTexture")
-	static inline function updateTextureWithRawPixels(texture:Texture, rect:Rectangle, pixels:Any, pitch:Int) {
-		return untyped __cpp__("SDL_UpdateTexture({0}, {1}, (void*){2}, {3})", texture, rect, pixels, pitch);
+	static inline function updateTextureRaw(texture:Texture, rect:Rectangle, pixels:Any, pitch:Int) {
+		return untyped __cpp__("SDL_UpdateTexture({0}, {1}, (void*){2}, {3})", texture, RawConstPointer.addressOf(rect), pixels, pitch);
 	}
 
 	@:native("SDL_UpdateTexture")
