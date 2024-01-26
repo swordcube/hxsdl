@@ -1257,7 +1257,12 @@ extern class SDL {
 
 	@:native("SDL_CreateRGBSurfaceWithFormat")
 	static inline function createRGBSurfaceWithFormat(width:Int, height:Int, depth:Int, format:PixelFormatEnum):Surface {
-		return untyped __cpp__("SDL_CreateRGBSurfaceWithFormat(0, {0}, {1}, {2}, {3})", width, height, depth, format);
+		return untyped __cpp__("SDL_CreateRGBSurfaceWithFormat(0, {0}, {1}, {2}, (SDL_PixelFormatEnum){3})", width, height, depth, format);
+	}
+
+	@:native("SDL_CreateRGBSurfaceFrom")
+	static inline function createRGBSurfaceFromRaw(pixels:Any, width:Int, height:Int, depth:Int, pitch:Int, Rmask:UInt32, Gmask:UInt32, Bmask:UInt32):Surface {
+		return untyped __cpp__("SDL_CreateRGBSurfaceFrom((void*){0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})", pixels, width, height, depth, pitch, Rmask, Gmask, Bmask);
 	}
 
 	@:native("SDL_CreateRGBSurfaceFrom")
@@ -1271,13 +1276,18 @@ extern class SDL {
 	}
 
 	@:native("SDL_CreateRGBSurfaceWithFormatFrom")
+	static inline function createRGBSurfaceWithFormatFromRaw(pixels:Any, pixels:Array<Any>, width:Int, height:Int, depth:Int, pitch:Int, format:PixelFormatEnum):Surface {
+		return untyped __cpp__("SDL_CreateRGBSurfaceWithFormatFrom((void*){0}, {1}, {2}, {3}, {4}, (SDL_PixelFormatEnum){5})", pixels, width, height, depth, pitch, format);
+	}
+
+	@:native("SDL_CreateRGBSurfaceWithFormatFrom")
 	static inline function createRGBSurfaceWithFormatFrom(pixels:Array<Any>, width:Int, height:Int, depth:Int, pitch:Int, format:PixelFormatEnum):Surface {
 		untyped __cpp__("
 		void** _cArray = (void**)malloc(sizeof(void*) * {1});
 		for (int i = 0; i < {1}; i++) {
 			_cArray[i] = {0}->__get(i);
 		}", pixels, pixels.length);
-		return untyped __cpp__("SDL_CreateRGBSurfaceWithFormatFrom(_cArray, {0}, {1}, {2}, {3}, {4})", width, height, depth, pitch, format);
+		return untyped __cpp__("SDL_CreateRGBSurfaceWithFormatFrom(_cArray, {0}, {1}, {2}, {3}, (SDL_PixelFormatEnum){4})", width, height, depth, pitch, format);
 	}
 
 	@:native("SDL_FreeSurface")
@@ -1385,7 +1395,12 @@ extern class SDL {
 
 	@:native("SDL_ConvertSurfaceFormat")
 	static inline function convertSurfaceFormat(surface:Surface, format:PixelFormatEnum):Surface {
-		return untyped __cpp__("SDL_ConvertSurfaceFormat({0}, {1}, 0)", surface, format);
+		return untyped __cpp__("SDL_ConvertSurfaceFormat({0}, (SDL_PixelFormatEnum){1}, 0)", surface, format);
+	}
+
+	@:native("SDL_ConvertPixels")
+	static inline function convertPixelsRaw(width:Int, height:Int, srcFormat:PixelFormatEnum, src:Any, srcPitch:Int, dstFormat:PixelFormatEnum, dst:Any, dstPitch:Int):Int {
+		return untyped __cpp__("SDL_ConvertPixels({0}, {1}, (SDL_PixelFormatEnum){2}, {3}, {4}, (SDL_PixelFormatEnum){5}, {6}, {7})");
 	}
 
 	@:native("SDL_ConvertPixels")
@@ -1402,7 +1417,7 @@ extern class SDL {
 			_dstArr[i] = {0}->__get(i);
 		}", dst, dst.length);
 
-		return untyped __cpp__("SDL_ConvertPixels({0}, {1}, _srcArr, {2}, {3}, _dstArr, {4})", width, height, srcFormat, srcPitch, dstFormat, dstPitch);
+		return untyped __cpp__("SDL_ConvertPixels({0}, {1}, (SDL_PixelFormatEnum){2}, _srcArr, {3}, (SDL_PixelFormatEnum){4}, _dstArr, {5})", width, height, srcFormat, srcPitch, dstFormat, dstPitch);
 	}
 
 	@:native("SDL_PremultiplyAlpha")
@@ -1419,7 +1434,7 @@ extern class SDL {
 			_dstArr[i] = {0}->__get(i);
 		}", dst, dst.length);
 
-		return untyped __cpp__("SDL_PremultiplyAlpha({0}, {1}, _srcArr, {2}, {3}, _dstArr, {4})", width, height, srcFormat, srcPitch, dstFormat, dstPitch);
+		return untyped __cpp__("SDL_PremultiplyAlpha({0}, {1}, (SDL_PixelFormatEnum){2}, _srcArr, {3}, (SDL_PixelFormatEnum){4}, _dstArr, {5})", width, height, srcFormat, srcPitch, dstFormat, dstPitch);
 	}
 	
 	@:native("SDL_FillRect")
