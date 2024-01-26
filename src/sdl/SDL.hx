@@ -1276,7 +1276,7 @@ extern class SDL {
 	}
 
 	@:native("SDL_CreateRGBSurfaceWithFormatFrom")
-	static inline function createRGBSurfaceWithFormatFromRaw(pixels:Any, pixels:Array<Any>, width:Int, height:Int, depth:Int, pitch:Int, format:PixelFormatEnum):Surface {
+	static inline function createRGBSurfaceWithFormatFromRaw(pixels:Any, width:Int, height:Int, depth:Int, pitch:Int, format:PixelFormatEnum):Surface {
 		return untyped __cpp__("SDL_CreateRGBSurfaceWithFormatFrom((void*){0}, {1}, {2}, {3}, {4}, (SDL_PixelFormatEnum){5})", pixels, width, height, depth, pitch, format);
 	}
 
