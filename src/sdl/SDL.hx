@@ -850,7 +850,9 @@ extern class SDL {
 	}
 
 	@:native("SDL_SetRenderDrawBlendMode")
-	static function setRenderDrawBlendMode(renderer:Renderer, blendMode:BlendMode):Int;
+	static inline function setRenderDrawBlendMode(renderer:Renderer, blendMode:BlendMode):Int {
+		return untyped __cpp__("SDL_SetRenderDrawBlendMode({0}, (SDL_BlendMode){1})", renderer, blendMode);
+	}
 
 	@:native("SDL_GetRenderDrawBlendMode")
 	static inline function getRenderDrawBlendMode(renderer:Renderer, blendMode:BlendMode):BlendMode {
