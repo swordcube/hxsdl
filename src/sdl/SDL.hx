@@ -1535,7 +1535,7 @@ extern class SDL {
 	static function flushEvents(minType:EventType, maxType:EventType):Void;
 
 	@:native("SDL_PollEvent")
-	static function pollEvent(event:Event):Void;
+	static function pollEvent(event:Event):Int;
 
 	@:native("SDL_WaitEvent")
 	static function waitEvent(event:Event):Int;
