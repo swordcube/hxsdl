@@ -14,13 +14,21 @@ import cpp.Helpers;
 
 class Types {}
 
+#if SDL_PREFIX
+enum abstract SDLBoolean(Int) from Int to Int {
+#else
 enum abstract Boolean(Int) from Int to Int {
+#end
 	var FALSE = 0;
 	var TRUE = 1;
 }
 
 // SDL.h
+#if SDL_PREFIX
+enum abstract SDLInitFlags(UInt32) to UInt32 from UInt32 {
+#else
 enum abstract InitFlags(UInt32) to UInt32 from UInt32 {
+#end
 	var VIDEO = 0x00000020;
 	var AUDIO = 0x00000010;
 	var JOYSTICK = 0x00000200;
@@ -33,7 +41,11 @@ enum abstract InitFlags(UInt32) to UInt32 from UInt32 {
 }
 
 // SDL_hints.h
+#if SDL_PREFIX
+enum abstract SDLHints(ConstCharStar) to ConstCharStar from ConstCharStar {
+#else
 enum abstract Hints(ConstCharStar) to ConstCharStar from ConstCharStar {
+#end
 	var ACCELEROMETER_AS_JOYSTICK = cast "SDL_ACCELEROMETER_AS_JOYSTICK";
 	var ALLOW_ALT_TAB_WHILE_GRABBED = cast "SDL_ALLOW_ALT_TAB_WHILE_GRABBED";
 	var ALLOW_TOPMOST = cast "SDL_ALLOW_TOPMOST";
@@ -230,16 +242,29 @@ enum abstract Hints(ConstCharStar) to ConstCharStar from ConstCharStar {
 	var TRACKPAD_IS_TOUCH_ONLY = cast "SDL_TRACKPAD_IS_TOUCH_ONLY";
 }
 
-extern enum abstract HintPriority(UInt32) from UInt32 to UInt32 {
+#if SDL_PREFIX
+enum abstract SDLHintPriority(UInt32) from UInt32 to UInt32 { 
+#else
+enum abstract HintPriority(UInt32) from UInt32 to UInt32 {
+#end
     var DEFAULT = 0;
     var NORMAL;
     var OVERRIDE;
 }
 
+
+#if SDL_PREFIX
+typedef SDLHintCallback = cpp.Callable<(userdata:RawPointer<cpp.Void>, name:ConstCharStar, oldValue:ConstCharStar, newValue:ConstCharStar) -> Void>;
+#else
 typedef HintCallback = cpp.Callable<(userdata:RawPointer<cpp.Void>, name:ConstCharStar, oldValue:ConstCharStar, newValue:ConstCharStar) -> Void>;
+#end
 
 // SDL_log.h
-extern enum abstract LogCategory(UInt32) from UInt32 to UInt32 {
+#if SDL_PREFIX
+enum abstract SDLLogCategory(UInt32) from UInt32 to UInt32 { 
+#else
+enum abstract LogCategory(UInt32) from UInt32 to UInt32 {
+#end
     @:native("SDL_LOG_CATEGORY_APPLICATION")
 	var APPLICATION;
 	@:native("SDL_LOG_CATEGORY_ERROR")
@@ -282,7 +307,11 @@ extern enum abstract LogCategory(UInt32) from UInt32 to UInt32 {
 	var CUSTOM;
 }
 
-extern enum abstract LogPriority(UInt32) from UInt32 to UInt32 {
+#if SDL_PREFIX
+enum abstract SDLLogPriority(UInt32) from UInt32 to UInt32 { 
+#else
+enum abstract LogPriority(UInt32) from UInt32 to UInt32 {
+#end
 	@:native("SDL_LOG_PRIORITY_VERBOSE")
 	var VERBOSE;
 	@:native("SDL_LOG_PRIORITY_DEBUG")
@@ -299,7 +328,12 @@ extern enum abstract LogPriority(UInt32) from UInt32 to UInt32 {
     var NUM_LOG_PRIORITIES;
 }
 
+
+#if SDL_PREFIX
+typedef SDLLogOutputFunction = cpp.Callable<(userdata:RawPointer<cpp.Void>, category:Int, priority:SDLLogPriority, message:ConstCharStar) -> Void>;
+#else
 typedef LogOutputFunction = cpp.Callable<(userdata:RawPointer<cpp.Void>, category:Int, priority:LogPriority, message:ConstCharStar) -> Void>;
+#end
 
 
 
@@ -307,7 +341,11 @@ typedef LogOutputFunction = cpp.Callable<(userdata:RawPointer<cpp.Void>, categor
 @:include("vendor/include/Headers.h")
 @:native("SDL_version")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLVersion {
+#else
 extern class Version {
+#end
 	@:native("major")
 	public var major:cpp.UInt8;
 	@:native("minor")
@@ -320,7 +358,11 @@ extern class Version {
 @:include("vendor/include/Headers.h")
 @:native("SDL_DisplayMode")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLDisplayMode {
+#else
 extern class DisplayMode {
+#end
 	@:native("format")
 	public var format:cpp.UInt32;
 	@:native("w")
@@ -335,10 +377,23 @@ extern class DisplayMode {
 
 @:native("SDL_Window")
 @:include("vendor/include/Headers.h")
-extern class SDL_Window {}
-typedef Window = Pointer<SDL_Window>;
+#if SDL_PREFIX
+extern class SDLRawWindow {}
+#else
+extern class RawWindow {}
+#end
 
+#if SDL_PREFIX
+typedef SDLWindow = Pointer<SDLRawWindow>;
+#else
+typedef Window = Pointer<RawWindow>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLWindowInitFlags(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract WindowInitFlags(UInt32) from UInt32 to UInt32 {
+#end
 	var FULLSCREEN = 0x00000001;
 	var OPENGL = 0x00000002;
 	var SHOWN = 0x00000004;
@@ -365,12 +420,20 @@ enum abstract WindowInitFlags(UInt32) from UInt32 to UInt32 {
 	var INPUT_GRABBED = MOUSE_GRABBED;
 }
 
+#if SDL_PREFIX
+enum abstract SDLWindowPos(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract WindowPos(UInt32) from UInt32 to UInt32 {
+#end
 	var CENTERED = 0x2FFF0000;
 	var UNDEFINED = 0x1FFF0000;
 }
 
+#if SDL_PREFIX
+enum abstract SDLWindowEventID(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract WindowEventID(UInt32) from UInt32 to UInt32 {
+#end
 	var NONE = 0;       /**< Never used */
     var SHOWN;          /**< Window has been shown */
     var HIDDEN;         /**< Window has been hidden */
@@ -397,7 +460,11 @@ enum abstract WindowEventID(UInt32) from UInt32 to UInt32 {
     var DISPLAY_CHANGED; /**< Window has been moved to display data1. */
 }
 
+#if SDL_PREFIX
+enum abstract SDLDisplayEventID(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract DisplayEventID(UInt32) from UInt32 to UInt32 {
+#end
 	var NONE = 0;       /**< Never used */
     var ORIENTATION;   /**< Display orientation has changed to data1 */
     var CONNECTED;     /**< Display has been added to the system */
@@ -405,7 +472,11 @@ enum abstract DisplayEventID(UInt32) from UInt32 to UInt32 {
     var MOVED;          /**< Display has changed position */
 }
 
+#if SDL_PREFIX
+enum abstract SDLDisplayOrientation(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract DisplayOrientation(UInt32) from UInt32 to UInt32 {
+#end
     var UNKNOWN = 0;            /**< The display orientation can't be determined */
     var LANDSCAPE;          /**< The display is in landscape mode, with the right side up, relative to portrait mode */
     var LANDSCAPE_FLIPPED;  /**< The display is in landscape mode, with the left side up, relative to portrait mode */
@@ -413,15 +484,28 @@ enum abstract DisplayOrientation(UInt32) from UInt32 to UInt32 {
     var PORTRAIT_FLIPPED;    /**< The display is in portrait mode, upside down */
 }
 
+#if SDL_PREFIX
+enum abstract SDLFlashOperation(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract FlashOperation(UInt32) from UInt32 to UInt32 {
+#end
     var CANCEL = 0;                   /**< Cancel any window flash state */
     var BRIEFLY;                  /**< Flash the window briefly to get attention */
     var UNTIL_FOCUSED;             /**< Flash the window until it gets focus */
 }
 
-typedef GlContext = Pointer<cpp.Void>;
 
+#if SDL_PREFIX
+typedef SDLGlContext = Pointer<cpp.Void>;
+#else
+typedef GlContext = Pointer<cpp.Void>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLGlAttribute(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract GlAttribute(UInt32) from UInt32 to UInt32 {
+#end
 	var RED_SIZE = 0;
     var GREEN_SIZE;
     var BLUE_SIZE;
@@ -452,30 +536,50 @@ enum abstract GlAttribute(UInt32) from UInt32 to UInt32 {
     var FLOATBUFFERS;
 }
 
+#if SDL_PREFIX
+enum abstract SDLGlProfile(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract GlProfile(UInt32) from UInt32 to UInt32 {
+#end
 	var CORE = 0x0001;
     var COMPATIBILITY = 0x0002;
     var ES = 0x0004; /**< GLX_CONTEXT_ES2_PROFILE_BIT_EXT */
 }
 
+#if SDL_PREFIX
+enum abstract SDLGlContextFlag(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract GlContextFlag(UInt32) from UInt32 to UInt32 {
+#end
     var DEBUG_FLAG = 0x0001;
     var FORWARD_COMPATIBLE_FLAG = 0x0002;
     var ROBUST_ACCESS_FLAG = 0x0004;
     var RESET_ISOLATION_FLAG = 0x0008;
 }
 
+#if SDL_PREFIX
+enum abstract SDLGlContextReleaseFlag(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract GlContextReleaseFlag(UInt32) from UInt32 to UInt32 {
+#end
     var NONE = 0x0000;
     var FLUSH = 0x0001;
 }
 
+#if SDL_PREFIX
+enum abstract SDLGlContextResetNotification(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract GlContextResetNotification(UInt32) from UInt32 to UInt32 {
+#end
     var NO_NOTIFICATION = 0x0000;
     var LOSE_CONTEXT = 0x0001;
 }
 
+#if SDL_PREFIX
+enum abstract SDLHitTestResult(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract HitTestResult(UInt32) from UInt32 to UInt32 {
+#end
     var NORMAL = 0;  /**< Region is normal. No special properties. */
     var DRAGGABLE;  /**< Region can drag entire window. */
     var RESIZE_TOPLEFT;
@@ -488,12 +592,21 @@ enum abstract HitTestResult(UInt32) from UInt32 to UInt32 {
     var RESIZE_LEFT;
 }
 
+
+#if SDL_PREFIX
+typedef SDLHitTest = cpp.Callable<(window:SDLWindow, area:cpp.RawConstPointer<SDLPoint>, data:Any) -> SDLHitTestResult>;
+#else
 typedef HitTest = cpp.Callable<(window:Window, area:cpp.RawConstPointer<Point>, data:Any) -> HitTestResult>;
+#end
 
 
 
 // SDL_blendmode.h
+#if SDL_PREFIX
+enum abstract SDLBlendMode(UInt32) to UInt32 from UInt32 {
+#else
 enum abstract BlendMode(UInt32) to UInt32 from UInt32 {
+#end
 	var NONE = 0x00000000;     /**< no blending
 									dstRGBA = srcRGBA */
 	var BLEND = 0x00000001;    /**< alpha blending
@@ -511,7 +624,11 @@ enum abstract BlendMode(UInt32) to UInt32 from UInt32 {
 	var INVALID = 0x7FFFFFFF;
 }
 
+#if SDL_PREFIX
+enum abstract SDLBlendOperation(UInt32) to UInt32 from UInt32 {
+#else
 enum abstract BlendOperation(UInt32) to UInt32 from UInt32 {
+#end
 	var ADD              = 0x1;  /**< dst + src: supported by all renderers */
     var SUBTRACT         = 0x2;  /**< dst - src : supported by D3D9, D3D11, OpenGL, OpenGLES */
     var REV_SUBTRACT     = 0x3;  /**< src - dst : supported by D3D9, D3D11, OpenGL, OpenGLES */
@@ -519,7 +636,11 @@ enum abstract BlendOperation(UInt32) to UInt32 from UInt32 {
     var MAXIMUM          = 0x5;   /**< max(dst, src) : supported by D3D9, D3D11 */
 }
 
+#if SDL_PREFIX
+enum abstract SDLBlendFactor(UInt32) to UInt32 from UInt32 {
+#else
 enum abstract BlendFactor(UInt32) to UInt32 from UInt32 {
+#end
 	var ZERO                = 0x1;  /**< 0, 0, 0, 0 */
     var ONE                 = 0x2;  /**< 1, 1, 1, 1 */
     var SRC_COLOR           = 0x3;  /**< srcR, srcG, srcB, srcA */
@@ -535,7 +656,11 @@ enum abstract BlendFactor(UInt32) to UInt32 from UInt32 {
 
 
 // SDL_render.h
+#if SDL_PREFIX
+enum abstract SDLRendererFlags(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract RendererFlags(UInt32) from UInt32 to UInt32 {
+#end
     var SOFTWARE = 0x00000001;         /**< The renderer is a software fallback */
     var ACCELERATED = 0x00000002;      /**< The renderer uses hardware
                                                      acceleration */
@@ -548,7 +673,11 @@ enum abstract RendererFlags(UInt32) from UInt32 to UInt32 {
 @:include("vendor/include/Headers.h")
 @:native("SDL_RendererInfo")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLRendererInfo {
+#else
 extern class RendererInfo {
+#end
 	@:native("name")
 	public var name:ConstCharStar;
 	@:native("flags")
@@ -566,44 +695,82 @@ extern class RendererInfo {
 @:native("SDL_Vertex")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLVertex {
+#else
 extern class Vertex {
+#end
 	@:native("position")
-	public var position:FPoint;
-	@:native("color")
-	public var color:Color;
-	@:native("tex_coord")
-	public var texCoord:FPoint;
+	#if SDL_PREFIX
+    public var position:SDLFPoint;
+    #else
+    public var position:FPoint;
+    #end
 
-	public static inline function create(pos:FPoint, col:Color, tex:FPoint):Vertex {
+	@:native("color")
+	#if SDL_PREFIX
+    public var color:SDLColor;
+    #else
+    public var color:Color;
+    #end
+
+	@:native("tex_coord")
+	#if SDL_PREFIX
+    public var texCoord:SDLFPoint;
+    #else
+    public var texCoord:FPoint;
+    #end
+
+	public static inline function create(pos:#if SDL_PREFIX SDLFPoint #else FPoint #end, col:#if SDL_PREFIX SDLColor #else Color #end, tex:#if SDL_PREFIX SDLFPoint #else FPoint #end):#if SDL_PREFIX SDLVertex #else Vertex #end {
 		return cast untyped __cpp__("SDL_Vertex{{0}, {1}, {2}}", pos, col, tex);
 	}
 }
 
+#if SDL_PREFIX
+enum abstract SDLTextureScaleMode(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract TextureScaleMode(UInt32) from UInt32 to UInt32 {
+#end
 	var NEAREST = 0;
 	var LINEAR;
 	var ANISOTROPIC;
 }
 
+#if SDL_PREFIX
+enum abstract SDLScaleMode(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract ScaleMode(UInt32) from UInt32 to UInt32 {
+#end
     var NEAREST = 0;
     var LINEAR;
     var BEST;
 }
 
+#if SDL_PREFIX
+enum abstract SDLTextureAccess(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract TextureAccess(UInt32) from UInt32 to UInt32 {
+#end
     var STATIC = 0;
     var STREAMING;
     var TARGET;
 }
 
+#if SDL_PREFIX
+enum abstract SDLTextureModulate(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract TextureModulate(UInt32) from UInt32 to UInt32 {
+#end
 	var NONE = 0x00000000;     /**< No modulation */
     var COLOR = 0x00000001;    /**< srcC = srcC * color */
     var ALPHA = 0x00000002;     /**< srcA = srcA * alpha */
 }
 
+#if SDL_PREFIX
+enum abstract SDLRendererFlip(UInt32) to UInt32 from UInt32 {
+#else
 enum abstract RendererFlip(UInt32) to UInt32 from UInt32 {
+#end
 	var NONE = 0x00000000;
     var HORIZONTAL = 0x00000001;
     var VERTICAL = 0x00000002;
@@ -611,23 +778,49 @@ enum abstract RendererFlip(UInt32) to UInt32 from UInt32 {
 
 @:native("SDL_Renderer")
 @:include("vendor/include/Headers.h")
-extern class SDL_Renderer {}
-typedef Renderer = Pointer<SDL_Renderer>;
+#if SDL_PREFIX
+extern class SDLRawRenderer {}
+#else
+extern class RawRenderer {}
+#end
+
+#if SDL_PREFIX
+typedef SDLRenderer = Pointer<SDLRawRenderer>;
+#else
+typedef Renderer = Pointer<RawRenderer>;
+#end
 
 @:native("SDL_Texture")
 @:include("vendor/include/Headers.h")
-extern class SDL_Texture {}
-typedef Texture = Pointer<SDL_Texture>;
+#if SDL_PREFIX
+extern class SDLRawTexture {}
+#else
+extern class RawTexture {}
+#end
+
+#if SDL_PREFIX
+typedef SDLTexture = Pointer<SDLRawTexture>;
+#else
+typedef Texture = Pointer<RawTexture>;
+#end
 
 
 
 // SDL_pixels.h
+#if SDL_PREFIX
+enum abstract SDLTransparencyDefs(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract TransparencyDefs(UInt32) from UInt32 to UInt32 {
+#end
 	var OPAQUE = 255;
     var TRANSPARENT = 0;
 }
 
+#if SDL_PREFIX
+enum abstract SDLPixelType(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract PixelType(UInt32) from UInt32 to UInt32 {
+#end
 	var UNKNOWN = 0;
 	var INDEX1;
 	var INDEX4;
@@ -642,13 +835,21 @@ enum abstract PixelType(UInt32) from UInt32 to UInt32 {
 	var ARRAYF32;
 }
 
+#if SDL_PREFIX
+enum abstract SDLBitmapOrder(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract BitmapOrder(UInt32) from UInt32 to UInt32 {
+#end
 	var ORDER_NONE = 0;
 	var ORDER_4321;
 	var ORDER_1234;
 }
 
+#if SDL_PREFIX
+enum abstract SDLPackedOrder(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract PackedOrder(UInt32) from UInt32 to UInt32 {
+#end
 	var NONE = 0;
 	var XRGB;
 	var RGBX;
@@ -660,7 +861,11 @@ enum abstract PackedOrder(UInt32) from UInt32 to UInt32 {
 	var BGRA;
 }
 
+#if SDL_PREFIX
+enum abstract SDLArrayOrder(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract ArrayOrder(UInt32) from UInt32 to UInt32 {
+#end
 	var NONE = 0;
 	var RGB;
 	var RGBA;
@@ -670,7 +875,11 @@ enum abstract ArrayOrder(UInt32) from UInt32 to UInt32 {
 	var ABGR;
 }
 
+#if SDL_PREFIX
+enum abstract SDLPackedLayout(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract PackedLayout(UInt32) from UInt32 to UInt32 {
+#end
 	var LAYOUT_NONE = 0;
 	var LAYOUT_332;
 	var LAYOUT_4444;
@@ -683,7 +892,11 @@ enum abstract PackedLayout(UInt32) from UInt32 to UInt32 {
 }
 
 @:native("SDL_PixelFormatEnum")
+#if SDL_PREFIX
+enum abstract SDLPixelFormatEnum(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract PixelFormatEnum(UInt32) from UInt32 to UInt32 {
+#end
     @:native("SDL_PIXELFORMAT_UNKNOWN")
 	var UNKNOWN;
 
@@ -814,13 +1027,17 @@ enum abstract PixelFormatEnum(UInt32) from UInt32 to UInt32 {
 @:native("SDL_Color")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLColor {
+#else
 extern class Color {
+#end
 	public var r:UInt8;
 	public var g:UInt8;
 	public var b:UInt8;
 	public var a:UInt8;
 
-	public static inline function create(r:UInt8, g:UInt8, b:UInt8, a:UInt8):Color {
+	public static inline function create(r:UInt8, g:UInt8, b:UInt8, a:UInt8):#if SDL_PREFIX SDLColor #else Color #end {
 		return cast untyped __cpp__("SDL_Color{ (unsigned char){0}, (unsigned char){1}, (unsigned char){2}, (unsigned char){3} }", r, g, b, a);
 	}
 }
@@ -828,62 +1045,113 @@ extern class Color {
 @:native("SDL_Palette")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_Palette {
+#if SDL_PREFIX
+extern class SDLRawPalette {
+#else
+extern class RawPalette {
+#end
 	@:native("ncolors")
 	public var numColors:Int;
+
 	@:native("colors")
+    #if SDL_PREFIX
+	public var colors:RawPointer<SDLColor>;
+    #else
 	public var colors:RawPointer<Color>;
+    #end
+    
 	@:native("version")
 	public var version:UInt32;
+
 	@:native("refcount")
 	public var refCount:Int;
 }
-typedef Palette = Pointer<SDL_Palette>;
+
+#if SDL_PREFIX
+typedef SDLPalette = Pointer<SDLRawPalette>;
+#else
+typedef Palette = Pointer<RawPalette>;
+#end
 
 @:native("SDL_Palette")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_PixelFormat {
+#if SDL_PREFIX
+extern class SDLRawPixelFormat {
+#else
+extern class RawPixelFormat {
+#end
 	@:native("format")
 	public var format:UInt32;
+
 	@:native("palette")
+    #if SDL_PREFIX
+	public var palette:SDLPalette;
+    #else
 	public var palette:Palette;
+    #end
+
 	@:native("BitsPerPixel")
 	public var bitsPerPixel:UInt8;
+
 	@:native("BytesPerPixel")
 	public var bytesPerPixel:UInt8;
+
 	@:native("padding")
 	public var padding:RawPointer<UInt8>;
+
 	@:native("Rmask")
 	public var Rmask:UInt32;
+
 	@:native("Gmask")
 	public var Gmask:UInt32;
+
 	@:native("Bmask")
 	public var Bmask:UInt32;
+
 	@:native("Amask")
 	public var Amask:UInt32;
+    
 	@:native("Rloss")
 	public var Rloss:UInt8;
+
 	@:native("Gloss")
 	public var Gloss:UInt8;
+
 	@:native("Bloss")
 	public var Bloss:UInt8;
+
 	@:native("Aloss")
 	public var Aloss:UInt8;
+
 	@:native("Rshift")
 	public var Rshift:UInt8;
+
 	@:native("Gshift")
 	public var Gshift:UInt8;
+
 	@:native("Bshift")
 	public var Bshift:UInt8;
+
 	@:native("Ashift")
 	public var Ashift:UInt8;
+
 	@:native("refcount")
 	public var refCount:Int;
+
 	@:native("next")
+    #if SDL_PREFIX
+	public var next:SDLPixelFormat;
+    #else
 	public var next:PixelFormat;
+    #end
 }
-typedef PixelFormat = Pointer<SDL_PixelFormat>;
+
+#if SDL_PREFIX
+typedef SDLPixelFormat = Pointer<SDLRawPixelFormat>;
+#else
+typedef PixelFormat = Pointer<RawPixelFormat>;
+#end
 
 
 
@@ -891,11 +1159,15 @@ typedef PixelFormat = Pointer<SDL_PixelFormat>;
 @:native("SDL_Point")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLPoint {
+#else
 extern class Point {
+#end
 	public var x:Int;
 	public var y:Int;
 
-	public static inline function create(x:Int, y:Int):Point {
+	public static inline function create(x:Int, y:Int):#if SDL_PREFIX SDLPoint #else Point #end {
 		return cast untyped __cpp__("SDL_Point{ (int){0}, (int){1} }", x, y);
 	}
 }
@@ -903,11 +1175,15 @@ extern class Point {
 @:native("SDL_FPoint")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLFPoint {
+#else
 extern class FPoint {
+#end
 	public var x:Float;
 	public var y:Float;
 
-	public static inline function create(x:Float, y:Float):FPoint {
+	public static inline function create(x:Float, y:Float):#if SDL_PREFIX SDLFPoint #else FPoint #end {
 		return cast untyped __cpp__("SDL_FPoint{ (float){0}, (float){1} }", x, y);
 	}
 }
@@ -915,13 +1191,17 @@ extern class FPoint {
 @:native("SDL_Rect")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLRectangle {
+#else
 extern class Rectangle {
+#end
 	public var x:Int;
 	public var y:Int;
 	public var w:Int;
 	public var h:Int;
 
-	public static inline function create(x:Int, y:Int, w:Int, h:Int):Rectangle {
+	public static inline function create(x:Int, y:Int, w:Int, h:Int):#if SDL_PREFIX SDLRectangle #else Rectangle #end {
 		return cast untyped __cpp__("SDL_Rect{ (int){0}, (int){1}, (int){2}, (int){3} }", x, y, w, h);
 	}
 }
@@ -929,13 +1209,17 @@ extern class Rectangle {
 @:native("SDL_FRect")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLFRectangle {
+#else
 extern class FRectangle {
+#end
 	public var x:Float;
 	public var y:Float;
 	public var w:Float;
 	public var h:Float;
 
-	public static inline function create(x:Float, y:Float, w:Float, h:Float):FRectangle {
+	public static inline function create(x:Float, y:Float, w:Float, h:Float):#if SDL_PREFIX SDLFRectangle #else FRectangle #end {
 		return cast untyped __cpp__("SDL_FRect{ (float){0}, (float){1}, (float){2}, (float){3} }", x, y, w, h);
 	}
 }
@@ -944,21 +1228,42 @@ extern class FRectangle {
 @:native("SDL_Surface")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_Surface {
+#if SDL_PREFIX
+extern class SDLRawSurface {
+#else
+extern class RawSurface {
+#end
 	@:native("format")
+    #if SDL_PREFIX
+	public var format:SDLPixelFormat;
+    #else
 	public var format:PixelFormat;
+    #end
+
 	@:native("w")
     public var w:Int;
+
 	@:native("h")
     public var h:Int;
+
 	@:native("pitch")
     public var pitch:Int;
+
 	@:native("pixels")
 	public var pixels:RawPointer<cpp.Void>;
 }
-typedef Surface = Pointer<SDL_Surface>;
 
+#if SDL_PREFIX
+typedef SDLSurface = Pointer<SDLRawSurface>;
+#else
+typedef Surface = Pointer<RawSurface>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLYUVConversionMode(Int) from Int to Int {
+#else
 enum abstract YUVConversionMode(Int) from Int to Int {
+#end
 	var JPEG = 0;
     var BT601;
     var BT709;
@@ -968,11 +1273,24 @@ enum abstract YUVConversionMode(Int) from Int to Int {
 // SDL_rwops.h
 @:native("SDL_RWops")
 @:include("vendor/include/Headers.h")
-extern class SDL_RWops {}
-typedef RWops = Pointer<SDL_RWops>;
+#if SDL_PREFIX
+extern class SDLRawRWops {}
+#else
+extern class RawRWops {}
+#end
+
+#if SDL_PREFIX
+typedef SDLRWops = Pointer<SDLRawRWops>;
+#else
+typedef RWops = Pointer<RawRWops>;
+#end
 
 // SDL_syswm.h
+#if SDL_PREFIX
+enum abstract SDLSysWMType(Int) from Int to Int {
+#else
 enum abstract SysWMType(Int) from Int to Int {
+#end
 	var UNKNOWN = 0;
     var WINDOWS;
     var X11;
@@ -993,16 +1311,38 @@ enum abstract SysWMType(Int) from Int to Int {
 @:native("SDL_SysWMinfo")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_SysWMinfo {
+#if SDL_PREFIX
+extern class SDLRawSysWMinfo {
+#else
+extern class RawSysWMinfo {
+#end
 	@:native("version")
-	public var version:Version;
+	#if SDL_PREFIX
+    public var version:SDLVersion;
+    #else
+    public var version:Version;
+    #end
+    
 	@:native("subsystem")
-	public var subsystem:SysWMType;
+	#if SDL_PREFIX
+    public var subsystem:SDLSysWMType;
+    #else
+    public var subsystem:SysWMType;
+    #end
 }
-typedef SysWMinfo = Pointer<SDL_SysWMinfo>;
+
+#if SDL_PREFIX
+typedef SDLSysWMinfo = Pointer<SDLRawSysWMinfo>;
+#else
+typedef SysWMinfo = Pointer<RawSysWMinfo>;
+#end
 
 // SDL_events.h
+#if SDL_PREFIX
+enum abstract SDLEventType(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract EventType(UInt32) from UInt32 to UInt32 {
+#end
     var QUIT = 0x100;
     var APP_TERMINATING;
     var APP_LOWMEMORY;
@@ -1065,7 +1405,11 @@ enum abstract EventType(UInt32) from UInt32 to UInt32 {
     var LASTEVENT    = 0xFFFF;
 }
 
+#if SDL_PREFIX
+enum abstract SDLEventAction(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract EventAction(UInt32) from UInt32 to UInt32 {
+#end
     var ADD = 0;
     var PEEK;
     var GET;
@@ -1074,7 +1418,11 @@ enum abstract EventAction(UInt32) from UInt32 to UInt32 {
 @:native("SDL_CommonEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLCommonEvent {
+#else
 extern class CommonEvent {
+#end
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1084,21 +1432,36 @@ extern class CommonEvent {
 @:native("SDL_DisplayEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLDisplayEvent {
+#else
 extern class DisplayEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("display")
 	var display:UInt32;
+
 	@:native("event")
+    #if SDL_PREFIX
+	var event:SDLDisplayEventID;
+    #else
 	var event:DisplayEventID;
+    #end
+
 	@:native("padding1")
 	var padding1:UInt8;
+
 	@:native("padding2")
 	var padding2:UInt8;
+
 	@:native("padding3")
 	var padding3:UInt8;
+
 	@:native("data")
 	var data:Int;
 }
@@ -1106,23 +1469,39 @@ extern class DisplayEvent {
 @:native("SDL_WindowEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLWindowEvent {
+#else
 extern class WindowEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("windowID")
 	var windowID:UInt32;
+
 	@:native("event")
+    #if SDL_PREFIX
+	var event:SDLWindowEventID;
+    #else
 	var event:WindowEventID;
+    #end
+
 	@:native("padding1")
 	var padding1:UInt8;
+
 	@:native("padding2")
 	var padding2:UInt8;
+
 	@:native("padding3")
 	var padding3:UInt8;
+
 	@:native("data1")
 	var data1:Int;
+
     @:native("data2")
 	var data2:Int;
 }
@@ -1130,29 +1509,52 @@ extern class WindowEvent {
 @:native("SDL_KeyboardEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLKeyboardEvent {
+#else
 extern class KeyboardEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("windowID")
 	var windowID:UInt32;
+
 	@:native("state")
+    #if SDL_PREFIX
+	var state:SDLKeyState;
+    #else
 	var state:KeyState;
+    #end
+
 	@:native("padding1")
 	var padding1:UInt8;
+
 	@:native("padding2")
 	var padding2:UInt8;
+
 	@:native("padding3")
 	var padding3:UInt8;
+
 	@:native("keysym")
+    #if SDL_PREFIX
+	var keysym:SDLKeySym;
+    #else
 	var keysym:KeySym;
+    #end
 }
 
 @:native("SDL_TextEditingEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLTextEditingEvent {
+#else
 extern class TextEditingEvent {
+#end
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1173,7 +1575,11 @@ extern class TextEditingEvent {
 @:native("SDL_TextEditingExtEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLTextEditingExtEvent {
+#else
 extern class TextEditingExtEvent {
+#end
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1191,7 +1597,11 @@ extern class TextEditingExtEvent {
 @:native("SDL_TextInputEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLTextInputEvent {
+#else
 extern class TextInputEvent {
+#end
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1208,23 +1618,39 @@ extern class TextInputEvent {
 @:native("SDL_MouseMotionEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLMouseMotionEvent {
+#else
 extern class MouseMotionEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("windowID")
 	var windowID:UInt32;
+
 	@:native("which")
 	var which:UInt32;
+
 	@:native("state")
-	var state:MouseButton;
+	#if SDL_PREFIX
+    var state:SDLMouseButton;
+    #else
+    var state:MouseButton;
+    #end
+
 	@:native("x")
     var x:Int;
+
 	@:native("y")
     var y:Int;
+
     @:native("xrel")
     var xRel:Int;
+
 	@:native("yrel")
     var yRel:Int;
 }
@@ -1232,35 +1658,65 @@ extern class MouseMotionEvent {
 @:native("SDL_MouseButtonEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLMouseButtonEvent {
+#else
 extern class MouseButtonEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("windowID")
 	var windowID:UInt32;
+
 	@:native("which")
 	var which:UInt32;
+
 	@:native("button")
-	var button:MouseButton;
+	#if SDL_PREFIX
+    var button:SDLMouseButton;
+    #else
+    var button:MouseButton;
+    #end
+
 	@:native("state")
+    #if SDL_PREFIX
+    var state:SDLKeyState;
+    #else
     var state:KeyState;
+    #end
+
     @:native("clicks")
     var clicks:UInt8;
+
     @:native("padding1")
     var padding1:UInt8;
+
     @:native("x")
     var x:Int;
+
 	@:native("y")
     var y:Int;
+
     @:native("direction")
+    #if SDL_PREFIX
+    var direction:SDLMouseWheelDirection;
+    #else
     var direction:MouseWheelDirection;
+    #end
+
     @:native("preciseX")
     var preciseX:Single;
+
     @:native("preciseY")
     var preciseY:Single;
+
     @:native("mouseX")
     var mouseX:Int;
+
     @:native("mouseY")
     var mouseY:Int;
 }
@@ -1268,7 +1724,11 @@ extern class MouseButtonEvent {
 @:native("SDL_MouseWheelEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLMouseWheelEvent {
+#else
 extern class MouseWheelEvent {
+#end
 	@:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1286,23 +1746,39 @@ extern class MouseWheelEvent {
 @:native("SDL_JoyAxisEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLJoyAxisEvent {
+#else
 extern class JoyAxisEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
+
     @:native("axis")
     var axis:UInt8;
+
     @:native("padding1")
     var padding1:UInt8;
+
     @:native("padding2")
     var padding2:UInt8;
+
     @:native("padding3")
     var padding3:UInt8;
+
     @:native("value")
     var value:Int16;
+    
     @:native("padding4")
     var padding4:UInt16;
 }
@@ -1310,23 +1786,40 @@ extern class JoyAxisEvent {
 @:native("SDL_JoyBallEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLJoyBallEvent {
+#else
 extern class JoyBallEvent {
+#end
+
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
+
     @:native("ball")
     var ball:UInt8;
+
     @:native("padding1")
     var padding1:UInt8;
+
     @:native("padding2")
     var padding2:UInt8;
+
     @:native("padding3")
     var padding3:UInt8;
+
     @:native("xrel")
     var xRel:Int16;
+
     @:native("yrel")
     var yRel:Int16;
 }
@@ -1334,19 +1827,33 @@ extern class JoyBallEvent {
 @:native("SDL_JoyHatEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLJoyHatEvent {
+#else
 extern class JoyHatEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+    
 	@:native("timestamp")
 	var timestamp:UInt32;
+    
 	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
+
     @:native("hat")
     var hat:UInt8;
+
     @:native("value")
     var value:UInt8;
+
     @:native("padding1")
     var padding1:UInt8;
+
     @:native("padding2")
     var padding2:UInt8;
 }
@@ -1354,19 +1861,33 @@ extern class JoyHatEvent {
 @:native("SDL_JoyButtonEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLJoyButtonEvent {
+#else
 extern class JoyButtonEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
+
     @:native("button")
     var button:UInt8;
+
     @:native("state")
     var state:UInt8;
+
     @:native("padding1")
     var padding1:UInt8;
+
     @:native("padding2")
     var padding2:UInt8;
 }
@@ -1374,49 +1895,90 @@ extern class JoyButtonEvent {
 @:native("SDL_JoyDeviceEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLJoyDeviceEvent {
+#else
 extern class JoyDeviceEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
 }
 
 @:native("SDL_JoyBatteryEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLJoyBatteryEvent {
+#else
 extern class JoyBatteryEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
+
     @:native("level")
+    #if SDL_PREFIX
+    var level:SDLJoystickPowerLevel;
+    #else
     var level:JoystickPowerLevel;
+    #end
 }
 
 @:native("SDL_ControllerAxisEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLControllerAxisEvent {
+#else
 extern class ControllerAxisEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
+
     @:native("axis")
     var axis:UInt8;
+
     @:native("padding1")
     var padding1:UInt8;
+
     @:native("padding2")
     var padding2:UInt8;
+
     @:native("padding3")
     var padding3:UInt8;
+
     @:native("value")
     var value:Int16;
+
     @:native("padding4")
     var padding4:UInt16;
 }
@@ -1424,19 +1986,33 @@ extern class ControllerAxisEvent {
 @:native("SDL_ControllerButtonEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLControllerButtonEvent {
+#else
 extern class ControllerButtonEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
+
     @:native("button")
     var button:UInt8;
+
     @:native("state")
     var state:UInt8;
+
     @:native("padding1")
     var padding1:UInt8;
+
     @:native("padding2")
     var padding2:UInt8;
 }
@@ -1444,33 +2020,58 @@ extern class ControllerButtonEvent {
 @:native("SDL_ControllerDeviceEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLControllerDeviceEvent {
+#else
 extern class ControllerDeviceEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
 }
 
 @:native("SDL_ControllerTouchpadEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLControllerTouchpadEvent {
+#else
 extern class ControllerTouchpadEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+    #if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
+
     @:native("touchpad")
     var touchpad:Int;
+
     @:native("finger")
     var finger:Int;
+
     @:native("x")
     var x:Single;
+
     @:native("y")
     var y:Single;
+
     @:native("pressure")
     var pressure:Single;
 }
@@ -1478,15 +2079,31 @@ extern class ControllerTouchpadEvent {
 @:native("SDL_ControllerSensorEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLControllerSensorEvent {
+#else
 extern class ControllerSensorEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("which")
+    #if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
 	var which:JoystickID;
+    #end
+
     @:native("sensor")
+    #if SDL_PREFIX
+    var sensor:SDLSensor;
+    #else
     var sensor:Sensor;
+    #end
+
     /**
      * Has 3 values in it
      */
@@ -1497,25 +2114,46 @@ extern class ControllerSensorEvent {
 @:native("SDL_TouchFingerEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLTouchFingerEvent {
+#else
 extern class TouchFingerEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("touchId")
+    #if SDL_PREFIX
+	var touchID:SDLTouchID;
+    #else
 	var touchID:TouchID;
+    #end
+    
     @:native("finger")
+    #if SDL_PREFIX
+	var finger:SDLFingerID;
+    #else
 	var finger:FingerID;
+    #end
+    
     @:native("x")
     var x:Single;
+
     @:native("y")
     var y:Single;
+
     @:native("dx")
     var dx:Single;
+
     @:native("dy")
     var dy:Single;
+
     @:native("pressure")
     var pressure:Single;
+
     @:native("windowID")
     var windowID:UInt32;
 }
@@ -1523,23 +2161,39 @@ extern class TouchFingerEvent {
 @:native("SDL_MultiGestureEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLMultiGestureEvent {
+#else
 extern class MultiGestureEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("touchId")
+    #if SDL_PREFIX
+	var touchID:SDLTouchID;
+    #else
 	var touchID:TouchID;
+    #end
+
     @:native("dTheta")
     var dTheta:Single;
+
     @:native("dDist")
     var dDist:Single;
+
     @:native("x")
     var x:Single;
+
     @:native("y")
     var y:Single;
+
     @:native("numFingers")
     var numFingers:UInt16;
+
     @:native("padding")
     var padding:UInt16;
 }
@@ -1547,21 +2201,43 @@ extern class MultiGestureEvent {
 @:native("SDL_DollarGestureEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLDollarGestureEvent {
+#else
 extern class DollarGestureEvent {
+#end
 	@:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
 	@:native("touchId")
-	var touchID:TouchID;
+	#if SDL_PREFIX
+    var touchID:SDLTouchID;
+    #else
+    var touchID:TouchID;
+    #end
+
     @:native("gestureId")
-	var gestureID:GestureID;
+	#if SDL_PREFIX
+    var gestureID:SDLGestureID;
+    #else
+    var gestureID:GestureID;
+    #end
+
     @:native("numFingers")
     var numFingers:UInt32;
+
     @:native("error")
     var error:Single;
+
     @:native("x")
     var x:Single;
+#if SDL_PREFIX
+
+#else   
+#end
     @:native("y")
     var y:Single;
 }
@@ -1569,7 +2245,11 @@ extern class DollarGestureEvent {
 @:native("SDL_DropEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLDropEvent {
+#else
 extern class DropEvent {
+#end
     @:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1583,7 +2263,11 @@ extern class DropEvent {
 @:native("SDL_SensorEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLSensorEvent {
+#else
 extern class SensorEvent {
+#end
     @:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1602,7 +2286,11 @@ extern class SensorEvent {
 @:native("SDL_QuitEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLQuitEvent {
+#else
 extern class QuitEvent {
+#end
     @:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1612,7 +2300,11 @@ extern class QuitEvent {
 @:native("SDL_UserEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLUserEvent {
+#else
 extern class UserEvent {
+#end
     @:native("type")
 	var type:UInt32;
 	@:native("timestamp")
@@ -1630,132 +2322,289 @@ extern class UserEvent {
 @:native("SDL_SysWMmsg")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLSysWMmsg {}
+#else
 extern class SysWMmsg {}
+#end
 
 @:native("SDL_SysWMEvent")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLSysWMEvent {
+#else
 extern class SysWMEvent {
+#end
     @:native("type")
 	var type:UInt32;
+
 	@:native("timestamp")
 	var timestamp:UInt32;
+
     @:native("msg")
+    #if SDL_PREFIX
+	var msg:SDLSysWMmsg;
+    #else
 	var msg:SysWMmsg;
+    #end
 }
 
-// gonna space out my @:native blocks for this
-// i usually don't because idc enough to
-// but here is an expection because i want readability
-// when porting this structure
 @:native("SDL_Event")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_Event {
+#if SDL_PREFIX
+extern class SDLRawEvent {
+#else
+extern class RawEvent {
+#end
     @:native("type")
+    #if SDL_PREFIX
+    var type:SDLEventType;
+    #else
     var type:EventType;
-    
+    #end
+
     @:native("common")
+    #if SDL_PREFIX
+    var common:SDLCommonEvent;
+    #else
     var common:CommonEvent;
+    #end
 
     @:native("display")
+    #if SDL_PREFIX
+    var display:SDLDisplayEvent;
+    #else
     var display:DisplayEvent;
+    #end
 
     @:native("window")
+    #if SDL_PREFIX
+    var window:SDLWindowEvent;
+    #else
     var window:WindowEvent;
+    #end
 
     @:native("key")
+    #if SDL_PREFIX
+    var key:SDLKeyboardEvent;
+    #else
     var key:KeyboardEvent;
+    #end
 
     @:native("edit")
+    #if SDL_PREFIX
+    var edit:SDLTextEditingEvent;
+    #else
     var edit:TextEditingEvent;
+    #end
 
     @:native("editExt")
+    #if SDL_PREFIX
+    var editExt:SDLTextEditingExtEvent;
+    #else
     var editExt:TextEditingExtEvent;
+    #end
 
     @:native("text")
+    #if SDL_PREFIX
+    var text:SDLTextInputEvent;
+    #else
     var text:TextInputEvent;
+    #end
 
     @:native("motion")
+    #if SDL_PREFIX
+    var motion:SDLMouseMotionEvent;
+    #else
     var motion:MouseMotionEvent;
+    #end
 
     @:native("button")
+    #if SDL_PREFIX
+    var button:SDLMouseButtonEvent;
+    #else
     var button:MouseButtonEvent;
+    #end
 
     @:native("mouse")
+    #if SDL_PREFIX
+    var mouse:SDLMouseWheelEvent;
+    #else
     var mouse:MouseWheelEvent;
-    
+    #end
+
     @:native("jaxis")
+    #if SDL_PREFIX
+    var jAxis:SDLJoyAxisEvent;
+    #else
     var jAxis:JoyAxisEvent;
+    #end
 
     @:native("jball")
+    #if SDL_PREFIX
+    var jBall:SDLJoyBallEvent;
+    #else
     var jBall:JoyBallEvent;
+    #end
 
     @:native("jhat")
+    #if SDL_PREFIX
+    var jHat:SDLJoyHatEvent;
+    #else
     var jHat:JoyHatEvent;
+    #end
 
     @:native("jbutton")
+    #if SDL_PREFIX
+    var jButton:SDLJoyButtonEvent;
+    #else
     var jButton:JoyButtonEvent;
+    #end
 
     @:native("jdevice")
+    #if SDL_PREFIX
+    var jDevice:SDLJoyDeviceEvent;
+    #else
     var jDevice:JoyDeviceEvent;
+    #end
 
     @:native("jbattery")
+    #if SDL_PREFIX
+    var jBattery:SDLJoyBatteryEvent;
+    #else
     var jBattery:JoyBatteryEvent;
+    #end
 
     @:native("caxis")
+    #if SDL_PREFIX
+    var cAxis:SDLControllerAxisEvent;
+    #else
     var cAxis:ControllerAxisEvent;
+    #end
 
     @:native("cbutton")
+    #if SDL_PREFIX
+    var cButton:SDLControllerButtonEvent;
+    #else
     var cButton:ControllerButtonEvent;
+    #end
 
     @:native("cdevice")
+    #if SDL_PREFIX
+    var cDevice:SDLControllerDeviceEvent;
+    #else
     var cDevice:ControllerDeviceEvent;
+    #end
 
     @:native("ctouchpad")
+    #if SDL_PREFIX
+    var cTouchpad:SDLControllerTouchpadEvent;
+    #else
     var cTouchpad:ControllerTouchpadEvent;
+    #end
 
     @:native("csensor")
+    #if SDL_PREFIX
+    var cSensor:SDLControllerSensorEvent;
+    #else
     var cSensor:ControllerSensorEvent;
+    #end
 
     // no adevice for you >:D
     // use openal it's cool and awesome
     // or port sdl audio shit if you want idc
     // i'm making this lib for a single game framework
     // but porting [almost] everything ever because i published it on github and haxelib
+    
+    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    // i'm now realizing this might come off as mean
+    // but basically from what i've witnessed sdl audio is
+    // very limited and barely works, that's why i'm not porting it
+    // as something with better capabilities such as openal (mentioned above)
+    // would work better. you can make a pull request for it if you wish
+    // i don't really mind, but i'm not porting sdl audio myself, have no need to
+    // have a good day reader!! ^^
 
     @:native("sensor")
+    #if SDL_PREFIX
+    var sensor:SDLSensorEvent;
+    #else
     var sensor:SensorEvent;
+    #end
 
     @:native("quit")
+    #if SDL_PREFIX
+    var quit:SDLQuitEvent;
+    #else
     var quit:QuitEvent;
+    #end
 
     @:native("user")
+    #if SDL_PREFIX
+    var user:SDLUserEvent;
+    #else
     var user:UserEvent;
+    #end
 
     @:native("syswm")
+    #if SDL_PREFIX
+    var sysWM:SDLSysWMEvent;
+    #else
     var sysWM:SysWMEvent;
+    #end
 
     @:native("tfinger")
+    #if SDL_PREFIX
+    var tFinger:SDLTouchFingerEvent;
+    #else
     var tFinger:TouchFingerEvent;
+    #end
 
     @:native("mgesture")
+    #if SDL_PREFIX
+    var mGesture:SDLMultiGestureEvent;
+    #else
     var mGesture:MultiGestureEvent;
+    #end
 
     @:native("dgesture")
+    #if SDL_PREFIX
+    var dGesture:SDLDollarGestureEvent;
+    #else
     var dGesture:DollarGestureEvent;
+    #end
 
     @:native("drop")
+    #if SDL_PREFIX
+    var drop:SDLDropEvent;
+    #else
     var drop:DropEvent;
+    #end
 
     @:native("padding")
     var padding:UInt8;
 }
-typedef Event = Pointer<SDL_Event>;
 
+#if SDL_PREFIX
+typedef SDLEvent = Pointer<SDLRawEvent>;
+#else
+typedef Event = Pointer<RawEvent>;
+#end
+
+
+#if SDL_PREFIX
+typedef SDLEventFilter = cpp.Callable<(userdata:RawPointer<cpp.Void>, event:SDLEvent) -> Int>;
+#else
 typedef EventFilter = cpp.Callable<(userdata:RawPointer<cpp.Void>, event:Event) -> Int>;
+#end
 
+#if SDL_PREFIX
+enum abstract SDLEventState(Int) from Int to Int {
+#else
 enum abstract EventState(Int) from Int to Int {
+#end
     var QUERY = -1;
     var IGNORE = 0;
     var DISABLE = 0;
@@ -1763,7 +2612,11 @@ enum abstract EventState(Int) from Int to Int {
 }
 
 // SDL_keyboard.h
+#if SDL_PREFIX
+enum abstract SDLScanCode(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract ScanCode(UInt32) from UInt32 to UInt32 {
+#end
     var UNKNOWN = 0;
     var A = 4;
     var B = 5;
@@ -2016,7 +2869,11 @@ enum abstract ScanCode(UInt32) from UInt32 to UInt32 {
     var NUM_SCANCODES = 512;
 }
 
+#if SDL_PREFIX
+enum abstract SDLKeyCode(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract KeyCode(UInt32) from UInt32 to UInt32 {
+#end
     var UNKNOWN = 0;
     var ENTER = 13;
     var ESCAPE = 27;
@@ -2287,7 +3144,11 @@ enum abstract KeyCode(UInt32) from UInt32 to UInt32 {
     var NUM_KEYCODES = 512;
 }
 
+#if SDL_PREFIX
+enum abstract SDLKeyMod(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract KeyMod(UInt32) from UInt32 to UInt32 {
+#end
     var NONE = 0x0000;
     var LSHIFT = 0x0001;
     var RSHIFT = 0x0002;
@@ -2308,7 +3169,11 @@ enum abstract KeyMod(UInt32) from UInt32 to UInt32 {
     var RESERVED = 0x8000;
 }
 
+#if SDL_PREFIX
+enum abstract SDLKeyState(UInt8) from UInt8 to UInt8 {
+#else
 enum abstract KeyState(UInt8) from UInt8 to UInt8 {
+#end
     var RELEASED = 0;
     var PRESSED = 1;
 }
@@ -2316,23 +3181,54 @@ enum abstract KeyState(UInt8) from UInt8 to UInt8 {
 @:native("SDL_Keysym")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLKeySym {
+#else
 extern class KeySym {
+#end
 	@:native("scancode")
+    #if SDL_PREFIX
+    public var scancode:SDLScanCode; // physical keycode
+    #else
     public var scancode:ScanCode; // physical keycode
+    #end
+
 	@:native("sym")
+    #if SDL_PREFIX
+    public var sym:SDLKeyCode; // virtual keycode
+    #else
     public var sym:KeyCode; // virtual keycode
+    #end
+    
 	@:native("mod")
+    #if SDL_PREFIX
+    public var mod:SDLKeyMod; // key mods
+    #else
     public var mod:KeyMod; // key mods
+    #end
 }
 
 // SDL_mouse.h
 @:native("SDL_Cursor")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_Cursor {}
-typedef Cursor = Pointer<SDL_Cursor>;
+#if SDL_PREFIX
+extern class SDLRawCursor {}
+#else
+extern class RawCursor {}
+#end
 
+#if SDL_PREFIX
+typedef SDLCursor = Pointer<SDLRawCursor>;
+#else
+typedef Cursor = Pointer<RawCursor>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLSystemCursor(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract SystemCursor(UInt32) from UInt32 to UInt32 {
+#end
 	var ARROW = 0;
     var IBEAM;
     var WAIT;
@@ -2348,12 +3244,20 @@ enum abstract SystemCursor(UInt32) from UInt32 to UInt32 {
     var NUM_SYSTEM_CURSORS;
 }
 
+#if SDL_PREFIX
+enum abstract SDLMouseWheelDirection(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract MouseWheelDirection(UInt32) from UInt32 to UInt32 {
+#end
 	var NORMAL = 0;
 	var FLIPPED;
 }
 
+#if SDL_PREFIX
+enum abstract SDLMouseButton(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract MouseButton(UInt32) from UInt32 to UInt32 {
+#end
 	private static inline function mask(x:UInt32) {
 		return (1 << ((x)-1));
 	}
@@ -2374,7 +3278,11 @@ enum abstract MouseButton(UInt32) from UInt32 to UInt32 {
 @:native("SDL_GUID")
 @:include("vendor/include/Headers.h")
 @:structAccess
+#if SDL_PREFIX
+extern class SDLGUID {
+#else
 extern class GUID {
+#end
     @:native("data")
     var data:UInt8;
 }
@@ -2383,44 +3291,99 @@ extern class GUID {
 @:native("SDL_Joystick")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_Joystick {}
-typedef Joystick = Pointer<SDL_Joystick>;
+#if SDL_PREFIX
+extern class SDLRawJoystick {}
+#else
+extern class RawJoystick {}
+#end
+
+#if SDL_PREFIX
+typedef SDLJoystick = Pointer<SDLRawJoystick>;
+#else
+typedef Joystick = Pointer<RawJoystick>;
+#end
 
 @:native("SDL_VirtualJoystickDesc")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_VirtualJoystickDesc {
+#if SDL_PREFIX
+extern class SDLRawVirtualJoystickDesc {
+#else
+extern class RawVirtualJoystickDesc {
+#end
     @:native("version")
     var version:UInt16;
+
     @:native("type")
+    #if SDL_PREFIX
+    var type:SDLJoystickType;
+    #else
     var type:JoystickType;
+    #end
+
     @:native("naxes")
     var nAxes:UInt16;
+
     @:native("nbuttons")
     var nButtons:UInt16;
+
     @:native("nhats")
     var nHats:UInt16;
+
     @:native("vendor_id")
     var vendorID:UInt16;
+
     @:native("product_id")
     var productID:UInt16;
+
     @:native("padding")
     var padding:UInt16;
+
     @:native("button_mask")
+    #if SDL_PREFIX
+    var buttonMask:SDLGameControllerButton;
+    #else
     var buttonMask:GameControllerButton;
+    #end
+
     @:native("axis_mask")
+    #if SDL_PREFIX
+    var axisMask:SDLGameControllerAxis;
+    #else
     var axisMask:GameControllerAxis;
+    #end
+
     @:native("name")
     var name:ConstCharStar;
+
     @:native("userdata")
     var userdata:RawPointer<cpp.Void>;
 }
-typedef VirtualJoystickDesc = Pointer<SDL_VirtualJoystickDesc>;
 
+#if SDL_PREFIX
+typedef SDLVirtualJoystickDesc = Pointer<SDLRawVirtualJoystickDesc>;
+#else
+typedef VirtualJoystickDesc = Pointer<RawVirtualJoystickDesc>;
+#end
+
+
+#if SDL_PREFIX
+typedef SDLJoystickGUID = SDLGUID;
+#else
 typedef JoystickGUID = GUID;
-typedef JoystickID = Int;
+#end
 
+#if SDL_PREFIX
+typedef SDLJoystickID = Int;
+#else
+typedef JoystickID = Int;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLJoystickType(UInt32) from UInt32 from UInt32 {
+#else
 enum abstract JoystickType(UInt32) from UInt32 from UInt32 {
+#end
     var UNKNOWN = 0;
     var GAMECONTROLLER;
     var WHEEL;
@@ -2433,7 +3396,11 @@ enum abstract JoystickType(UInt32) from UInt32 from UInt32 {
     var THROTTLE;
 }
 
+#if SDL_PREFIX
+enum abstract SDLJoystickPowerLevel(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract JoystickPowerLevel(UInt32) from UInt32 to UInt32 {
+#end
     var UNKNOWN = -1;
     /** <= 5% */
     var EMPTY;
@@ -2447,7 +3414,11 @@ enum abstract JoystickPowerLevel(UInt32) from UInt32 to UInt32 {
     var MAX;
 }
 
+#if SDL_PREFIX
+enum abstract SDLJoystickHatPosition(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract JoystickHatPosition(UInt32) from UInt32 to UInt32 {
+#end
     var CENTERED = 0x00;
     var UP = 0x01;
     var RIGHT = 0x02;
@@ -2463,10 +3434,23 @@ enum abstract JoystickHatPosition(UInt32) from UInt32 to UInt32 {
 @:native("SDL_GameController")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_GameController {}
-typedef GameController = Pointer<SDL_GameController>;
+#if SDL_PREFIX
+extern class SDLRawGameController {}
+#else
+extern class RawGameController {}
+#end
 
+#if SDL_PREFIX
+typedef SDLGameController = Pointer<SDLRawGameController>;
+#else
+typedef GameController = Pointer<RawGameController>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLGameControllerType(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract GameControllerType(UInt32) from UInt32 to UInt32 {
+#end
     var UNKNOWN = 0;
     var XBOX360;
     var XBOXONE;
@@ -2484,7 +3468,11 @@ enum abstract GameControllerType(UInt32) from UInt32 to UInt32 {
     var MAX;
 }
 
+#if SDL_PREFIX
+enum abstract SDLGameControllerBindType(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract GameControllerBindType(UInt32) from UInt32 to UInt32 {
+#end
     var NONE = 0;
     var BUTTON;
     var AXIS;
@@ -2494,13 +3482,30 @@ enum abstract GameControllerBindType(UInt32) from UInt32 to UInt32 {
 @:native("SDL_GameControllerButtonBind")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_GameControllerButtonBind {
+#if SDL_PREFIX
+extern class SDLRawGameControllerButtonBind {
+#else
+extern class RawGameControllerButtonBind {
+#end
     @:native("bindType")
+    #if SDL_PREFIX
+    var bindType:SDLGameControllerBindType;
+    #else
     var bindType:GameControllerBindType;
+    #end
 }
-typedef GameControllerButtonBind = Pointer<SDL_GameControllerButtonBind>;
 
+#if SDL_PREFIX
+typedef SDLGameControllerButtonBind = Pointer<SDLRawGameControllerButtonBind>;
+#else
+typedef GameControllerButtonBind = Pointer<RawGameControllerButtonBind>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLGameControllerAxis(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract GameControllerAxis(UInt32) from UInt32 to UInt32 {
+#end
     var INVALID = -1;
     var LEFTX;
     var LEFTY;
@@ -2511,7 +3516,11 @@ enum abstract GameControllerAxis(UInt32) from UInt32 to UInt32 {
     var MAX;
 }
 
+#if SDL_PREFIX
+enum abstract SDLGameControllerButton(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract GameControllerButton(UInt32) from UInt32 to UInt32 {
+#end
     var INVALID = -1;
     var A;
     var B;
@@ -2541,12 +3550,30 @@ enum abstract GameControllerButton(UInt32) from UInt32 to UInt32 {
 @:native("SDL_Sensor")
 @:include("vendor/include/Headers.h")
 @:structAccess
-extern class SDL_Sensor {}
-typedef Sensor = Pointer<SDL_Sensor>;
+#if SDL_PREFIX
+extern class SDLRawSensor {}
+#else
+extern class RawSensor {}
+#end
 
+#if SDL_PREFIX
+typedef SDLSensor = Pointer<SDLRawSensor>;
+#else
+typedef Sensor = Pointer<RawSensor>;
+#end
+
+
+#if SDL_PREFIX
+typedef SDLSensorID = Int;
+#else
 typedef SensorID = Int;
+#end
 
+#if SDL_PREFIX
+enum abstract SDLSensorType(UInt32) from UInt32 to UInt32 {
+#else
 enum abstract SensorType(UInt32) from UInt32 to UInt32 {
+#end
     var INVALID = -1;    /**< Returned for an invalid sensor */
     var UNKNOWN;         /**< Unknown sensor type */
     var ACCEL;           /**< Accelerometer */
@@ -2558,12 +3585,37 @@ enum abstract SensorType(UInt32) from UInt32 to UInt32 {
 }
 
 // SDL_touch.h
+
+#if SDL_PREFIX
+typedef SDLTouchID = Int;
+#else
 typedef TouchID = Int;
+#end
+
+#if SDL_PREFIX
+typedef SDLFingerID = Int;
+#else
 typedef FingerID = Int;
+#end
 
 // SDL_gesture.h
+
+#if SDL_PREFIX
+typedef SDLGestureID = Int;
+#else
 typedef GestureID = Int;
+#end
 
 // SDL_timer.h
+
+#if SDL_PREFIX
+typedef SDLTimerCallback = cpp.Callable<(interval:UInt32, param:RawPointer<cpp.Void>) -> UInt32>;
+#else
 typedef TimerCallback = cpp.Callable<(interval:UInt32, param:RawPointer<cpp.Void>) -> UInt32>;
+#end
+
+#if SDL_PREFIX
+typedef SDLTimerID = Int;
+#else
 typedef TimerID = Int;
+#end
