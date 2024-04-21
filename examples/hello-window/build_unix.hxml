@@ -1,0 +1,13 @@
+--class-path src
+
+-D HXCPP_CHECK_POINTER
+-D HXCPP_STACK_LINE
+-D analyzer-optimize
+
+--library hxsdl
+--main Test
+
+--cpp bin/cpp
+--cmd cd bin/cpp
+--cmd ./Test
+--cmd cd ../../

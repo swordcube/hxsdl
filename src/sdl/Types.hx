@@ -1,0 +1,3621 @@
+package sdl;
+
+import cpp.Int16;
+import cpp.RawConstPointer;
+import cpp.CastCharStar;
+import cpp.UInt8;
+import cpp.UInt16;
+import cpp.UInt32;
+import cpp.UInt64;
+import cpp.Pointer;
+import cpp.RawPointer;
+import cpp.ConstCharStar;
+import cpp.Helpers;
+
+class Types {}
+
+#if SDL_PREFIX
+enum abstract SDLBoolean(Int) from Int to Int {
+#else
+enum abstract Boolean(Int) from Int to Int {
+#end
+	var FALSE = 0;
+	var TRUE = 1;
+}
+
+// SDL.h
+#if SDL_PREFIX
+enum abstract SDLInitFlags(UInt32) to UInt32 from UInt32 {
+#else
+enum abstract InitFlags(UInt32) to UInt32 from UInt32 {
+#end
+	var VIDEO = 0x00000020;
+	var AUDIO = 0x00000010;
+	var JOYSTICK = 0x00000200;
+	var HAPTIC = 0x00001000;
+	var CONTROLLER = 0x00002000;
+	var EVENTS = 0x00004000;
+	var SENSOR = 0x00004000;
+	var NOPARACHUTE = 0x00100000;
+	var EVERYTHING = 0x00000020 | 0x00000010 | 0x00000200 | 0x00001000 | 0x00002000 | 0x00004000 | 0x00100000;
+}
+
+// SDL_hints.h
+#if SDL_PREFIX
+enum abstract SDLHints(ConstCharStar) to ConstCharStar from ConstCharStar {
+#else
+enum abstract Hints(ConstCharStar) to ConstCharStar from ConstCharStar {
+#end
+	var ACCELEROMETER_AS_JOYSTICK = cast "SDL_ACCELEROMETER_AS_JOYSTICK";
+	var ALLOW_ALT_TAB_WHILE_GRABBED = cast "SDL_ALLOW_ALT_TAB_WHILE_GRABBED";
+	var ALLOW_TOPMOST = cast "SDL_ALLOW_TOPMOST";
+	var ANDROID_APK_EXPANSION_MAIN_FILE_VERSION = cast "SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION";
+	var ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = cast "SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION";
+	var ANDROID_BLOCK_ON_PAUSE = cast "SDL_ANDROID_BLOCK_ON_PAUSE";
+	var ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO = cast "SDL_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO";
+	var ANDROID_TRAP_BACK_BUTTON = cast "SDL_ANDROID_TRAP_BACK_BUTTON";
+	var APP_NAME = cast "SDL_APP_NAME";
+	var APPLE_TV_CONTROLLER_UI_EVENTS = cast "SDL_APPLE_TV_CONTROLLER_UI_EVENTS";
+	var APPLE_TV_REMOTE_ALLOW_ROTATION = cast "SDL_APPLE_TV_REMOTE_ALLOW_ROTATION";
+	var AUDIO_CATEGORY = cast "SDL_AUDIO_CATEGORY";
+	var AUDIO_DEVICE_APP_NAME = cast "SDL_AUDIO_DEVICE_APP_NAME";
+	var AUDIO_DEVICE_STREAM_NAME = cast "SDL_AUDIO_DEVICE_STREAM_NAME";
+	var AUDIO_DEVICE_STREAM_ROLE = cast "SDL_AUDIO_DEVICE_STREAM_ROLE";
+	var AUDIO_RESAMPLING_MODE = cast "SDL_AUDIO_RESAMPLING_MODE";
+	var AUTO_UPDATE_JOYSTICKS = cast "SDL_AUTO_UPDATE_JOYSTICKS";
+	var AUTO_UPDATE_SENSORS = cast "SDL_AUTO_UPDATE_SENSORS";
+	var BMP_SAVE_LEGACY_FORMAT = cast "SDL_BMP_SAVE_LEGACY_FORMAT";
+	var DISPLAY_USABLE_BOUNDS = cast "SDL_DISPLAY_USABLE_BOUNDS";
+	var EMSCRIPTEN_ASYNCIFY = cast "SDL_EMSCRIPTEN_ASYNCIFY";
+	var EMSCRIPTEN_KEYBOARD_ELEMENT = cast "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT";
+	var ENABLE_SCREEN_KEYBOARD = cast "SDL_ENABLE_SCREEN_KEYBOARD";
+	var ENABLE_STEAM_CONTROLLERS = cast "SDL_ENABLE_STEAM_CONTROLLERS";
+	var EVENT_LOGGING = cast "SDL_EVENT_LOGGING";
+	var FORCE_RAISEWINDOW = cast "SDL_HINT_FORCE_RAISEWINDOW";
+	var FRAMEBUFFER_ACCELERATION = cast "SDL_FRAMEBUFFER_ACCELERATION";
+	var GAMECONTROLLERCONFIG = cast "SDL_GAMECONTROLLERCONFIG";
+	var GAMECONTROLLERCONFIG_FILE = cast "SDL_GAMECONTROLLERCONFIG_FILE";
+	var GAMECONTROLLERTYPE = cast "SDL_GAMECONTROLLERTYPE";
+	var GAMECONTROLLER_IGNORE_DEVICES = cast "SDL_GAMECONTROLLER_IGNORE_DEVICES";
+	var GAMECONTROLLER_IGNORE_DEVICES_EXCEPT = cast "SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT";
+	var GAMECONTROLLER_USE_BUTTON_LABELS = cast "SDL_GAMECONTROLLER_USE_BUTTON_LABELS";
+	var GRAB_KEYBOARD = cast "SDL_GRAB_KEYBOARD";
+	var HIDAPI_IGNORE_DEVICES = cast "SDL_HIDAPI_IGNORE_DEVICES";
+	var IDLE_TIMER_DISABLED = cast "SDL_IOS_IDLE_TIMER_DISABLED";
+	var IME_INTERNAL_EDITING = cast "SDL_IME_INTERNAL_EDITING";
+	var IME_SHOW_UI = cast "SDL_IME_SHOW_UI";
+	var IME_SUPPORT_EXTENDED_TEXT = cast "SDL_IME_SUPPORT_EXTENDED_TEXT";
+	var IOS_HIDE_HOME_INDICATOR = cast "SDL_IOS_HIDE_HOME_INDICATOR";
+	var JOYSTICK_ALLOW_BACKGROUND_EVENTS = cast "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS";
+	var JOYSTICK_ARCADESTICK_DEVICES = cast "SDL_JOYSTICK_ARCADESTICK_DEVICES";
+	var JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED = cast "SDL_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED";
+	var JOYSTICK_BLACKLIST_DEVICES = cast "SDL_JOYSTICK_BLACKLIST_DEVICES";
+	var JOYSTICK_BLACKLIST_DEVICES_EXCLUDED = cast "SDL_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED";
+	var JOYSTICK_FLIGHTSTICK_DEVICES = cast "SDL_JOYSTICK_FLIGHTSTICK_DEVICES";
+	var JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED = cast "SDL_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED";
+	var JOYSTICK_GAMECUBE_DEVICES = cast "SDL_JOYSTICK_GAMECUBE_DEVICES";
+	var JOYSTICK_GAMECUBE_DEVICES_EXCLUDED = cast "SDL_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED";
+	var JOYSTICK_HIDAPI = cast "SDL_JOYSTICK_HIDAPI";
+	var JOYSTICK_HIDAPI_GAMECUBE = cast "SDL_JOYSTICK_HIDAPI_GAMECUBE";
+	var JOYSTICK_GAMECUBE_RUMBLE_BRAKE = cast "SDL_JOYSTICK_GAMECUBE_RUMBLE_BRAKE";
+	var JOYSTICK_HIDAPI_JOY_CONS = cast "SDL_JOYSTICK_HIDAPI_JOY_CONS";
+	var JOYSTICK_HIDAPI_COMBINE_JOY_CONS = cast "SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS";
+	var JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = cast "SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS";
+	var JOYSTICK_HIDAPI_LUNA = cast "SDL_JOYSTICK_HIDAPI_LUNA";
+	var JOYSTICK_HIDAPI_NINTENDO_CLASSIC = cast "SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC";
+	var JOYSTICK_HIDAPI_SHIELD = cast "SDL_JOYSTICK_HIDAPI_SHIELD";
+	var JOYSTICK_HIDAPI_PS3 = cast "SDL_JOYSTICK_HIDAPI_PS3";
+	var JOYSTICK_HIDAPI_PS4 = cast "SDL_JOYSTICK_HIDAPI_PS4";
+	var JOYSTICK_HIDAPI_PS4_RUMBLE = cast "SDL_JOYSTICK_HIDAPI_PS4_RUMBLE";
+	var JOYSTICK_HIDAPI_PS5 = cast "SDL_JOYSTICK_HIDAPI_PS5";
+	var JOYSTICK_HIDAPI_PS5_PLAYER_LED = cast "SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED";
+	var JOYSTICK_HIDAPI_PS5_RUMBLE = cast "SDL_JOYSTICK_HIDAPI_PS5_RUMBLE";
+	var JOYSTICK_HIDAPI_STADIA = cast "SDL_JOYSTICK_HIDAPI_STADIA";
+	var JOYSTICK_HIDAPI_STEAM = cast "SDL_JOYSTICK_HIDAPI_STEAM";
+	var JOYSTICK_HIDAPI_STEAMDECK = cast "SDL_JOYSTICK_HIDAPI_STEAMDECK";
+	var JOYSTICK_HIDAPI_SWITCH = cast "SDL_JOYSTICK_HIDAPI_SWITCH";
+	var JOYSTICK_HIDAPI_SWITCH_HOME_LED = cast "SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED";
+	var JOYSTICK_HIDAPI_JOYCON_HOME_LED = cast "SDL_JOYSTICK_HIDAPI_JOYCON_HOME_LED";
+	var JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = cast "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED";
+	var JOYSTICK_HIDAPI_WII = cast "SDL_JOYSTICK_HIDAPI_WII";
+	var JOYSTICK_HIDAPI_WII_PLAYER_LED = cast "SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED";
+	var JOYSTICK_HIDAPI_XBOX = cast "SDL_JOYSTICK_HIDAPI_XBOX";
+	var JOYSTICK_HIDAPI_XBOX_360 = cast "SDL_JOYSTICK_HIDAPI_XBOX_360";
+	var JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED = cast "SDL_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED";
+	var JOYSTICK_HIDAPI_XBOX_360_WIRELESS = cast "SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS";
+	var JOYSTICK_HIDAPI_XBOX_ONE = cast "SDL_JOYSTICK_HIDAPI_XBOX_ONE";
+	var JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED = cast "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED";
+	var JOYSTICK_IOKIT = cast "SDL_JOYSTICK_IOKIT";
+	var JOYSTICK_MFI = cast "SDL_JOYSTICK_MFI";
+	var JOYSTICK_RAWINPUT = cast "SDL_JOYSTICK_RAWINPUT";
+	var JOYSTICK_RAWINPUT_CORRELATE_XINPUT = cast "SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT";
+	var JOYSTICK_ROG_CHAKRAM = cast "SDL_JOYSTICK_ROG_CHAKRAM";
+	var JOYSTICK_THREAD = cast "SDL_JOYSTICK_THREAD";
+	var JOYSTICK_THROTTLE_DEVICES = cast "SDL_JOYSTICK_THROTTLE_DEVICES";
+	var JOYSTICK_THROTTLE_DEVICES_EXCLUDED = cast "SDL_JOYSTICK_THROTTLE_DEVICES_EXCLUDED";
+	var JOYSTICK_WGI = cast "SDL_JOYSTICK_WGI";
+	var JOYSTICK_WHEEL_DEVICES = cast "SDL_JOYSTICK_WHEEL_DEVICES";
+	var JOYSTICK_WHEEL_DEVICES_EXCLUDED = cast "SDL_JOYSTICK_WHEEL_DEVICES_EXCLUDED";
+	var JOYSTICK_ZERO_CENTERED_DEVICES = cast "SDL_JOYSTICK_ZERO_CENTERED_DEVICES";
+	var KMSDRM_REQUIRE_DRM_MASTER = cast "SDL_KMSDRM_REQUIRE_DRM_MASTER";
+	var JOYSTICK_DEVICE = cast "SDL_JOYSTICK_DEVICE";
+	var LINUX_DIGITAL_HATS = cast "SDL_LINUX_DIGITAL_HATS";
+	var LINUX_HAT_DEADZONES = cast "SDL_LINUX_HAT_DEADZONES";
+	var LINUX_JOYSTICK_CLASSIC = cast "SDL_LINUX_JOYSTICK_CLASSIC";
+	var LINUX_JOYSTICK_DEADZONES = cast "SDL_LINUX_JOYSTICK_DEADZONES";
+	var MAC_BACKGROUND_APP = cast "SDL_MAC_BACKGROUND_APP";
+	var MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK = cast "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK";
+	var MAC_OPENGL_ASYNC_DISPATCH = cast "SDL_MAC_OPENGL_ASYNC_DISPATCH";
+	var MOUSE_DOUBLE_CLICK_RADIUS = cast "SDL_MOUSE_DOUBLE_CLICK_RADIUS";
+	var MOUSE_DOUBLE_CLICK_TIME = cast "SDL_MOUSE_DOUBLE_CLICK_TIME";
+	var MOUSE_FOCUS_CLICKTHROUGH = cast "SDL_MOUSE_FOCUS_CLICKTHROUGH";
+	var MOUSE_NORMAL_SPEED_SCALE = cast "SDL_MOUSE_NORMAL_SPEED_SCALE";
+	var MOUSE_RELATIVE_MODE_CENTER = cast "SDL_MOUSE_RELATIVE_MODE_CENTER";
+	var MOUSE_RELATIVE_MODE_WARP = cast "SDL_MOUSE_RELATIVE_MODE_WARP";
+	var MOUSE_RELATIVE_SCALING = cast "SDL_MOUSE_RELATIVE_SCALING";
+	var MOUSE_RELATIVE_SPEED_SCALE = cast "SDL_MOUSE_RELATIVE_SPEED_SCALE";
+	var MOUSE_RELATIVE_SYSTEM_SCALE = cast "SDL_MOUSE_RELATIVE_SYSTEM_SCALE";
+	var MOUSE_RELATIVE_WARP_MOTION = cast "SDL_MOUSE_RELATIVE_WARP_MOTION";
+	var MOUSE_TOUCH_EVENTS = cast "SDL_MOUSE_TOUCH_EVENTS";
+	var MOUSE_AUTO_CAPTURE = cast "SDL_MOUSE_AUTO_CAPTURE";
+	var NO_SIGNAL_HANDLERS = cast "SDL_NO_SIGNAL_HANDLERS";
+	var OPENGL_ES_DRIVER = cast "SDL_OPENGL_ES_DRIVER";
+	var ORIENTATIONS = cast "SDL_IOS_ORIENTATIONS";
+	var POLL_SENTINEL = cast "SDL_POLL_SENTINEL";
+	var PREFERRED_LOCALES = cast "SDL_PREFERRED_LOCALES";
+	var QTWAYLAND_CONTENT_ORIENTATION = cast "SDL_QTWAYLAND_CONTENT_ORIENTATION";
+	var QTWAYLAND_WINDOW_FLAGS = cast "SDL_QTWAYLAND_WINDOW_FLAGS";
+	var RENDER_BATCHING = cast "SDL_RENDER_BATCHING";
+	var RENDER_LINE_METHOD = cast "SDL_RENDER_LINE_METHOD";
+	var RENDER_DIRECT3D11_DEBUG = cast "SDL_RENDER_DIRECT3D11_DEBUG";
+	var RENDER_DIRECT3D_THREADSAFE = cast "SDL_RENDER_DIRECT3D_THREADSAFE";
+	var RENDER_DRIVER = cast "SDL_RENDER_DRIVER";
+	var RENDER_LOGICAL_SIZE_MODE = cast "SDL_RENDER_LOGICAL_SIZE_MODE";
+	var RENDER_OPENGL_SHADERS = cast "SDL_RENDER_OPENGL_SHADERS";
+	var RENDER_SCALE_QUALITY = cast "SDL_RENDER_SCALE_QUALITY";
+	var RENDER_VSYNC = cast "SDL_RENDER_VSYNC";
+	var RENDER_METAL_PREFER_LOW_POWER_DEVICE = cast "SDL_RENDER_METAL_PREFER_LOW_POWER_DEVICE";
+	var ROG_GAMEPAD_MICE = cast "SDL_ROG_GAMEPAD_MICE";
+	var ROG_GAMEPAD_MICE_EXCLUDED = cast "SDL_ROG_GAMEPAD_MICE_EXCLUDED";
+	var PS2_DYNAMIC_VSYNC = cast "SDL_PS2_DYNAMIC_VSYNC";
+	var RETURN_KEY_HIDES_IME = cast "SDL_RETURN_KEY_HIDES_IME";
+	var RPI_VIDEO_LAYER = cast "SDL_RPI_VIDEO_LAYER";
+	var SCREENSAVER_INHIBIT_ACTIVITY_NAME = cast "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME";
+	var THREAD_FORCE_REALTIME_TIME_CRITICAL = cast "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL";
+	var THREAD_PRIORITY_POLICY = cast "SDL_THREAD_PRIORITY_POLICY";
+	var THREAD_STACK_SIZE = cast "SDL_THREAD_STACK_SIZE";
+	var TIMER_RESOLUTION = cast "SDL_TIMER_RESOLUTION";
+	var TOUCH_MOUSE_EVENTS = cast "SDL_TOUCH_MOUSE_EVENTS";
+	var VITA_TOUCH_MOUSE_DEVICE = cast "SDL_HINT_VITA_TOUCH_MOUSE_DEVICE";
+	var TV_REMOTE_AS_JOYSTICK = cast "SDL_TV_REMOTE_AS_JOYSTICK";
+	var VIDEO_ALLOW_SCREENSAVER = cast "SDL_VIDEO_ALLOW_SCREENSAVER";
+	var VIDEO_DOUBLE_BUFFER = cast "SDL_VIDEO_DOUBLE_BUFFER";
+	var VIDEO_EGL_ALLOW_TRANSPARENCY = cast "SDL_VIDEO_EGL_ALLOW_TRANSPARENCY";
+	var VIDEO_EXTERNAL_CONTEXT = cast "SDL_VIDEO_EXTERNAL_CONTEXT";
+	var VIDEO_HIGHDPI_DISABLED = cast "SDL_VIDEO_HIGHDPI_DISABLED";
+	var VIDEO_MAC_FULLSCREEN_SPACES = cast "SDL_VIDEO_MAC_FULLSCREEN_SPACES";
+	var VIDEO_MINIMIZE_ON_FOCUS_LOSS = cast "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS";
+	var VIDEO_WAYLAND_ALLOW_LIBDECOR = cast "SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR";
+	var VIDEO_WAYLAND_PREFER_LIBDECOR = cast "SDL_VIDEO_WAYLAND_PREFER_LIBDECOR";
+	var VIDEO_WAYLAND_MODE_EMULATION = cast "SDL_VIDEO_WAYLAND_MODE_EMULATION";
+	var VIDEO_WAYLAND_EMULATE_MOUSE_WARP = cast "SDL_VIDEO_WAYLAND_EMULATE_MOUSE_WARP";
+	var VIDEO_WINDOW_SHARE_PIXEL_FORMAT = cast "SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT";
+	var VIDEO_FOREIGN_WINDOW_OPENGL = cast "SDL_VIDEO_FOREIGN_WINDOW_OPENGL";
+	var VIDEO_FOREIGN_WINDOW_VULKAN = cast "SDL_VIDEO_FOREIGN_WINDOW_VULKAN";
+	var VIDEO_WIN_D3DCOMPILER = cast "SDL_VIDEO_WIN_D3DCOMPILER";
+	var VIDEO_X11_FORCE_EGL = cast "SDL_VIDEO_X11_FORCE_EGL";
+	var VIDEO_X11_NET_WM_BYPASS_COMPOSITOR = cast "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR";
+	var VIDEO_X11_NET_WM_PING = cast "SDL_VIDEO_X11_NET_WM_PING";
+	var VIDEO_X11_WINDOW_VISUALID = cast "SDL_VIDEO_X11_WINDOW_VISUALID";
+	var VIDEO_X11_XINERAMA = cast "SDL_VIDEO_X11_XINERAMA";
+	var VIDEO_X11_XRANDR = cast "SDL_VIDEO_X11_XRANDR";
+	var VIDEO_X11_XVIDMODE = cast "SDL_VIDEO_X11_XVIDMODE";
+	var WAVE_FACT_CHUNK = cast "SDL_WAVE_FACT_CHUNK";
+	var WAVE_RIFF_CHUNK_SIZE = cast "SDL_WAVE_RIFF_CHUNK_SIZE";
+	var WAVE_TRUNCATION = cast "SDL_WAVE_TRUNCATION";
+	var WINDOWS_DISABLE_THREAD_NAMING = cast "SDL_WINDOWS_DISABLE_THREAD_NAMING";
+	var WINDOWS_ENABLE_MENU_MNEMONICS = cast "SDL_WINDOWS_ENABLE_MENU_MNEMONICS";
+	var WINDOWS_ENABLE_MESSAGELOOP = cast "SDL_WINDOWS_ENABLE_MESSAGELOOP";
+	var WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS = cast "SDL_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS";
+	var WINDOWS_FORCE_SEMAPHORE_KERNEL = cast "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL";
+	var WINDOWS_INTRESOURCE_ICON = cast "SDL_WINDOWS_INTRESOURCE_ICON";
+	var WINDOWS_INTRESOURCE_ICON_SMALL = cast "SDL_WINDOWS_INTRESOURCE_ICON_SMALL";
+	var WINDOWS_NO_CLOSE_ON_ALT_F4 = cast "SDL_WINDOWS_NO_CLOSE_ON_ALT_F4";
+	var WINDOWS_USE_D3D9EX = cast "SDL_WINDOWS_USE_D3D9EX";
+	var WINDOWS_DPI_AWARENESS = cast "SDL_WINDOWS_DPI_AWARENESS";
+	var WINDOWS_DPI_SCALING = cast "SDL_WINDOWS_DPI_SCALING";
+	var WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN = cast "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN";
+	var WINDOW_NO_ACTIVATION_WHEN_SHOWN = cast "SDL_WINDOW_NO_ACTIVATION_WHEN_SHOWN";
+	var WINRT_HANDLE_BACK_BUTTON = cast "SDL_WINRT_HANDLE_BACK_BUTTON";
+	var WINRT_PRIVACY_POLICY_LABEL = cast "SDL_WINRT_PRIVACY_POLICY_LABEL";
+	var WINRT_PRIVACY_POLICY_URL = cast "SDL_WINRT_PRIVACY_POLICY_URL";
+	var X11_FORCE_OVERRIDE_REDIRECT = cast "SDL_X11_FORCE_OVERRIDE_REDIRECT";
+	var XINPUT_ENABLED = cast "SDL_XINPUT_ENABLED";
+	var DIRECTINPUT_ENABLED = cast "SDL_DIRECTINPUT_ENABLED";
+	var XINPUT_USE_OLD_JOYSTICK_MAPPING = cast "SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING";
+	var AUDIO_INCLUDE_MONITORS = cast "SDL_AUDIO_INCLUDE_MONITORS";
+	var X11_WINDOW_TYPE = cast "SDL_X11_WINDOW_TYPE";
+	var QUIT_ON_LAST_WINDOW_CLOSE = cast "SDL_QUIT_ON_LAST_WINDOW_CLOSE";
+	var VIDEODRIVER = cast "SDL_VIDEODRIVER";
+	var AUDIODRIVER = cast "SDL_AUDIODRIVER";
+	var KMSDRM_DEVICE_INDEX = cast "SDL_KMSDRM_DEVICE_INDEX";
+	var TRACKPAD_IS_TOUCH_ONLY = cast "SDL_TRACKPAD_IS_TOUCH_ONLY";
+}
+
+#if SDL_PREFIX
+enum abstract SDLHintPriority(UInt32) from UInt32 to UInt32 { 
+#else
+enum abstract HintPriority(UInt32) from UInt32 to UInt32 {
+#end
+    var DEFAULT = 0;
+    var NORMAL;
+    var OVERRIDE;
+}
+
+
+#if SDL_PREFIX
+typedef SDLHintCallback = cpp.Callable<(userdata:RawPointer<cpp.Void>, name:ConstCharStar, oldValue:ConstCharStar, newValue:ConstCharStar) -> Void>;
+#else
+typedef HintCallback = cpp.Callable<(userdata:RawPointer<cpp.Void>, name:ConstCharStar, oldValue:ConstCharStar, newValue:ConstCharStar) -> Void>;
+#end
+
+// SDL_log.h
+#if SDL_PREFIX
+enum abstract SDLLogCategory(UInt32) from UInt32 to UInt32 { 
+#else
+enum abstract LogCategory(UInt32) from UInt32 to UInt32 {
+#end
+    @:native("SDL_LOG_CATEGORY_APPLICATION")
+	var APPLICATION;
+	@:native("SDL_LOG_CATEGORY_ERROR")
+	var ERROR;
+	@:native("SDL_LOG_CATEGORY_ASSERT")
+	var ASSERT;
+	@:native("SDL_LOG_CATEGORY_SYSTEM")
+	var SYSTEM;
+	@:native("SDL_LOG_CATEGORY_AUDIO")
+	var AUDIO;
+	@:native("SDL_LOG_CATEGORY_VIDEO")
+	var VIDEO;
+	@:native("SDL_LOG_CATEGORY_RENDER")
+	var RENDER;
+	@:native("SDL_LOG_CATEGORY_INPUT")
+	var INPUT;
+	@:native("SDL_LOG_CATEGORY_TEST")
+	var TEST;
+	@:native("SDL_LOG_CATEGORY_RESERVED1")
+	var RESERVED1;
+	@:native("SDL_LOG_CATEGORY_RESERVED2")
+	var RESERVED2;
+	@:native("SDL_LOG_CATEGORY_RESERVED3")
+	var RESERVED3;
+	@:native("SDL_LOG_CATEGORY_RESERVED4")
+	var RESERVED4;
+	@:native("SDL_LOG_CATEGORY_RESERVED5")
+	var RESERVED5;
+	@:native("SDL_LOG_CATEGORY_RESERVED6")
+	var RESERVED6;
+	@:native("SDL_LOG_CATEGORY_RESERVED7")
+	var RESERVED7;
+	@:native("SDL_LOG_CATEGORY_RESERVED8")
+	var RESERVED8;
+	@:native("SDL_LOG_CATEGORY_RESERVED9")
+	var RESERVED9;
+	@:native("SDL_LOG_CATEGORY_RESERVED10")
+	var RESERVED10;
+	@:native("SDL_LOG_CATEGORY_CUSTOM")
+	var CUSTOM;
+}
+
+#if SDL_PREFIX
+enum abstract SDLLogPriority(UInt32) from UInt32 to UInt32 { 
+#else
+enum abstract LogPriority(UInt32) from UInt32 to UInt32 {
+#end
+	@:native("SDL_LOG_PRIORITY_VERBOSE")
+	var VERBOSE;
+	@:native("SDL_LOG_PRIORITY_DEBUG")
+	var DEBUG;
+	@:native("SDL_LOG_PRIORITY_INFO")
+	var INFO;
+	@:native("SDL_LOG_PRIORITY_WARN")
+	var WARN;
+	@:native("SDL_LOG_PRIORITY_ERROR")
+	var ERROR;
+	@:native("SDL_LOG_PRIORITY_CRITICAL")
+	var CRITICAL;
+    @:native("SDL_NUM_LOG_PRIORITIES")
+    var NUM_LOG_PRIORITIES;
+}
+
+
+#if SDL_PREFIX
+typedef SDLLogOutputFunction = cpp.Callable<(userdata:RawPointer<cpp.Void>, category:Int, priority:SDLLogPriority, message:ConstCharStar) -> Void>;
+#else
+typedef LogOutputFunction = cpp.Callable<(userdata:RawPointer<cpp.Void>, category:Int, priority:LogPriority, message:ConstCharStar) -> Void>;
+#end
+
+
+
+// SDL_version.h
+@:include("vendor/include/Headers.h")
+@:native("SDL_version")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLVersion {
+#else
+extern class Version {
+#end
+	@:native("major")
+	public var major:cpp.UInt8;
+	@:native("minor")
+	public var minor:cpp.UInt8;
+	@:native("patch")
+	public var patch:cpp.UInt8;
+}
+
+// SDL_video.h
+@:include("vendor/include/Headers.h")
+@:native("SDL_DisplayMode")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLDisplayMode {
+#else
+extern class DisplayMode {
+#end
+	@:native("format")
+	public var format:cpp.UInt32;
+	@:native("w")
+	public var width:Int;
+	@:native("h")
+	public var height:Int;
+	@:native("refresh_rate")
+	public var refreshRate:Int;
+	@:native("driverdata")
+	public var driverData:RawPointer<cpp.Void>;
+}
+
+@:native("SDL_Window")
+@:include("vendor/include/Headers.h")
+#if SDL_PREFIX
+extern class SDLRawWindow {}
+#else
+extern class RawWindow {}
+#end
+
+#if SDL_PREFIX
+typedef SDLWindow = Pointer<SDLRawWindow>;
+#else
+typedef Window = Pointer<RawWindow>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLWindowInitFlags(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract WindowInitFlags(UInt32) from UInt32 to UInt32 {
+#end
+	var FULLSCREEN = 0x00000001;
+	var OPENGL = 0x00000002;
+	var SHOWN = 0x00000004;
+	var HIDDEN = 0x00000008;
+	var BORDERLESS = 0x00000010;
+	var RESIZABLE = 0x00000020;
+	var MINIMIZED = 0x00000040;
+	var MAXIMIZED = 0x00000080;
+	var MOUSE_GRABBED = 0x00000100;
+	var INPUT_FOCUS = 0x00000200;
+	var MOUSE_FOCUS = 0x00000400;
+	var FULLSCREEN_DESKTOP = (FULLSCREEN | 0x00001000);
+	var FOREIGN = 0x00000800;
+	var ALLOW_HIGHDPI = 0x00002000;
+	var MOUSE_CAPTURE = 0x00004000;
+	var ALWAYS_ON_TOP = 0x00008000;
+	var SKIP_TASKBAR = 0x00010000;
+	var UTILITY = 0x00020000;
+	var TOOLTIP = 0x00040000;
+	var POPUP_MENU = 0x00080000;
+	var KEYBOARD_GRABBED = 0x00100000;
+	var VULKAN = 0x10000000;
+	var METAL = 0x20000000;
+	var INPUT_GRABBED = MOUSE_GRABBED;
+}
+
+#if SDL_PREFIX
+enum abstract SDLWindowPos(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract WindowPos(UInt32) from UInt32 to UInt32 {
+#end
+	var CENTERED = 0x2FFF0000;
+	var UNDEFINED = 0x1FFF0000;
+}
+
+#if SDL_PREFIX
+enum abstract SDLWindowEventID(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract WindowEventID(UInt32) from UInt32 to UInt32 {
+#end
+	var NONE = 0;       /**< Never used */
+    var SHOWN;          /**< Window has been shown */
+    var HIDDEN;         /**< Window has been hidden */
+    var EXPOSED;        /**< Window has been exposed and should be
+                                         redrawn */
+    var MOVED;          /**< Window has been moved to data1, data2
+                                     */
+    var RESIZED;        /**< Window has been resized to data1xdata2 */
+    var SIZE_CHANGED;   /**< The window size has changed, either as
+                                         a result of an API call or through the
+                                         system or user changing the window size. */
+    var MINIMIZED;      /**< Window has been minimized */
+    var MAXIMIZED;      /**< Window has been maximized */
+    var RESTORED;       /**< Window has been restored to normal size
+                                         and position */
+    var ENTER;          /**< Window has gained mouse focus */
+    var LEAVE;          /**< Window has lost mouse focus */
+    var FOCUS_GAINED;   /**< Window has gained keyboard focus */
+    var FOCUS_LOST;     /**< Window has lost keyboard focus */
+    var CLOSE;          /**< The window manager requests that the window be closed */
+    var TAKE_FOCUS;     /**< Window is being offered a focus (should SetWindowInputFocus() on itself or a subwindow, or ignore) */
+    var HIT_TEST;       /**< Window had a hit test that wasn't var NORMAL. */
+    var ICCPROF_CHANGED; /**< The ICC profile of the window's display has changed. */
+    var DISPLAY_CHANGED; /**< Window has been moved to display data1. */
+}
+
+#if SDL_PREFIX
+enum abstract SDLDisplayEventID(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract DisplayEventID(UInt32) from UInt32 to UInt32 {
+#end
+	var NONE = 0;       /**< Never used */
+    var ORIENTATION;   /**< Display orientation has changed to data1 */
+    var CONNECTED;     /**< Display has been added to the system */
+    var DISCONNECTED;  /**< Display has been removed from the system */
+    var MOVED;          /**< Display has changed position */
+}
+
+#if SDL_PREFIX
+enum abstract SDLDisplayOrientation(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract DisplayOrientation(UInt32) from UInt32 to UInt32 {
+#end
+    var UNKNOWN = 0;            /**< The display orientation can't be determined */
+    var LANDSCAPE;          /**< The display is in landscape mode, with the right side up, relative to portrait mode */
+    var LANDSCAPE_FLIPPED;  /**< The display is in landscape mode, with the left side up, relative to portrait mode */
+    var PORTRAIT;           /**< The display is in portrait mode */
+    var PORTRAIT_FLIPPED;    /**< The display is in portrait mode, upside down */
+}
+
+#if SDL_PREFIX
+enum abstract SDLFlashOperation(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract FlashOperation(UInt32) from UInt32 to UInt32 {
+#end
+    var CANCEL = 0;                   /**< Cancel any window flash state */
+    var BRIEFLY;                  /**< Flash the window briefly to get attention */
+    var UNTIL_FOCUSED;             /**< Flash the window until it gets focus */
+}
+
+
+#if SDL_PREFIX
+typedef SDLGlContext = Pointer<cpp.Void>;
+#else
+typedef GlContext = Pointer<cpp.Void>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLGlAttribute(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract GlAttribute(UInt32) from UInt32 to UInt32 {
+#end
+	var RED_SIZE = 0;
+    var GREEN_SIZE;
+    var BLUE_SIZE;
+    var ALPHA_SIZE;
+    var BUFFER_SIZE;
+    var DOUBLEBUFFER;
+    var DEPTH_SIZE;
+    var STENCIL_SIZE;
+    var ACCUM_RED_SIZE;
+    var ACCUM_GREEN_SIZE;
+    var ACCUM_BLUE_SIZE;
+    var ACCUM_ALPHA_SIZE;
+    var STEREO;
+    var MULTISAMPLEBUFFERS;
+    var MULTISAMPLESAMPLES;
+    var ACCELERATED_VISUAL;
+    var RETAINED_BACKING;
+    var CONTEXT_MAJOR_VERSION;
+    var CONTEXT_MINOR_VERSION;
+    var CONTEXT_EGL;
+    var CONTEXT_FLAGS;
+    var CONTEXT_PROFILE_MASK;
+    var SHARE_WITH_CURRENT_CONTEXT;
+    var FRAMEBUFFER_SRGB_CAPABLE;
+    var CONTEXT_RELEASE_BEHAVIOR;
+    var CONTEXT_RESET_NOTIFICATION;
+    var CONTEXT_NO_ERROR;
+    var FLOATBUFFERS;
+}
+
+#if SDL_PREFIX
+enum abstract SDLGlProfile(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract GlProfile(UInt32) from UInt32 to UInt32 {
+#end
+	var CORE = 0x0001;
+    var COMPATIBILITY = 0x0002;
+    var ES = 0x0004; /**< GLX_CONTEXT_ES2_PROFILE_BIT_EXT */
+}
+
+#if SDL_PREFIX
+enum abstract SDLGlContextFlag(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract GlContextFlag(UInt32) from UInt32 to UInt32 {
+#end
+    var DEBUG_FLAG = 0x0001;
+    var FORWARD_COMPATIBLE_FLAG = 0x0002;
+    var ROBUST_ACCESS_FLAG = 0x0004;
+    var RESET_ISOLATION_FLAG = 0x0008;
+}
+
+#if SDL_PREFIX
+enum abstract SDLGlContextReleaseFlag(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract GlContextReleaseFlag(UInt32) from UInt32 to UInt32 {
+#end
+    var NONE = 0x0000;
+    var FLUSH = 0x0001;
+}
+
+#if SDL_PREFIX
+enum abstract SDLGlContextResetNotification(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract GlContextResetNotification(UInt32) from UInt32 to UInt32 {
+#end
+    var NO_NOTIFICATION = 0x0000;
+    var LOSE_CONTEXT = 0x0001;
+}
+
+#if SDL_PREFIX
+enum abstract SDLHitTestResult(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract HitTestResult(UInt32) from UInt32 to UInt32 {
+#end
+    var NORMAL = 0;  /**< Region is normal. No special properties. */
+    var DRAGGABLE;  /**< Region can drag entire window. */
+    var RESIZE_TOPLEFT;
+    var RESIZE_TOP;
+    var RESIZE_TOPRIGHT;
+    var RESIZE_RIGHT;
+    var RESIZE_BOTTOMRIGHT;
+    var RESIZE_BOTTOM;
+    var RESIZE_BOTTOMLEFT;
+    var RESIZE_LEFT;
+}
+
+
+#if SDL_PREFIX
+typedef SDLHitTest = cpp.Callable<(window:SDLWindow, area:cpp.RawConstPointer<SDLPoint>, data:Any) -> SDLHitTestResult>;
+#else
+typedef HitTest = cpp.Callable<(window:Window, area:cpp.RawConstPointer<Point>, data:Any) -> HitTestResult>;
+#end
+
+
+
+// SDL_blendmode.h
+#if SDL_PREFIX
+enum abstract SDLBlendMode(UInt32) to UInt32 from UInt32 {
+#else
+enum abstract BlendMode(UInt32) to UInt32 from UInt32 {
+#end
+	var NONE = 0x00000000;     /**< no blending
+									dstRGBA = srcRGBA */
+	var BLEND = 0x00000001;    /**< alpha blending
+									dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA))
+									dstA = srcA + (dstA * (1-srcA)) */
+	var ADD = 0x00000002;      /**< additive blending
+									dstRGB = (srcRGB * srcA) + dstRGB
+									dstA = dstA */
+	var MOD = 0x00000004;      /**< color modulate
+									dstRGB = srcRGB * dstRGB
+									dstA = dstA */
+	var MUL = 0x00000008;      /**< color multiply
+									dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA))
+									dstA = dstA */
+	var INVALID = 0x7FFFFFFF;
+}
+
+#if SDL_PREFIX
+enum abstract SDLBlendOperation(UInt32) to UInt32 from UInt32 {
+#else
+enum abstract BlendOperation(UInt32) to UInt32 from UInt32 {
+#end
+	var ADD              = 0x1;  /**< dst + src: supported by all renderers */
+    var SUBTRACT         = 0x2;  /**< dst - src : supported by D3D9, D3D11, OpenGL, OpenGLES */
+    var REV_SUBTRACT     = 0x3;  /**< src - dst : supported by D3D9, D3D11, OpenGL, OpenGLES */
+    var MINIMUM          = 0x4;  /**< min(dst, src) : supported by D3D9, D3D11 */
+    var MAXIMUM          = 0x5;   /**< max(dst, src) : supported by D3D9, D3D11 */
+}
+
+#if SDL_PREFIX
+enum abstract SDLBlendFactor(UInt32) to UInt32 from UInt32 {
+#else
+enum abstract BlendFactor(UInt32) to UInt32 from UInt32 {
+#end
+	var ZERO                = 0x1;  /**< 0, 0, 0, 0 */
+    var ONE                 = 0x2;  /**< 1, 1, 1, 1 */
+    var SRC_COLOR           = 0x3;  /**< srcR, srcG, srcB, srcA */
+    var ONE_MINUS_SRC_COLOR = 0x4;  /**< 1-srcR, 1-srcG, 1-srcB, 1-srcA */
+    var SRC_ALPHA           = 0x5;  /**< srcA, srcA, srcA, srcA */
+    var ONE_MINUS_SRC_ALPHA = 0x6;  /**< 1-srcA, 1-srcA, 1-srcA, 1-srcA */
+    var DST_COLOR           = 0x7;  /**< dstR, dstG, dstB, dstA */
+    var ONE_MINUS_DST_COLOR = 0x8;  /**< 1-dstR, 1-dstG, 1-dstB, 1-dstA */
+    var DST_ALPHA           = 0x9;  /**< dstA, dstA, dstA, dstA */
+    var ONE_MINUS_DST_ALPHA = 0xA;  /**< 1-dstA, 1-dstA, 1-dstA, 1-dstA */
+}
+
+
+
+// SDL_render.h
+#if SDL_PREFIX
+enum abstract SDLRendererFlags(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract RendererFlags(UInt32) from UInt32 to UInt32 {
+#end
+    var SOFTWARE = 0x00000001;         /**< The renderer is a software fallback */
+    var ACCELERATED = 0x00000002;      /**< The renderer uses hardware
+                                                     acceleration */
+    var PRESENTVSYNC = 0x00000004;     /**< Present is synchronized
+                                                     with the refresh rate */
+    var TARGETTEXTURE = 0x00000008;     /**< The renderer supports
+                                                     rendering to texture */
+}
+
+@:include("vendor/include/Headers.h")
+@:native("SDL_RendererInfo")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRendererInfo {
+#else
+extern class RendererInfo {
+#end
+	@:native("name")
+	public var name:ConstCharStar;
+	@:native("flags")
+	public var flags:UInt32;
+	@:native("num_texture_formats")
+	public var numTextureFormats:UInt32;
+	@:native("texture_formats")
+	public var textureFormats:RawPointer<UInt32>;
+	@:native("max_texture_width")
+	public var maxTextureWidth:Int;
+	@:native("max_texture_height")
+	public var maxTextureHeight:Int;
+}
+
+@:native("SDL_Vertex")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLVertex {
+#else
+extern class Vertex {
+#end
+	@:native("position")
+	#if SDL_PREFIX
+    public var position:SDLFPoint;
+    #else
+    public var position:FPoint;
+    #end
+
+	@:native("color")
+	#if SDL_PREFIX
+    public var color:SDLColor;
+    #else
+    public var color:Color;
+    #end
+
+	@:native("tex_coord")
+	#if SDL_PREFIX
+    public var texCoord:SDLFPoint;
+    #else
+    public var texCoord:FPoint;
+    #end
+
+	public static inline function create(pos:#if SDL_PREFIX SDLFPoint #else FPoint #end, col:#if SDL_PREFIX SDLColor #else Color #end, tex:#if SDL_PREFIX SDLFPoint #else FPoint #end):#if SDL_PREFIX SDLVertex #else Vertex #end {
+		return cast untyped __cpp__("SDL_Vertex{{0}, {1}, {2}}", pos, col, tex);
+	}
+}
+
+#if SDL_PREFIX
+enum abstract SDLTextureScaleMode(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract TextureScaleMode(UInt32) from UInt32 to UInt32 {
+#end
+	var NEAREST = 0;
+	var LINEAR;
+	var ANISOTROPIC;
+}
+
+#if SDL_PREFIX
+enum abstract SDLScaleMode(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract ScaleMode(UInt32) from UInt32 to UInt32 {
+#end
+    var NEAREST = 0;
+    var LINEAR;
+    var BEST;
+}
+
+#if SDL_PREFIX
+enum abstract SDLTextureAccess(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract TextureAccess(UInt32) from UInt32 to UInt32 {
+#end
+    var STATIC = 0;
+    var STREAMING;
+    var TARGET;
+}
+
+#if SDL_PREFIX
+enum abstract SDLTextureModulate(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract TextureModulate(UInt32) from UInt32 to UInt32 {
+#end
+	var NONE = 0x00000000;     /**< No modulation */
+    var COLOR = 0x00000001;    /**< srcC = srcC * color */
+    var ALPHA = 0x00000002;     /**< srcA = srcA * alpha */
+}
+
+#if SDL_PREFIX
+enum abstract SDLRendererFlip(UInt32) to UInt32 from UInt32 {
+#else
+enum abstract RendererFlip(UInt32) to UInt32 from UInt32 {
+#end
+	var NONE = 0x00000000;
+    var HORIZONTAL = 0x00000001;
+    var VERTICAL = 0x00000002;
+}
+
+@:native("SDL_Renderer")
+@:include("vendor/include/Headers.h")
+#if SDL_PREFIX
+extern class SDLRawRenderer {}
+#else
+extern class RawRenderer {}
+#end
+
+#if SDL_PREFIX
+typedef SDLRenderer = Pointer<SDLRawRenderer>;
+#else
+typedef Renderer = Pointer<RawRenderer>;
+#end
+
+@:native("SDL_Texture")
+@:include("vendor/include/Headers.h")
+#if SDL_PREFIX
+extern class SDLRawTexture {}
+#else
+extern class RawTexture {}
+#end
+
+#if SDL_PREFIX
+typedef SDLTexture = Pointer<SDLRawTexture>;
+#else
+typedef Texture = Pointer<RawTexture>;
+#end
+
+
+
+// SDL_pixels.h
+#if SDL_PREFIX
+enum abstract SDLTransparencyDefs(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract TransparencyDefs(UInt32) from UInt32 to UInt32 {
+#end
+	var OPAQUE = 255;
+    var TRANSPARENT = 0;
+}
+
+#if SDL_PREFIX
+enum abstract SDLPixelType(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract PixelType(UInt32) from UInt32 to UInt32 {
+#end
+	var UNKNOWN = 0;
+	var INDEX1;
+	var INDEX4;
+	var INDEX8;
+	var PACKED8;
+	var PACKED16;
+	var PACKED32;
+	var ARRAYU8;
+	var ARRAYU16;
+	var ARRAYU32;
+	var ARRAYF16;
+	var ARRAYF32;
+}
+
+#if SDL_PREFIX
+enum abstract SDLBitmapOrder(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract BitmapOrder(UInt32) from UInt32 to UInt32 {
+#end
+	var ORDER_NONE = 0;
+	var ORDER_4321;
+	var ORDER_1234;
+}
+
+#if SDL_PREFIX
+enum abstract SDLPackedOrder(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract PackedOrder(UInt32) from UInt32 to UInt32 {
+#end
+	var NONE = 0;
+	var XRGB;
+	var RGBX;
+	var ARGB;
+	var RGBA;
+	var XBGR;
+	var BGRX;
+	var ABGR;
+	var BGRA;
+}
+
+#if SDL_PREFIX
+enum abstract SDLArrayOrder(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract ArrayOrder(UInt32) from UInt32 to UInt32 {
+#end
+	var NONE = 0;
+	var RGB;
+	var RGBA;
+	var ARGB;
+	var BGR;
+	var BGRA;
+	var ABGR;
+}
+
+#if SDL_PREFIX
+enum abstract SDLPackedLayout(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract PackedLayout(UInt32) from UInt32 to UInt32 {
+#end
+	var LAYOUT_NONE = 0;
+	var LAYOUT_332;
+	var LAYOUT_4444;
+	var LAYOUT_1555;
+	var LAYOUT_5551;
+	var LAYOUT_565;
+	var LAYOUT_8888;
+	var LAYOUT_2101010;
+	var LAYOUT_1010102;
+}
+
+@:native("SDL_PixelFormatEnum")
+#if SDL_PREFIX
+enum abstract SDLPixelFormatEnum(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract PixelFormatEnum(UInt32) from UInt32 to UInt32 {
+#end
+    @:native("SDL_PIXELFORMAT_UNKNOWN")
+	var UNKNOWN;
+
+    @:native("SDL_PIXELFORMAT_INDEX1LSB")
+	var INDEX1LSB;
+
+    @:native("SDL_PIXELFORMAT_INDEX1MSB")
+	var INDEX1MSB;
+
+    @:native("SDL_PIXELFORMAT_INDEX4LSB")
+	var INDEX4LSB;
+
+    @:native("SDL_PIXELFORMAT_INDEX4MSB")
+	var INDEX4MSB;
+
+    @:native("SDL_PIXELFORMAT_INDEX8")
+	var INDEX8;
+
+    @:native("SDL_PIXELFORMAT_RGB332")
+	var RGB332;
+
+    @:native("SDL_PIXELFORMAT_XRGB4444")
+	var XRGB4444;
+
+    @:native("SDL_PIXELFORMAT_RGB4444")
+	var RGB444;
+    
+    @:native("SDL_PIXELFORMAT_XBGR4444")
+	var XBGR4444;
+
+    @:native("SDL_PIXELFORMAT_BGR4444")
+	var BGR444;
+    
+    @:native("SDL_PIXELFORMAT_XRGB1555")
+	var XRGB1555;
+
+    @:native("SDL_PIXELFORMAT_RGB555")
+	var RGB555;
+
+    @:native("SDL_PIXELFORMAT_XBGR1555")
+	var XBGR1555;
+
+    @:native("SDL_PIXELFORMAT_BGR555")
+	var BGR555;
+
+    @:native("SDL_PIXELFORMAT_ARGB4444")
+	var ARGB4444;
+
+    @:native("SDL_PIXELFORMAT_RGBA4444")
+	var RGBA4444;
+
+    @:native("SDL_PIXELFORMAT_ABGR4444")
+	var ABGR4444;
+
+    @:native("SDL_PIXELFORMAT_BGRA4444")
+	var BGRA4444;
+
+    @:native("SDL_PIXELFORMAT_ARGB1555")
+	var ARGB1555;
+
+    @:native("SDL_PIXELFORMAT_RGBA5551")
+	var RGBA5551;
+
+    @:native("SDL_PIXELFORMAT_ABGR1555")
+	var ABGR1555;
+
+    @:native("SDL_PIXELFORMAT_BGRA5551")
+	var BGRA5551;
+
+    @:native("SDL_PIXELFORMAT_RGB565")
+	var RGB565;
+
+    @:native("SDL_PIXELFORMAT_BGR565")
+	var BGR565;
+
+    @:native("SDL_PIXELFORMAT_RGB24")
+	var RGB24;
+
+    @:native("SDL_PIXELFORMAT_BGR24")
+	var BGR24;
+
+    @:native("SDL_PIXELFORMAT_XRGB8888")
+	var XRGB8888;
+	
+    @:native("SDL_PIXELFORMAT_RGB888")
+    var RGB888;
+
+    @:native("SDL_PIXELFORMAT_RGBX8888")
+	var RGBX8888;
+
+    @:native("SDL_PIXELFORMAT_XBGR8888")
+	var XBGR8888;
+
+    @:native("SDL_PIXELFORMAT_BGR888")
+	var BGR888;
+
+    @:native("SDL_PIXELFORMAT_BGRX8888")
+	var BGRX8888;
+
+    @:native("SDL_PIXELFORMAT_ARGB8888")
+	var ARGB8888;
+
+    @:native("SDL_PIXELFORMAT_RGBA8888")
+	var RGBA8888;
+
+    @:native("SDL_PIXELFORMAT_ABGR8888")
+	var ABGR8888;
+
+    @:native("SDL_PIXELFORMAT_BGRA8888")
+	var BGRA8888;
+
+    @:native("SDL_PIXELFORMAT_ARGB2101010")
+	var ARGB2101010;
+
+    @:native("SDL_PIXELFORMAT_RGBA32")
+    var RGBA32;
+
+    @:native("SDL_PIXELFORMAT_ARGB32")
+    var ARGB32;
+
+    @:native("SDL_PIXELFORMAT_BGRA32")
+    var BGRA32;
+
+    @:native("SDL_PIXELFORMAT_ABGR32")
+    var ABGR32;
+}
+
+@:native("SDL_Color")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLColor {
+#else
+extern class Color {
+#end
+	public var r:UInt8;
+	public var g:UInt8;
+	public var b:UInt8;
+	public var a:UInt8;
+
+	public static inline function create(r:UInt8, g:UInt8, b:UInt8, a:UInt8):#if SDL_PREFIX SDLColor #else Color #end {
+		return cast untyped __cpp__("SDL_Color{ (unsigned char){0}, (unsigned char){1}, (unsigned char){2}, (unsigned char){3} }", r, g, b, a);
+	}
+}
+
+@:native("SDL_Palette")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawPalette {
+#else
+extern class RawPalette {
+#end
+	@:native("ncolors")
+	public var numColors:Int;
+
+	@:native("colors")
+    #if SDL_PREFIX
+	public var colors:RawPointer<SDLColor>;
+    #else
+	public var colors:RawPointer<Color>;
+    #end
+    
+	@:native("version")
+	public var version:UInt32;
+
+	@:native("refcount")
+	public var refCount:Int;
+}
+
+#if SDL_PREFIX
+typedef SDLPalette = Pointer<SDLRawPalette>;
+#else
+typedef Palette = Pointer<RawPalette>;
+#end
+
+@:native("SDL_Palette")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawPixelFormat {
+#else
+extern class RawPixelFormat {
+#end
+	@:native("format")
+	public var format:UInt32;
+
+	@:native("palette")
+    #if SDL_PREFIX
+	public var palette:SDLPalette;
+    #else
+	public var palette:Palette;
+    #end
+
+	@:native("BitsPerPixel")
+	public var bitsPerPixel:UInt8;
+
+	@:native("BytesPerPixel")
+	public var bytesPerPixel:UInt8;
+
+	@:native("padding")
+	public var padding:RawPointer<UInt8>;
+
+	@:native("Rmask")
+	public var Rmask:UInt32;
+
+	@:native("Gmask")
+	public var Gmask:UInt32;
+
+	@:native("Bmask")
+	public var Bmask:UInt32;
+
+	@:native("Amask")
+	public var Amask:UInt32;
+    
+	@:native("Rloss")
+	public var Rloss:UInt8;
+
+	@:native("Gloss")
+	public var Gloss:UInt8;
+
+	@:native("Bloss")
+	public var Bloss:UInt8;
+
+	@:native("Aloss")
+	public var Aloss:UInt8;
+
+	@:native("Rshift")
+	public var Rshift:UInt8;
+
+	@:native("Gshift")
+	public var Gshift:UInt8;
+
+	@:native("Bshift")
+	public var Bshift:UInt8;
+
+	@:native("Ashift")
+	public var Ashift:UInt8;
+
+	@:native("refcount")
+	public var refCount:Int;
+
+	@:native("next")
+    #if SDL_PREFIX
+	public var next:SDLPixelFormat;
+    #else
+	public var next:PixelFormat;
+    #end
+}
+
+#if SDL_PREFIX
+typedef SDLPixelFormat = Pointer<SDLRawPixelFormat>;
+#else
+typedef PixelFormat = Pointer<RawPixelFormat>;
+#end
+
+
+
+// SDL_rect.h
+@:native("SDL_Point")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLPoint {
+#else
+extern class Point {
+#end
+	public var x:Int;
+	public var y:Int;
+
+	public static inline function create(x:Int, y:Int):#if SDL_PREFIX SDLPoint #else Point #end {
+		return cast untyped __cpp__("SDL_Point{ (int){0}, (int){1} }", x, y);
+	}
+}
+
+@:native("SDL_FPoint")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLFPoint {
+#else
+extern class FPoint {
+#end
+	public var x:Float;
+	public var y:Float;
+
+	public static inline function create(x:Float, y:Float):#if SDL_PREFIX SDLFPoint #else FPoint #end {
+		return cast untyped __cpp__("SDL_FPoint{ (float){0}, (float){1} }", x, y);
+	}
+}
+
+@:native("SDL_Rect")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRectangle {
+#else
+extern class Rectangle {
+#end
+	public var x:Int;
+	public var y:Int;
+	public var w:Int;
+	public var h:Int;
+
+	public static inline function create(x:Int, y:Int, w:Int, h:Int):#if SDL_PREFIX SDLRectangle #else Rectangle #end {
+		return cast untyped __cpp__("SDL_Rect{ (int){0}, (int){1}, (int){2}, (int){3} }", x, y, w, h);
+	}
+}
+
+@:native("SDL_FRect")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLFRectangle {
+#else
+extern class FRectangle {
+#end
+	public var x:Float;
+	public var y:Float;
+	public var w:Float;
+	public var h:Float;
+
+	public static inline function create(x:Float, y:Float, w:Float, h:Float):#if SDL_PREFIX SDLFRectangle #else FRectangle #end {
+		return cast untyped __cpp__("SDL_FRect{ (float){0}, (float){1}, (float){2}, (float){3} }", x, y, w, h);
+	}
+}
+
+// SDL_surface.h
+@:native("SDL_Surface")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawSurface {
+#else
+extern class RawSurface {
+#end
+	@:native("format")
+    #if SDL_PREFIX
+	public var format:SDLPixelFormat;
+    #else
+	public var format:PixelFormat;
+    #end
+
+	@:native("w")
+    public var w:Int;
+
+	@:native("h")
+    public var h:Int;
+
+	@:native("pitch")
+    public var pitch:Int;
+
+	@:native("pixels")
+	public var pixels:RawPointer<cpp.Void>;
+}
+
+#if SDL_PREFIX
+typedef SDLSurface = Pointer<SDLRawSurface>;
+#else
+typedef Surface = Pointer<RawSurface>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLYUVConversionMode(Int) from Int to Int {
+#else
+enum abstract YUVConversionMode(Int) from Int to Int {
+#end
+	var JPEG = 0;
+    var BT601;
+    var BT709;
+    var AUTOMATIC;
+}
+
+// SDL_rwops.h
+@:native("SDL_RWops")
+@:include("vendor/include/Headers.h")
+#if SDL_PREFIX
+extern class SDLRawRWops {}
+#else
+extern class RawRWops {}
+#end
+
+#if SDL_PREFIX
+typedef SDLRWops = Pointer<SDLRawRWops>;
+#else
+typedef RWops = Pointer<RawRWops>;
+#end
+
+// SDL_syswm.h
+#if SDL_PREFIX
+enum abstract SDLSysWMType(Int) from Int to Int {
+#else
+enum abstract SysWMType(Int) from Int to Int {
+#end
+	var UNKNOWN = 0;
+    var WINDOWS;
+    var X11;
+    var DIRECT_FB;
+    var COCOA;
+    var UI_KIT;
+    var WAYLAND;
+    var MIR;
+    var WIN_RT;
+    var ANDROID;
+    var VIVANTE;
+    var OS2;
+    var HAIKU;
+    var KMSDRM;
+    var RISC_OS;
+}
+
+@:native("SDL_SysWMinfo")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawSysWMinfo {
+#else
+extern class RawSysWMinfo {
+#end
+	@:native("version")
+	#if SDL_PREFIX
+    public var version:SDLVersion;
+    #else
+    public var version:Version;
+    #end
+    
+	@:native("subsystem")
+	#if SDL_PREFIX
+    public var subsystem:SDLSysWMType;
+    #else
+    public var subsystem:SysWMType;
+    #end
+}
+
+#if SDL_PREFIX
+typedef SDLSysWMinfo = Pointer<SDLRawSysWMinfo>;
+#else
+typedef SysWMinfo = Pointer<RawSysWMinfo>;
+#end
+
+// SDL_events.h
+#if SDL_PREFIX
+enum abstract SDLEventType(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract EventType(UInt32) from UInt32 to UInt32 {
+#end
+    var QUIT = 0x100;
+    var APP_TERMINATING;
+    var APP_LOWMEMORY;
+    var APP_WILLENTERBACKGROUND;
+    var APP_DIDENTERBACKGROUND;
+    var APP_WILLENTERFOREGROUND;
+    var APP_DIDENTERFOREGROUND;
+    var LOCALECHANGED;
+    var DISPLAYEVENT = 0x150;
+    var WINDOWEVENT = 0x200;
+    var SYSWMEVENT;
+    var KEYDOWN = 0x300;
+    var KEYUP;
+    var TEXTEDITING;
+    var TEXTINPUT;
+    var KEYMAPCHANGED;
+    var TEXTEDITING_EXT;
+    var MOUSEMOTION = 0x400;
+    var MOUSEBUTTONDOWN;
+    var MOUSEBUTTONUP;
+    var MOUSEWHEEL;
+    var JOYAXISMOTION = 0x600;
+    var JOYBALLMOTION;
+    var JOYHATMOTION;
+    var JOYBUTTONDOWN;
+    var JOYBUTTONUP;
+    var JOYDEVICEADDED;
+    var JOYDEVICEREMOVED;
+    var JOYBATTERYUPDATED;
+    var CONTROLLERAXISMOTION = 0x650;
+    var CONTROLLERBUTTONDOWN;
+    var CONTROLLERBUTTONUP;
+    var CONTROLLERDEVICEADDED;
+    var CONTROLLERDEVICEREMOVED;
+    var CONTROLLERDEVICEREMAPPED;
+    var CONTROLLERTOUCHPADDOWN;
+    var CONTROLLERTOUCHPADMOTION;
+    var CONTROLLERTOUCHPADUP;
+    var CONTROLLERSENSORUPDATE;
+    var CONTROLLERUPDATECOMPLETE_RESERVED_FOR_SDL3;
+    var CONTROLLERSTEAMHANDLEUPDATED;
+    var FINGERDOWN = 0x700;
+    var FINGERUP;
+    var FINGERMOTION;
+    var DOLLARGESTURE = 0x800;
+    var DOLLARRECORD;
+    var MULTIGESTURE;
+    var CLIPBOARDUPDATE = 0x900;
+    var DROPFILE = 0x1000;
+    var DROPTEXT;
+    var DROPBEGIN;
+    var DROPCOMPLETE;
+    var AUDIODEVICEADDED = 0x1100;
+    var AUDIODEVICEREMOVED;
+    var SENSORUPDATE = 0x1200;
+    var RENDER_TARGETS_RESET = 0x2000;
+    var RENDER_DEVICE_RESET;
+    var POLLSENTINEL = 0x7F00;
+    var USEREVENT    = 0x8000;
+    var LASTEVENT    = 0xFFFF;
+}
+
+#if SDL_PREFIX
+enum abstract SDLEventAction(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract EventAction(UInt32) from UInt32 to UInt32 {
+#end
+    var ADD = 0;
+    var PEEK;
+    var GET;
+}
+
+@:native("SDL_CommonEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLCommonEvent {
+#else
+extern class CommonEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+}
+
+@:native("SDL_DisplayEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLDisplayEvent {
+#else
+extern class DisplayEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("display")
+	var display:UInt32;
+
+	@:native("event")
+    #if SDL_PREFIX
+	var event:SDLDisplayEventID;
+    #else
+	var event:DisplayEventID;
+    #end
+
+	@:native("padding1")
+	var padding1:UInt8;
+
+	@:native("padding2")
+	var padding2:UInt8;
+
+	@:native("padding3")
+	var padding3:UInt8;
+
+	@:native("data")
+	var data:Int;
+}
+
+@:native("SDL_WindowEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLWindowEvent {
+#else
+extern class WindowEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("windowID")
+	var windowID:UInt32;
+
+	@:native("event")
+    #if SDL_PREFIX
+	var event:SDLWindowEventID;
+    #else
+	var event:WindowEventID;
+    #end
+
+	@:native("padding1")
+	var padding1:UInt8;
+
+	@:native("padding2")
+	var padding2:UInt8;
+
+	@:native("padding3")
+	var padding3:UInt8;
+
+	@:native("data1")
+	var data1:Int;
+
+    @:native("data2")
+	var data2:Int;
+}
+
+@:native("SDL_KeyboardEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLKeyboardEvent {
+#else
+extern class KeyboardEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("windowID")
+	var windowID:UInt32;
+
+	@:native("state")
+    #if SDL_PREFIX
+	var state:SDLKeyState;
+    #else
+	var state:KeyState;
+    #end
+
+	@:native("padding1")
+	var padding1:UInt8;
+
+	@:native("padding2")
+	var padding2:UInt8;
+
+	@:native("padding3")
+	var padding3:UInt8;
+
+	@:native("keysym")
+    #if SDL_PREFIX
+	var keysym:SDLKeySym;
+    #else
+	var keysym:KeySym;
+    #end
+}
+
+@:native("SDL_TextEditingEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLTextEditingEvent {
+#else
+extern class TextEditingEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	/**
+	 * This string can only be 32 characters long!
+	 */
+	@:native("text")
+	var text:String;
+	@:native("start")
+	var start:Int;
+	@:native("length")
+	var length:Int;
+}
+
+@:native("SDL_TextEditingExtEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLTextEditingExtEvent {
+#else
+extern class TextEditingExtEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	@:native("text")
+	var text:String;
+	@:native("start")
+	var start:Int;
+	@:native("length")
+	var length:Int;
+}
+
+@:native("SDL_TextInputEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLTextInputEvent {
+#else
+extern class TextInputEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	/**
+	 * This string can only be 32 characters long!
+	 */
+	@:native("text")
+	var text:String;
+}
+
+@:native("SDL_MouseMotionEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLMouseMotionEvent {
+#else
+extern class MouseMotionEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("windowID")
+	var windowID:UInt32;
+
+	@:native("which")
+	var which:UInt32;
+
+	@:native("state")
+	#if SDL_PREFIX
+    var state:SDLMouseButton;
+    #else
+    var state:MouseButton;
+    #end
+
+	@:native("x")
+    var x:Int;
+
+	@:native("y")
+    var y:Int;
+
+    @:native("xrel")
+    var xRel:Int;
+
+	@:native("yrel")
+    var yRel:Int;
+}
+
+@:native("SDL_MouseButtonEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLMouseButtonEvent {
+#else
+extern class MouseButtonEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("windowID")
+	var windowID:UInt32;
+
+	@:native("which")
+	var which:UInt32;
+
+	@:native("button")
+	#if SDL_PREFIX
+    var button:SDLMouseButton;
+    #else
+    var button:MouseButton;
+    #end
+
+	@:native("state")
+    #if SDL_PREFIX
+    var state:SDLKeyState;
+    #else
+    var state:KeyState;
+    #end
+
+    @:native("clicks")
+    var clicks:UInt8;
+
+    @:native("padding1")
+    var padding1:UInt8;
+
+    @:native("x")
+    var x:Int;
+
+	@:native("y")
+    var y:Int;
+
+    @:native("direction")
+    #if SDL_PREFIX
+    var direction:SDLMouseWheelDirection;
+    #else
+    var direction:MouseWheelDirection;
+    #end
+
+    @:native("preciseX")
+    var preciseX:Single;
+
+    @:native("preciseY")
+    var preciseY:Single;
+
+    @:native("mouseX")
+    var mouseX:Int;
+
+    @:native("mouseY")
+    var mouseY:Int;
+}
+
+@:native("SDL_MouseWheelEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLMouseWheelEvent {
+#else
+extern class MouseWheelEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+	@:native("windowID")
+	var windowID:UInt32;
+	@:native("which")
+	var which:UInt32;
+    @:native("x")
+    var x:Int;
+	@:native("y")
+    var y:Int;
+}
+
+@:native("SDL_JoyAxisEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLJoyAxisEvent {
+#else
+extern class JoyAxisEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+
+    @:native("axis")
+    var axis:UInt8;
+
+    @:native("padding1")
+    var padding1:UInt8;
+
+    @:native("padding2")
+    var padding2:UInt8;
+
+    @:native("padding3")
+    var padding3:UInt8;
+
+    @:native("value")
+    var value:Int16;
+    
+    @:native("padding4")
+    var padding4:UInt16;
+}
+
+@:native("SDL_JoyBallEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLJoyBallEvent {
+#else
+extern class JoyBallEvent {
+#end
+
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+
+    @:native("ball")
+    var ball:UInt8;
+
+    @:native("padding1")
+    var padding1:UInt8;
+
+    @:native("padding2")
+    var padding2:UInt8;
+
+    @:native("padding3")
+    var padding3:UInt8;
+
+    @:native("xrel")
+    var xRel:Int16;
+
+    @:native("yrel")
+    var yRel:Int16;
+}
+
+@:native("SDL_JoyHatEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLJoyHatEvent {
+#else
+extern class JoyHatEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+    
+	@:native("timestamp")
+	var timestamp:UInt32;
+    
+	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+
+    @:native("hat")
+    var hat:UInt8;
+
+    @:native("value")
+    var value:UInt8;
+
+    @:native("padding1")
+    var padding1:UInt8;
+
+    @:native("padding2")
+    var padding2:UInt8;
+}
+
+@:native("SDL_JoyButtonEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLJoyButtonEvent {
+#else
+extern class JoyButtonEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+
+    @:native("button")
+    var button:UInt8;
+
+    @:native("state")
+    var state:UInt8;
+
+    @:native("padding1")
+    var padding1:UInt8;
+
+    @:native("padding2")
+    var padding2:UInt8;
+}
+
+@:native("SDL_JoyDeviceEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLJoyDeviceEvent {
+#else
+extern class JoyDeviceEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+}
+
+@:native("SDL_JoyBatteryEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLJoyBatteryEvent {
+#else
+extern class JoyBatteryEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+
+    @:native("level")
+    #if SDL_PREFIX
+    var level:SDLJoystickPowerLevel;
+    #else
+    var level:JoystickPowerLevel;
+    #end
+}
+
+@:native("SDL_ControllerAxisEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLControllerAxisEvent {
+#else
+extern class ControllerAxisEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+
+    @:native("axis")
+    var axis:UInt8;
+
+    @:native("padding1")
+    var padding1:UInt8;
+
+    @:native("padding2")
+    var padding2:UInt8;
+
+    @:native("padding3")
+    var padding3:UInt8;
+
+    @:native("value")
+    var value:Int16;
+
+    @:native("padding4")
+    var padding4:UInt16;
+}
+
+@:native("SDL_ControllerButtonEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLControllerButtonEvent {
+#else
+extern class ControllerButtonEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+
+    @:native("button")
+    var button:UInt8;
+
+    @:native("state")
+    var state:UInt8;
+
+    @:native("padding1")
+    var padding1:UInt8;
+
+    @:native("padding2")
+    var padding2:UInt8;
+}
+
+@:native("SDL_ControllerDeviceEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLControllerDeviceEvent {
+#else
+extern class ControllerDeviceEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+	#if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+}
+
+@:native("SDL_ControllerTouchpadEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLControllerTouchpadEvent {
+#else
+extern class ControllerTouchpadEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+    #if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+
+    @:native("touchpad")
+    var touchpad:Int;
+
+    @:native("finger")
+    var finger:Int;
+
+    @:native("x")
+    var x:Single;
+
+    @:native("y")
+    var y:Single;
+
+    @:native("pressure")
+    var pressure:Single;
+}
+
+@:native("SDL_ControllerSensorEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLControllerSensorEvent {
+#else
+extern class ControllerSensorEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("which")
+    #if SDL_PREFIX
+	var which:SDLJoystickID;
+    #else
+	var which:JoystickID;
+    #end
+
+    @:native("sensor")
+    #if SDL_PREFIX
+    var sensor:SDLSensor;
+    #else
+    var sensor:Sensor;
+    #end
+
+    /**
+     * Has 3 values in it
+     */
+    @:native("data")
+    var data:CArray<Single>;
+}
+
+@:native("SDL_TouchFingerEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLTouchFingerEvent {
+#else
+extern class TouchFingerEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("touchId")
+    #if SDL_PREFIX
+	var touchID:SDLTouchID;
+    #else
+	var touchID:TouchID;
+    #end
+    
+    @:native("finger")
+    #if SDL_PREFIX
+	var finger:SDLFingerID;
+    #else
+	var finger:FingerID;
+    #end
+    
+    @:native("x")
+    var x:Single;
+
+    @:native("y")
+    var y:Single;
+
+    @:native("dx")
+    var dx:Single;
+
+    @:native("dy")
+    var dy:Single;
+
+    @:native("pressure")
+    var pressure:Single;
+
+    @:native("windowID")
+    var windowID:UInt32;
+}
+
+@:native("SDL_MultiGestureEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLMultiGestureEvent {
+#else
+extern class MultiGestureEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("touchId")
+    #if SDL_PREFIX
+	var touchID:SDLTouchID;
+    #else
+	var touchID:TouchID;
+    #end
+
+    @:native("dTheta")
+    var dTheta:Single;
+
+    @:native("dDist")
+    var dDist:Single;
+
+    @:native("x")
+    var x:Single;
+
+    @:native("y")
+    var y:Single;
+
+    @:native("numFingers")
+    var numFingers:UInt16;
+
+    @:native("padding")
+    var padding:UInt16;
+}
+
+@:native("SDL_DollarGestureEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLDollarGestureEvent {
+#else
+extern class DollarGestureEvent {
+#end
+	@:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+	@:native("touchId")
+	#if SDL_PREFIX
+    var touchID:SDLTouchID;
+    #else
+    var touchID:TouchID;
+    #end
+
+    @:native("gestureId")
+	#if SDL_PREFIX
+    var gestureID:SDLGestureID;
+    #else
+    var gestureID:GestureID;
+    #end
+
+    @:native("numFingers")
+    var numFingers:UInt32;
+
+    @:native("error")
+    var error:Single;
+
+    @:native("x")
+    var x:Single;
+#if SDL_PREFIX
+
+#else   
+#end
+    @:native("y")
+    var y:Single;
+}
+
+@:native("SDL_DropEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLDropEvent {
+#else
+extern class DropEvent {
+#end
+    @:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+    @:native("file")
+    var file:CastCharStar;
+    @:native("windowID")
+    var windowID:UInt32;
+}
+
+@:native("SDL_SensorEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLSensorEvent {
+#else
+extern class SensorEvent {
+#end
+    @:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+    @:native("which")
+    var which:Int;
+    /**
+     * Has 6 values in it
+     */
+    @:native("data")
+    var data:CArray<Single>;
+    @:native("timestamp_us")
+	var timestampUS:UInt64;
+}
+
+@:native("SDL_QuitEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLQuitEvent {
+#else
+extern class QuitEvent {
+#end
+    @:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+}
+
+@:native("SDL_UserEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLUserEvent {
+#else
+extern class UserEvent {
+#end
+    @:native("type")
+	var type:UInt32;
+	@:native("timestamp")
+	var timestamp:UInt32;
+    @:native("windowID")
+	var windowID:UInt32;
+    @:native("code")
+    var code:Int;
+    @:native("data1")
+    var data1:RawPointer<cpp.Void>;
+    @:native("data2")
+    var data2:RawPointer<cpp.Void>;
+}
+
+@:native("SDL_SysWMmsg")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLSysWMmsg {}
+#else
+extern class SysWMmsg {}
+#end
+
+@:native("SDL_SysWMEvent")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLSysWMEvent {
+#else
+extern class SysWMEvent {
+#end
+    @:native("type")
+	var type:UInt32;
+
+	@:native("timestamp")
+	var timestamp:UInt32;
+
+    @:native("msg")
+    #if SDL_PREFIX
+	var msg:SDLSysWMmsg;
+    #else
+	var msg:SysWMmsg;
+    #end
+}
+
+@:native("SDL_Event")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawEvent {
+#else
+extern class RawEvent {
+#end
+    @:native("type")
+    #if SDL_PREFIX
+    var type:SDLEventType;
+    #else
+    var type:EventType;
+    #end
+
+    @:native("common")
+    #if SDL_PREFIX
+    var common:SDLCommonEvent;
+    #else
+    var common:CommonEvent;
+    #end
+
+    @:native("display")
+    #if SDL_PREFIX
+    var display:SDLDisplayEvent;
+    #else
+    var display:DisplayEvent;
+    #end
+
+    @:native("window")
+    #if SDL_PREFIX
+    var window:SDLWindowEvent;
+    #else
+    var window:WindowEvent;
+    #end
+
+    @:native("key")
+    #if SDL_PREFIX
+    var key:SDLKeyboardEvent;
+    #else
+    var key:KeyboardEvent;
+    #end
+
+    @:native("edit")
+    #if SDL_PREFIX
+    var edit:SDLTextEditingEvent;
+    #else
+    var edit:TextEditingEvent;
+    #end
+
+    @:native("editExt")
+    #if SDL_PREFIX
+    var editExt:SDLTextEditingExtEvent;
+    #else
+    var editExt:TextEditingExtEvent;
+    #end
+
+    @:native("text")
+    #if SDL_PREFIX
+    var text:SDLTextInputEvent;
+    #else
+    var text:TextInputEvent;
+    #end
+
+    @:native("motion")
+    #if SDL_PREFIX
+    var motion:SDLMouseMotionEvent;
+    #else
+    var motion:MouseMotionEvent;
+    #end
+
+    @:native("button")
+    #if SDL_PREFIX
+    var button:SDLMouseButtonEvent;
+    #else
+    var button:MouseButtonEvent;
+    #end
+
+    @:native("mouse")
+    #if SDL_PREFIX
+    var mouse:SDLMouseWheelEvent;
+    #else
+    var mouse:MouseWheelEvent;
+    #end
+
+    @:native("jaxis")
+    #if SDL_PREFIX
+    var jAxis:SDLJoyAxisEvent;
+    #else
+    var jAxis:JoyAxisEvent;
+    #end
+
+    @:native("jball")
+    #if SDL_PREFIX
+    var jBall:SDLJoyBallEvent;
+    #else
+    var jBall:JoyBallEvent;
+    #end
+
+    @:native("jhat")
+    #if SDL_PREFIX
+    var jHat:SDLJoyHatEvent;
+    #else
+    var jHat:JoyHatEvent;
+    #end
+
+    @:native("jbutton")
+    #if SDL_PREFIX
+    var jButton:SDLJoyButtonEvent;
+    #else
+    var jButton:JoyButtonEvent;
+    #end
+
+    @:native("jdevice")
+    #if SDL_PREFIX
+    var jDevice:SDLJoyDeviceEvent;
+    #else
+    var jDevice:JoyDeviceEvent;
+    #end
+
+    @:native("jbattery")
+    #if SDL_PREFIX
+    var jBattery:SDLJoyBatteryEvent;
+    #else
+    var jBattery:JoyBatteryEvent;
+    #end
+
+    @:native("caxis")
+    #if SDL_PREFIX
+    var cAxis:SDLControllerAxisEvent;
+    #else
+    var cAxis:ControllerAxisEvent;
+    #end
+
+    @:native("cbutton")
+    #if SDL_PREFIX
+    var cButton:SDLControllerButtonEvent;
+    #else
+    var cButton:ControllerButtonEvent;
+    #end
+
+    @:native("cdevice")
+    #if SDL_PREFIX
+    var cDevice:SDLControllerDeviceEvent;
+    #else
+    var cDevice:ControllerDeviceEvent;
+    #end
+
+    @:native("ctouchpad")
+    #if SDL_PREFIX
+    var cTouchpad:SDLControllerTouchpadEvent;
+    #else
+    var cTouchpad:ControllerTouchpadEvent;
+    #end
+
+    @:native("csensor")
+    #if SDL_PREFIX
+    var cSensor:SDLControllerSensorEvent;
+    #else
+    var cSensor:ControllerSensorEvent;
+    #end
+
+    // no adevice for you >:D
+    // use openal it's cool and awesome
+    // or port sdl audio shit if you want idc
+    // i'm making this lib for a single game framework
+    // but porting [almost] everything ever because i published it on github and haxelib
+    
+    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    // i'm now realizing this might come off as mean
+    // but basically from what i've witnessed sdl audio is
+    // very limited and barely works, that's why i'm not porting it
+    // as something with better capabilities such as openal (mentioned above)
+    // would work better. you can make a pull request for it if you wish
+    // i don't really mind, but i'm not porting sdl audio myself, have no need to
+    // have a good day reader!! ^^
+
+    @:native("sensor")
+    #if SDL_PREFIX
+    var sensor:SDLSensorEvent;
+    #else
+    var sensor:SensorEvent;
+    #end
+
+    @:native("quit")
+    #if SDL_PREFIX
+    var quit:SDLQuitEvent;
+    #else
+    var quit:QuitEvent;
+    #end
+
+    @:native("user")
+    #if SDL_PREFIX
+    var user:SDLUserEvent;
+    #else
+    var user:UserEvent;
+    #end
+
+    @:native("syswm")
+    #if SDL_PREFIX
+    var sysWM:SDLSysWMEvent;
+    #else
+    var sysWM:SysWMEvent;
+    #end
+
+    @:native("tfinger")
+    #if SDL_PREFIX
+    var tFinger:SDLTouchFingerEvent;
+    #else
+    var tFinger:TouchFingerEvent;
+    #end
+
+    @:native("mgesture")
+    #if SDL_PREFIX
+    var mGesture:SDLMultiGestureEvent;
+    #else
+    var mGesture:MultiGestureEvent;
+    #end
+
+    @:native("dgesture")
+    #if SDL_PREFIX
+    var dGesture:SDLDollarGestureEvent;
+    #else
+    var dGesture:DollarGestureEvent;
+    #end
+
+    @:native("drop")
+    #if SDL_PREFIX
+    var drop:SDLDropEvent;
+    #else
+    var drop:DropEvent;
+    #end
+
+    @:native("padding")
+    var padding:UInt8;
+}
+
+#if SDL_PREFIX
+typedef SDLEvent = Pointer<SDLRawEvent>;
+#else
+typedef Event = Pointer<RawEvent>;
+#end
+
+
+#if SDL_PREFIX
+typedef SDLEventFilter = cpp.Callable<(userdata:RawPointer<cpp.Void>, event:SDLEvent) -> Int>;
+#else
+typedef EventFilter = cpp.Callable<(userdata:RawPointer<cpp.Void>, event:Event) -> Int>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLEventState(Int) from Int to Int {
+#else
+enum abstract EventState(Int) from Int to Int {
+#end
+    var QUERY = -1;
+    var IGNORE = 0;
+    var DISABLE = 0;
+    var ENABLE = 1;
+}
+
+// SDL_keyboard.h
+#if SDL_PREFIX
+enum abstract SDLScanCode(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract ScanCode(UInt32) from UInt32 to UInt32 {
+#end
+    var UNKNOWN = 0;
+    var A = 4;
+    var B = 5;
+    var C = 6;
+    var D = 7;
+    var E = 8;
+    var F = 9;
+    var G = 10;
+    var H = 11;
+    var I = 12;
+    var J = 13;
+    var K = 14;
+    var L = 15;
+    var M = 16;
+    var N = 17;
+    var O = 18;
+    var P = 19;
+    var Q = 20;
+    var R = 21;
+    var S = 22;
+    var T = 23;
+    var U = 24;
+    var V = 25;
+    var W = 26;
+    var X = 27;
+    var Y = 28;
+    var Z = 29;
+
+    var ONE = 30;
+    var TWO = 31;
+    var THREE = 32;
+    var FOUR = 33;
+    var FIVE = 34;
+    var SIX = 35;
+    var SEVEN = 36;
+    var EIGHT = 37;
+    var NINE = 38;
+    var ZERO = 39;
+    var RETURN = 40;
+    var ESCAPE = 41;
+    var BACKSPACE = 42;
+    var TAB = 43;
+    var SPACE = 44;
+    var MINUS = 45;
+    var EQUALS = 46;
+    var LEFTBRACKET = 47;
+    var RIGHTBRACKET = 48;
+    var BACKSLASH = 49;
+    var NONUSHASH = 50;
+    var SEMICOLON = 51;
+    var APOSTROPHE = 52;
+    var GRAVE = 53;
+    var COMMA = 54;
+    var PERIOD = 55;
+    var SLASH = 56;
+    var CAPSLOCK = 57;
+    var F1 = 58;
+    var F2 = 59;
+    var F3 = 60;
+    var F4 = 61;
+    var F5 = 62;
+    var F6 = 63;
+    var F7 = 64;
+    var F8 = 65;
+    var F9 = 66;
+    var F10 = 67;
+    var F11 = 68;
+    var F12 = 69;
+    var PRINTSCREEN = 70;
+    var SCROLLLOCK = 71;
+    var PAUSE = 72;
+    var INSERT = 73;
+    var HOME = 74;
+    var PAGEUP = 75;
+    var DELETE = 76;
+    var END = 77;
+    var PAGEDOWN = 78;
+    var RIGHT = 79;
+    var LEFT = 80;
+    var DOWN = 81;
+    var UP = 82;
+    var NUMLOCKCLEAR = 83;
+    var KP_DIVIDE = 84;
+    var KP_MULTIPLY = 85;
+    var KP_MINUS = 86;
+    var KP_PLUS = 87;
+    var KP_ENTER = 88;
+    var KP_ONE = 89;
+    var KP_TWO = 90;
+    var KP_THREE = 91;
+    var KP_FOUR = 92;
+    var KP_FIVE = 93;
+    var KP_SIX = 94;
+    var KP_SEVEN = 95;
+    var KP_EIGHT = 96;
+    var KP_NINE = 97;
+    var KP_ZERO = 98;
+    var KP_PERIOD = 99;
+    var NONUSBACKSLASH = 100;
+    var APPLICATION = 101;
+    var POWER = 102;
+    var KP_EQUALS = 103;
+    var F13 = 104;
+    var F14 = 105;
+    var F15 = 106;
+    var F16 = 107;
+    var F17 = 108;
+    var F18 = 109;
+    var F19 = 110;
+    var F20 = 111;
+    var F21 = 112;
+    var F22 = 113;
+    var F23 = 114;
+    var F24 = 115;
+    var EXECUTE = 116;
+    var HELP = 117;
+    var MENU = 118;
+    var SELECT = 119;
+    var STOP = 120;
+    var AGAIN = 121;
+    var UNDO = 122;
+    var CUT = 123;
+    var COPY = 124;
+    var PASTE = 125;
+    var FIND = 126;
+    var MUTE = 127;
+    var VOLUMEUP = 128;
+    var VOLUMEDOWN = 129;
+    var KP_COMMA = 133;
+    var KP_EQUALSAS400 = 134;
+    var INTERNATIONAL1 = 135;
+    var INTERNATIONAL2 = 136;
+    var INTERNATIONAL3 = 137;
+    var INTERNATIONAL4 = 138;
+    var INTERNATIONAL5 = 139;
+    var INTERNATIONAL6 = 140;
+    var INTERNATIONAL7 = 141;
+    var INTERNATIONAL8 = 142;
+    var INTERNATIONAL9 = 143;
+    var LANG1 = 144;
+    var LANG2 = 145;
+    var LANG3 = 146;
+    var LANG4 = 147;
+    var LANG5 = 148;
+    var LANG6 = 149;
+    var LANG7 = 150;
+    var LANG8 = 151;
+    var LANG9 = 152;
+    var ALTERASE = 153;
+    var SYSREQ = 154;
+    var CANCEL = 155;
+    var CLEAR = 156;
+    var PRIOR = 157;
+    var RETURN2 = 158;
+    var SEPARATOR = 159;
+    var OUT = 160;
+    var OPER = 161;
+    var CLEARAGAIN = 162;
+    var CRSEL = 163;
+    var EXSEL = 164;
+    var KP_00 = 176;
+    var KP_000 = 177;
+    var THOUSANDSSEPARATOR = 178;
+    var DECIMALSEPARATOR = 179;
+    var CURRENCYUNIT = 180;
+    var CURRENCYSUBUNIT = 181;
+    var KP_LEFTPAREN = 182;
+    var KP_RIGHTPAREN = 183;
+    var KP_LEFTBRACE = 184;
+    var KP_RIGHTBRACE = 185;
+    var KP_TAB = 186;
+    var KP_BACKSPACE = 187;
+    var KP_A = 188;
+    var KP_B = 189;
+    var KP_C = 190;
+    var KP_D = 191;
+    var KP_E = 192;
+    var KP_F = 193;
+    var KP_XOR = 194;
+    var KP_POWER = 195;
+    var KP_PERCENT = 196;
+    var KP_LESS = 197;
+    var KP_GREATER = 198;
+    var KP_AMPERSAND = 199;
+    var KP_DBLAMPERSAND = 200;
+    var KP_VERTICALBAR = 201;
+    var KP_DBLVERTICALBAR = 202;
+    var KP_COLON = 203;
+    var KP_HASH = 204;
+    var KP_SPACE = 205;
+    var KP_AT = 206;
+    var KP_EXCLAM = 207;
+    var KP_MEMSTORE = 208;
+    var KP_MEMRECALL = 209;
+    var KP_MEMCLEAR = 210;
+    var KP_MEMADD = 211;
+    var KP_MEMSUBTRACT = 212;
+    var KP_MEMMULTIPLY = 213;
+    var KP_MEMDIVIDE = 214;
+    var KP_PLUSMINUS = 215;
+    var KP_CLEAR = 216;
+    var KP_CLEARENTRY = 217;
+    var KP_BINARY = 218;
+    var KP_OCTAL = 219;
+    var KP_DECIMAL = 220;
+    var KP_HEXADECIMAL = 221;
+    var LCTRL = 224;
+    var LSHIFT = 225;
+    var LALT = 226;
+    var LGUI = 227;
+    var RCTRL = 228;
+    var RSHIFT = 229;
+    var RALT = 230;
+    var RGUI = 231;
+    var MODE = 257;
+    var AUDIONEXT = 258;
+    var AUDIOPREV = 259;
+    var AUDIOSTOP = 260;
+    var AUDIOPLAY = 261;
+    var AUDIOMUTE = 262;
+    var MEDIASELECT = 263;
+    var WWW = 264;
+    var MAIL = 265;
+    var CALCULATOR = 266;
+    var COMPUTER = 267;
+    var AC_SEARCH = 268;
+    var AC_HOME = 269;
+    var AC_BACK = 270;
+    var AC_FORWARD = 271;
+    var AC_STOP = 272;
+    var AC_REFRESH = 273;
+    var AC_BOOKMARKS = 274;
+    var BRIGHTNESSDOWN = 275;
+    var BRIGHTNESSUP = 276;
+    var DISPLAYSWITCH = 277;
+    var KBDILLUMTOGGLE = 278;
+    var KBDILLUMDOWN = 279;
+    var KBDILLUMUP = 280;
+    var EJECT = 281;
+    var SLEEP = 282;
+    var APP1 = 283;
+    var APP2 = 284;
+    var AUDIOREWIND = 285;
+    var AUDIOFASTFORWARD = 286;
+    var SOFTLEFT = 287;
+    var SOFTRIGHT = 288;
+    var CALL = 289;
+    var ENDCALL = 290;
+
+    var NUM_SCANCODES = 512;
+}
+
+#if SDL_PREFIX
+enum abstract SDLKeyCode(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract KeyCode(UInt32) from UInt32 to UInt32 {
+#end
+    var UNKNOWN = 0;
+    var ENTER = 13;
+    var ESCAPE = 27;
+    var BACKSPACE = 8;
+    var TAB = 9;
+    var SPACE = 32;
+    var EXCLAIM = 33;
+    var QUOTEDBL = 34;
+    var HASH = 35;
+    var PERCENT = 37;
+    var DOLLAR = 36;
+    var AMPERSAND = 38;
+    var QUOTE = 39;
+    var LEFTPAREN = 40;
+    var RIGHTPAREN = 41;
+    var ASTERISK = 42;
+    var PLUS = 43;
+    var COMMA = 44;
+    var MINUS = 45;
+    var PERIOD = 46;
+    var SLASH = 47;
+    var ZERO = 48;
+    var ONE = 49;
+    var TWO = 50;
+    var THREE = 51;
+    var FOUR = 52;
+    var FIVE = 53;
+    var SIX = 54;
+    var SEVEN = 55;
+    var EIGHT = 56;
+    var NINE = 57;
+    var COLON = 58;
+    var SEMICOLON = 59;
+    var LESS = 60;
+    var EQUALS = 61;
+    var GREATER = 62;
+    var QUESTION = 63;
+    var AT = 64;
+    var LEFTBRACKET = 91;
+    var BACKSLASH = 92;
+    var RIGHTBRACKET = 93;
+    var CARET = 94;
+    var UNDERSCORE = 95;
+    var BACKQUOTE = 96;
+    var A = 97;
+    var B = 98;
+    var C = 99;
+    var D = 100;
+    var E = 101;
+    var F = 102;
+    var G = 103;
+    var H = 104;
+    var I = 105;
+    var J = 106;
+    var K = 107;
+    var L = 108;
+    var M = 109;
+    var N = 110;
+    var O = 111;
+    var P = 112;
+    var Q = 113;
+    var R = 114;
+    var S = 115;
+    var T = 116;
+    var U = 117;
+    var V = 118;
+    var W = 119;
+    var X = 120;
+    var Y = 121;
+    var Z = 122;
+    var NONUSHASH = 1073741874;
+    var APOSTROPHE = 1073741876;
+    var GRAVE = 1073741877;
+    var CAPSLOCK = 1073741881;
+    var F1 = 1073741882;
+    var F2 = 1073741883;
+    var F3 = 1073741884;
+    var F4 = 1073741885;
+    var F5 = 1073741886;
+    var F6 = 1073741887;
+    var F7 = 1073741888;
+    var F8 = 1073741889;
+    var F9 = 1073741890;
+    var F10 = 1073741891;
+    var F11 = 1073741892;
+    var F12 = 1073741893;
+    var PRINTSCREEN = 1073741894;
+    var SCROLLLOCK = 1073741895;
+    var PAUSE = 1073741896;
+    var INSERT = 1073741897;
+    var HOME = 1073741898;
+    var PAGEUP = 1073741899;
+    var DELETE = 1073741900;
+    var END = 1073741901;
+    var PAGEDOWN = 1073741902;
+    var RIGHT = 1073741903;
+    var LEFT = 1073741904;
+    var DOWN = 1073741905;
+    var UP = 1073741906;
+    var NUMLOCKCLEAR = 1073741907;
+    var KP_DIVIDE = 1073741908;
+    var KP_MULTIPLY = 1073741909;
+    var KP_MINUS = 1073741910;
+    var KP_PLUS = 1073741911;
+    var KP_ENTER = 1073741912;
+    var KP_ONE = 1073741913;
+    var KP_TWO = 1073741914;
+    var KP_THREE = 1073741915;
+    var KP_FOUR = 1073741916;
+    var KP_FIVE = 1073741917;
+    var KP_SIX = 1073741918;
+    var KP_SEVEN = 1073741919;
+    var KP_EIGHT = 1073741920;
+    var KP_NINE = 1073741921;
+    var KP_ZERO = 1073741922;
+    var KP_PERIOD = 1073741923;
+    var NONUSBACKSLASH = 1073741924;
+    var APPLICATION = 1073741925;
+    var POWER = 1073741926;
+    var KP_EQUALS = 1073741927;
+    var F13 = 1073741928;
+    var F14 = 1073741929;
+    var F15 = 1073741930;
+    var F16 = 1073741931;
+    var F17 = 1073741932;
+    var F18 = 1073741933;
+    var F19 = 1073741934;
+    var F20 = 1073741935;
+    var F21 = 1073741936;
+    var F22 = 1073741937;
+    var F23 = 1073741938;
+    var F24 = 1073741939;
+    var EXECUTE = 1073741940;
+    var HELP = 1073741941;
+    var MENU = 1073741942;
+    var SELECT = 1073741943;
+    var STOP = 1073741944;
+    var AGAIN = 1073741945;
+    var UNDO = 1073741946;
+    var CUT = 1073741947;
+    var COPY = 1073741948;
+    var PASTE = 1073741949;
+    var FIND = 1073741950;
+    var MUTE = 1073741951;
+    var VOLUMEUP = 1073741952;
+    var VOLUMEDOWN = 1073741953;
+    var KP_COMMA = 1073741957;
+    var KP_EQUALSAS400 = 1073741958;
+    var INTERNATIONAL1 = 1073741959;
+    var INTERNATIONAL2 = 1073741960;
+    var INTERNATIONAL3 = 1073741961;
+    var INTERNATIONAL4 = 1073741962;
+    var INTERNATIONAL5 = 1073741963;
+    var INTERNATIONAL6 = 1073741964;
+    var INTERNATIONAL7 = 1073741965;
+    var INTERNATIONAL8 = 1073741966;
+    var INTERNATIONAL9 = 1073741967;
+    var LANG1 = 1073741968;
+    var LANG2 = 1073741969;
+    var LANG3 = 1073741970;
+    var LANG4 = 1073741971;
+    var LANG5 = 1073741972;
+    var LANG6 = 1073741973;
+    var LANG7 = 1073741974;
+    var LANG8 = 1073741975;
+    var LANG9 = 1073741976;
+    var ALTERASE = 1073741977;
+    var SYSREQ = 1073741978;
+    var CANCEL = 1073741979;
+    var CLEAR = 1073741980;
+    var PRIOR = 1073741981;
+    var ENTER2 = 1073741982;
+    var SEPARATOR = 1073741983;
+    var OUT = 1073741984;
+    var OPER = 1073741985;
+    var CLEARAGAIN = 1073741986;
+    var CRSEL = 1073741987;
+    var EXSEL = 1073741988;
+    var KP_00 = 1073742000;
+    var KP_000 = 1073742001;
+    var THOUSANDSSEPARATOR = 1073742002;
+    var DECIMALSEPARATOR = 1073742003;
+    var CURRENCYUNIT = 1073742004;
+    var CURRENCYSUBUNIT = 1073742005;
+    var KP_LEFTPAREN = 1073742006;
+    var KP_RIGHTPAREN = 1073742007;
+    var KP_LEFTBRACE = 1073742008;
+    var KP_RIGHTBRACE = 1073742009;
+    var KP_TAB = 1073742010;
+    var KP_BACKSPACE = 1073742011;
+    var KP_A = 1073742012;
+    var KP_B = 1073742013;
+    var KP_C = 1073742014;
+    var KP_D = 1073742015;
+    var KP_E = 1073742016;
+    var KP_F = 1073742017;
+    var KP_XOR = 1073742018;
+    var KP_POWER = 1073742019;
+    var KP_PERCENT = 1073742020;
+    var KP_LESS = 1073742021;
+    var KP_GREATER = 1073742022;
+    var KP_AMPERSAND = 1073742023;
+    var KP_DBLAMPERSAND = 1073742024;
+    var KP_VERTICALBAR = 1073742025;
+    var KP_DBLVERTICALBAR = 1073742026;
+    var KP_COLON = 1073742027;
+    var KP_HASH = 1073742028;
+    var KP_SPACE = 1073742029;
+    var KP_AT = 1073742030;
+    var KP_EXCLAM = 1073742031;
+    var KP_MEMSTORE = 1073742032;
+    var KP_MEMRECALL = 1073742033;
+    var KP_MEMCLEAR = 1073742034;
+    var KP_MEMADD = 1073742035;
+    var KP_MEMSUBTRACT = 1073742036;
+    var KP_MEMMULTIPLY = 1073742037;
+    var KP_MEMDIVIDE = 1073742038;
+    var KP_PLUSMINUS = 1073742039;
+    var KP_CLEAR = 1073742040;
+    var KP_CLEARENTRY = 1073742041;
+    var KP_BINARY = 1073742042;
+    var KP_OCTAL = 1073742043;
+    var KP_DECIMAL = 1073742044;
+    var KP_HEXADECIMAL = 1073742045;
+    var LCTRL = 1073742048;
+    var LSHIFT = 1073742049;
+    var LALT = 1073742050;
+    var LGUI = 1073742051;
+    var RCTRL = 1073742052;
+    var RSHIFT = 1073742053;
+    var RALT = 1073742054;
+    var RGUI = 1073742055;
+    var MODE = 1073742081;
+    var AUDIONEXT = 1073742082;
+    var AUDIOPREV = 1073742083;
+    var AUDIOSTOP = 1073742084;
+    var AUDIOPLAY = 1073742085;
+    var AUDIOMUTE = 1073742086;
+    var MEDIASELECT = 1073742087;
+    var WWW = 1073742088;
+    var MAIL = 1073742089;
+    var CALCULATOR = 1073742090;
+    var COMPUTER = 1073742091;
+    var AC_SEARCH = 1073742092;
+    var AC_HOME = 1073742093;
+    var AC_BACK = 1073742094;
+    var AC_FORWARD = 1073742095;
+    var AC_STOP = 1073742096;
+    var AC_REFRESH = 1073742097;
+    var AC_BOOKMARKS = 1073742098;
+    var BRIGHTNESSDOWN = 1073742099;
+    var BRIGHTNESSUP = 1073742100;
+    var DISPLAYSWITCH = 1073742101;
+    var KBDILLUMTOGGLE = 1073742102;
+    var KBDILLUMDOWN = 1073742103;
+    var KBDILLUMUP = 1073742104;
+    var EJECT = 1073742105;
+    var SLEEP = 1073742106;
+    var APP1 = 1073742107;
+    var APP2 = 1073742108;
+    var AUDIOREWIND = 1073742109;
+    var AUDIOFASTFORWARD = 1073742110;
+    var SOFTLEFT = 1073742111;
+    var SOFTRIGHT = 1073742112;
+    var CALL = 1073742113;
+    var ENDCALL = 1073742114;
+
+    var NUM_KEYCODES = 512;
+}
+
+#if SDL_PREFIX
+enum abstract SDLKeyMod(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract KeyMod(UInt32) from UInt32 to UInt32 {
+#end
+    var NONE = 0x0000;
+    var LSHIFT = 0x0001;
+    var RSHIFT = 0x0002;
+    var LCTRL = 0x0040;
+    var RCTRL = 0x0080;
+    var LALT = 0x0100;
+    var RALT = 0x0200;
+    var LGUI = 0x0400;
+    var RGUI = 0x0800;
+    var NUM = 0x1000;
+    var CAPS = 0x2000;
+    var MODE = 0x4000;
+    var SCROLL = 0x8000;
+    var CTRL = 192;
+    var SHIFT = 3;
+    var ALT = 768;
+    var GUI = 3072;
+    var RESERVED = 0x8000;
+}
+
+#if SDL_PREFIX
+enum abstract SDLKeyState(UInt8) from UInt8 to UInt8 {
+#else
+enum abstract KeyState(UInt8) from UInt8 to UInt8 {
+#end
+    var RELEASED = 0;
+    var PRESSED = 1;
+}
+
+@:native("SDL_Keysym")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLKeySym {
+#else
+extern class KeySym {
+#end
+	@:native("scancode")
+    #if SDL_PREFIX
+    public var scancode:SDLScanCode; // physical keycode
+    #else
+    public var scancode:ScanCode; // physical keycode
+    #end
+
+	@:native("sym")
+    #if SDL_PREFIX
+    public var sym:SDLKeyCode; // virtual keycode
+    #else
+    public var sym:KeyCode; // virtual keycode
+    #end
+    
+	@:native("mod")
+    #if SDL_PREFIX
+    public var mod:SDLKeyMod; // key mods
+    #else
+    public var mod:KeyMod; // key mods
+    #end
+}
+
+// SDL_mouse.h
+@:native("SDL_Cursor")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawCursor {}
+#else
+extern class RawCursor {}
+#end
+
+#if SDL_PREFIX
+typedef SDLCursor = Pointer<SDLRawCursor>;
+#else
+typedef Cursor = Pointer<RawCursor>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLSystemCursor(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract SystemCursor(UInt32) from UInt32 to UInt32 {
+#end
+	var ARROW = 0;
+    var IBEAM;
+    var WAIT;
+    var CROSSHAIR;
+    var WAITARROW;
+    var SIZENWSE;
+    var SIZENESW;
+    var SIZEWE;
+    var SIZENS;
+    var SIZEALL;
+    var NO;
+    var HAND;
+    var NUM_SYSTEM_CURSORS;
+}
+
+#if SDL_PREFIX
+enum abstract SDLMouseWheelDirection(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract MouseWheelDirection(UInt32) from UInt32 to UInt32 {
+#end
+	var NORMAL = 0;
+	var FLIPPED;
+}
+
+#if SDL_PREFIX
+enum abstract SDLMouseButton(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract MouseButton(UInt32) from UInt32 to UInt32 {
+#end
+	private static inline function mask(x:UInt32) {
+		return (1 << ((x)-1));
+	}
+
+	var LEFT = 1;
+	var MIDDLE;
+	var RIGHT;
+	var X1;
+	var X2;
+	var LMASK = mask(LEFT);
+	var MMASK = mask(MIDDLE);
+	var RMASK = mask(RIGHT);
+	var X1MASK = mask(X1);
+	var X2MASK = mask(X2);
+}
+
+// SDL_guid.h
+@:native("SDL_GUID")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLGUID {
+#else
+extern class GUID {
+#end
+    @:native("data")
+    var data:UInt8;
+}
+
+// SDL_joystick.h
+@:native("SDL_Joystick")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawJoystick {}
+#else
+extern class RawJoystick {}
+#end
+
+#if SDL_PREFIX
+typedef SDLJoystick = Pointer<SDLRawJoystick>;
+#else
+typedef Joystick = Pointer<RawJoystick>;
+#end
+
+@:native("SDL_VirtualJoystickDesc")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawVirtualJoystickDesc {
+#else
+extern class RawVirtualJoystickDesc {
+#end
+    @:native("version")
+    var version:UInt16;
+
+    @:native("type")
+    #if SDL_PREFIX
+    var type:SDLJoystickType;
+    #else
+    var type:JoystickType;
+    #end
+
+    @:native("naxes")
+    var nAxes:UInt16;
+
+    @:native("nbuttons")
+    var nButtons:UInt16;
+
+    @:native("nhats")
+    var nHats:UInt16;
+
+    @:native("vendor_id")
+    var vendorID:UInt16;
+
+    @:native("product_id")
+    var productID:UInt16;
+
+    @:native("padding")
+    var padding:UInt16;
+
+    @:native("button_mask")
+    #if SDL_PREFIX
+    var buttonMask:SDLGameControllerButton;
+    #else
+    var buttonMask:GameControllerButton;
+    #end
+
+    @:native("axis_mask")
+    #if SDL_PREFIX
+    var axisMask:SDLGameControllerAxis;
+    #else
+    var axisMask:GameControllerAxis;
+    #end
+
+    @:native("name")
+    var name:ConstCharStar;
+
+    @:native("userdata")
+    var userdata:RawPointer<cpp.Void>;
+}
+
+#if SDL_PREFIX
+typedef SDLVirtualJoystickDesc = Pointer<SDLRawVirtualJoystickDesc>;
+#else
+typedef VirtualJoystickDesc = Pointer<RawVirtualJoystickDesc>;
+#end
+
+
+#if SDL_PREFIX
+typedef SDLJoystickGUID = SDLGUID;
+#else
+typedef JoystickGUID = GUID;
+#end
+
+#if SDL_PREFIX
+typedef SDLJoystickID = Int;
+#else
+typedef JoystickID = Int;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLJoystickType(UInt32) from UInt32 from UInt32 {
+#else
+enum abstract JoystickType(UInt32) from UInt32 from UInt32 {
+#end
+    var UNKNOWN = 0;
+    var GAMECONTROLLER;
+    var WHEEL;
+    var ARCADE_STICK;
+    var FLIGHT_STICK;
+    var DANCE_PAD;
+    var GUITAR;
+    var DRUM_KIT;
+    var ARCADE_PAD;
+    var THROTTLE;
+}
+
+#if SDL_PREFIX
+enum abstract SDLJoystickPowerLevel(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract JoystickPowerLevel(UInt32) from UInt32 to UInt32 {
+#end
+    var UNKNOWN = -1;
+    /** <= 5% */
+    var EMPTY;
+    /** <= 20% */
+    var LOW;
+    /** <= 70% */
+    var MEDIUM;
+    /** <= 100% */
+    var FULL;
+    var WIRED;
+    var MAX;
+}
+
+#if SDL_PREFIX
+enum abstract SDLJoystickHatPosition(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract JoystickHatPosition(UInt32) from UInt32 to UInt32 {
+#end
+    var CENTERED = 0x00;
+    var UP = 0x01;
+    var RIGHT = 0x02;
+    var DOWN = 0x04;
+    var LEFT = 0x08;
+    var RIGHTUP = (RIGHT | UP);
+    var RIGHTDOWN = (RIGHT | DOWN);
+    var LEFTUP = (LEFT | UP);
+    var LEFTDOWN = (LEFT | DOWN);
+}
+
+// SDL_gamecontroller.h
+@:native("SDL_GameController")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawGameController {}
+#else
+extern class RawGameController {}
+#end
+
+#if SDL_PREFIX
+typedef SDLGameController = Pointer<SDLRawGameController>;
+#else
+typedef GameController = Pointer<RawGameController>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLGameControllerType(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract GameControllerType(UInt32) from UInt32 to UInt32 {
+#end
+    var UNKNOWN = 0;
+    var XBOX360;
+    var XBOXONE;
+    var PS3;
+    var PS4;
+    var NINTENDO_SWITCH_PRO;
+    var VIRTUAL;
+    var PS5;
+    var AMAZON_LUNA;
+    var GOOGLE_STADIA;
+    var NVIDIA_SHIELD;
+    var NINTENDO_SWITCH_JOYCON_LEFT;
+    var NINTENDO_SWITCH_JOYCON_RIGHT;
+    var NINTENDO_SWITCH_JOYCON_PAIR;
+    var MAX;
+}
+
+#if SDL_PREFIX
+enum abstract SDLGameControllerBindType(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract GameControllerBindType(UInt32) from UInt32 to UInt32 {
+#end
+    var NONE = 0;
+    var BUTTON;
+    var AXIS;
+    var HAT;
+}
+
+@:native("SDL_GameControllerButtonBind")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawGameControllerButtonBind {
+#else
+extern class RawGameControllerButtonBind {
+#end
+    @:native("bindType")
+    #if SDL_PREFIX
+    var bindType:SDLGameControllerBindType;
+    #else
+    var bindType:GameControllerBindType;
+    #end
+}
+
+#if SDL_PREFIX
+typedef SDLGameControllerButtonBind = Pointer<SDLRawGameControllerButtonBind>;
+#else
+typedef GameControllerButtonBind = Pointer<RawGameControllerButtonBind>;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLGameControllerAxis(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract GameControllerAxis(UInt32) from UInt32 to UInt32 {
+#end
+    var INVALID = -1;
+    var LEFTX;
+    var LEFTY;
+    var RIGHTX;
+    var RIGHTY;
+    var TRIGGERLEFT;
+    var TRIGGERRIGHT;
+    var MAX;
+}
+
+#if SDL_PREFIX
+enum abstract SDLGameControllerButton(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract GameControllerButton(UInt32) from UInt32 to UInt32 {
+#end
+    var INVALID = -1;
+    var A;
+    var B;
+    var X;
+    var Y;
+    var BACK;
+    var GUIDE;
+    var START;
+    var LEFTSTICK;
+    var RIGHTSTICK;
+    var LEFTSHOULDER;
+    var RIGHTSHOULDER;
+    var DPAD_UP;
+    var DPAD_DOWN;
+    var DPAD_LEFT;
+    var DPAD_RIGHT;
+    var MISC1;    /* Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button */
+    var PADDLE1;  /* Xbox Elite paddle P1 (upper left, facing the back) */
+    var PADDLE2;  /* Xbox Elite paddle P3 (upper right, facing the back) */
+    var PADDLE3;  /* Xbox Elite paddle P2 (lower left, facing the back) */
+    var PADDLE4;  /* Xbox Elite paddle P4 (lower right, facing the back) */
+    var TOUCHPAD; /* PS4/PS5 touchpad button */
+    var MAX;
+}
+
+// SDL_sensor.h
+@:native("SDL_Sensor")
+@:include("vendor/include/Headers.h")
+@:structAccess
+#if SDL_PREFIX
+extern class SDLRawSensor {}
+#else
+extern class RawSensor {}
+#end
+
+#if SDL_PREFIX
+typedef SDLSensor = Pointer<SDLRawSensor>;
+#else
+typedef Sensor = Pointer<RawSensor>;
+#end
+
+
+#if SDL_PREFIX
+typedef SDLSensorID = Int;
+#else
+typedef SensorID = Int;
+#end
+
+#if SDL_PREFIX
+enum abstract SDLSensorType(UInt32) from UInt32 to UInt32 {
+#else
+enum abstract SensorType(UInt32) from UInt32 to UInt32 {
+#end
+    var INVALID = -1;    /**< Returned for an invalid sensor */
+    var UNKNOWN;         /**< Unknown sensor type */
+    var ACCEL;           /**< Accelerometer */
+    var GYRO;            /**< Gyroscope */
+    var ACCEL_L;         /**< Accelerometer for left Joy-Con controller and Wii nunchuk */
+    var GYRO_L;          /**< Gyroscope for left Joy-Con controller */
+    var ACCEL_R;         /**< Accelerometer for right Joy-Con controller */
+    var GYRO_R;          /**< Gyroscope for right Joy-Con controller */
+}
+
+// SDL_touch.h
+
+#if SDL_PREFIX
+typedef SDLTouchID = Int;
+#else
+typedef TouchID = Int;
+#end
+
+#if SDL_PREFIX
+typedef SDLFingerID = Int;
+#else
+typedef FingerID = Int;
+#end
+
+// SDL_gesture.h
+
+#if SDL_PREFIX
+typedef SDLGestureID = Int;
+#else
+typedef GestureID = Int;
+#end
+
+// SDL_timer.h
+
+#if SDL_PREFIX
+typedef SDLTimerCallback = cpp.Callable<(interval:UInt32, param:RawPointer<cpp.Void>) -> UInt32>;
+#else
+typedef TimerCallback = cpp.Callable<(interval:UInt32, param:RawPointer<cpp.Void>) -> UInt32>;
+#end
+
+#if SDL_PREFIX
+typedef SDLTimerID = Int;
+#else
+typedef TimerID = Int;
+#end
