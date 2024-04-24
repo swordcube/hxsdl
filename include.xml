@@ -12,14 +12,6 @@
 		<compilerflag value="-I${haxelib:hxsdl}" />
 	</files>
 
-	<section if="windows HXCPP_M64">
-		<copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64/sdl2" toolid="exe" overwrite="true" />
-	</section>
-
-	<section if="windows HXCPP_M32">
-		<copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x86/sdl2" toolid="exe" overwrite="true" />
-	</section>
-
 	<target id="haxe">
 		<!--64 bit-->
 		<section if="windows HXCPP_M64">
