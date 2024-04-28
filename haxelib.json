@@ -3,10 +3,10 @@
     "url" : "https://github.com/swordcube/hxsdl",
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
-    "description": "A haxelib containing hxcpp bindings for SDL.",
-    "version": "0.3.0",
+    "description": "A haxelib containing hxcpp bindings for SDL 2.30.2.",
+    "version": "0.4.0",
     "classPath": "src/",
-    "releasenote": "Library reworked, which means a lot more functions are ported!\n\nAll enums and structs go in Types.hx, All functions go in SDL.hx",
+    "releasenote": "SDL version bumped up from 2.28.3 to 2.30.2",
     "contributors": ["swordcube"],
     "dependencies": {
         "hxcpp": ""

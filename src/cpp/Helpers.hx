@@ -5,12 +5,16 @@ import cpp.RawPointer;
 import cpp.UInt64;
 
 /**
- * C Arrays can be used somewhat like Haxe arrays,
- * Here's an example:
+ * C Arrays can access and set values at specific
+ * indexes of the array, but you cannot instantiate
+ * one like a normal Haxe array.
+ * 
+ * Example usage:
  * 
  * ```haxe
  * var keyStates:CArray<KeyState> = SDL.getKeyboardStates();
  * trace(keyStates[0]); // Prints out either `true` or `false`.
+ * ```
  */
 typedef CArray<T> = RawPointer<T>;
 
@@ -27,8 +31,8 @@ extern class Helpers {
     }
 
     static inline function malloc<T>(count:Int, starClass:Any):T {
-		return cast untyped __cpp__("malloc({0} * sizeof({1}))", count, starClass);
-	}
+        return cast untyped __cpp__("malloc({0} * sizeof({1}))", count, starClass);
+    }
 
     static inline function sizeof(a:Any):Int {
         return untyped __cpp__("(int)sizeof({0})", a);
@@ -43,10 +47,10 @@ extern class Helpers {
     }
 
     static inline function nativeTrace(toTrace:ConstCharStar, formatParams:cpp.Rest<Any>):Void {
-		return untyped __cpp__("printf({0}, {1})", toTrace, formatParams);
-	}
+        return untyped __cpp__("printf({0}, {1})", toTrace, formatParams);
+    }
 
     static inline function tempPointer<T>(value:Any):T {
-		return untyped __cpp__("&{0}", value);
-	}
+        return untyped __cpp__("&{0}", value);
+    }
 }
