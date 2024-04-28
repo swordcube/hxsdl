@@ -2,7 +2,7 @@
 
 # hxsdl
 
-Haxe/hxcpp @:native bindings for [SDL](https://github.com/libsdl-org/SDL).
+Haxe/hxcpp @:native bindings for [SDL 2.30.2](https://github.com/libsdl-org/SDL).
 
 ---
 
