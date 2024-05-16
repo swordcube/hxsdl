@@ -1,5 +1,5 @@
 /.vscode
 /bin
-/examples/basic-image-test/bin
+/examples/hello-window/bin
 /release.zip
 .DS_Store
