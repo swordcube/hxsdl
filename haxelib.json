@@ -4,9 +4,9 @@
     "license": "MIT",
     "tags": ["haxe", "sdl", "hxsdl", "cpp", "binds", "bindings", "native"],
     "description": "A haxelib containing hxcpp bindings for SDL 2.30.2.",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "classPath": "src/",
-    "releasenote": "Revert static lib files",
+    "releasenote": "Static linking now works correctly",
     "contributors": ["swordcube"],
     "dependencies": {
         "hxcpp": ""

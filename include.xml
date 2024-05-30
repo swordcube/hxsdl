@@ -14,12 +14,6 @@
 		<compilerflag value="-I${haxelib:hxsdl}" />
 	</files>
 
-	<section if="windows">
-		<!-- copy dll to target directory -->
-		<!-- TODO: figure out static linking properly -->
-		<copyFile name="SDL2.dll" from="${haxelib:hxsdl}/vendor/lib/Windows/x64" toolid="exe" overwrite="true" />
-	</section>
-
 	<target id="haxe">
 		<flag value="-fstack-protector" if="mingw" />
 
@@ -31,6 +25,20 @@
 		<!--64 bit only-->
 		<section if="windows" unless="mingw">
 			<lib name="${haxelib:hxsdl}/vendor/lib/Windows/x64/SDL2.lib" />
+			<lib name="kernel32.lib" />
+			<lib name="user32.lib" />
+			<lib name="shell32.lib" />
+			<lib name="gdi32.lib" />
+			<lib name="comctl32.lib" />
+			<lib name="winmm.lib" />
+			<lib name="setupapi.lib" />
+			<lib name="advapi32.lib" />
+			<lib name="ole32.lib" />
+			<lib name="version.lib" />
+			<lib name="imm32.lib" />
+			<lib name="ws2_32.lib" />
+			<lib name="oleaut32.lib" />
+			<lib name="wldap32.lib" />
 		</section>
 
 		<section if="macos">
