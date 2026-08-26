@@ -19,7 +19,7 @@ class Test {
 		);
 
 		var running:Bool = true;
-		var event:Event = SDL.createEventPtr(); // workaround function for making an empty pointer
+		var event:Event = SDL.makeEvent(); // workaround function for making an empty pointer
 
 		while(running) {
 			SDL.pollEvent(event);
