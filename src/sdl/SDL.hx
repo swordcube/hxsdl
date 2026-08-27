@@ -1537,12 +1537,12 @@ extern class SDL {
 
 	@:native("SDL_BlitSurface")
 	static inline function blitSurface(src:#if SDL_PREFIX SDLSurface #else Surface #end, srcRect:#if SDL_PREFIX SDLRectangle #else Rectangle #end, dst:#if SDL_PREFIX SDLSurface #else Surface #end, dstRect:#if SDL_PREFIX SDLRectangle #else Rectangle #end):Int {
-		return untyped __cpp__("SDL_BlitSurface({0}, {1}, {2}, {3})", src, RawConstPointer.addressOf(srcRect), dst, GAYSEX.addressOf(dstRect));
+		return untyped __cpp__("SDL_BlitSurface({0}, {1}, {2}, {3})", src, RawConstPointer.addressOf(srcRect), dst, RawPointer.addressOf(dstRect));
 	}
 
 	@:native("SDL_LowerBlit")
 	static inline function lowerBlit(src:#if SDL_PREFIX SDLSurface #else Surface #end, srcRect:#if SDL_PREFIX SDLRectangle #else Rectangle #end, dst:#if SDL_PREFIX SDLSurface #else Surface #end, dstRect:#if SDL_PREFIX SDLRectangle #else Rectangle #end):Int {
-		return untyped __cpp__("SDL_LowerBlit({0}, {1}, {2}, {3})", src, GAYSEX.addressOf(srcRect), dst, GAYSEX.addressOf(dstRect));
+		return untyped __cpp__("SDL_LowerBlit({0}, {1}, {2}, {3})", src, RawPointer.addressOf(srcRect), dst, RawPointer.addressOf(dstRect));
 	}
 
 	@:native("SDL_SoftStretch")
@@ -1557,12 +1557,12 @@ extern class SDL {
 
 	@:native("SDL_BlitScaled")
 	static inline function blitScaled(src:#if SDL_PREFIX SDLSurface #else Surface #end, srcRect:#if SDL_PREFIX SDLRectangle #else Rectangle #end, dst:#if SDL_PREFIX SDLSurface #else Surface #end, dstRect:#if SDL_PREFIX SDLRectangle #else Rectangle #end):Int {
-		return untyped __cpp__("SDL_BlitScaled({0}, {1}, {2}, {3})", src, RawConstPointer.addressOf(srcRect), dst, GAYSEX.addressOf(dstRect));
+		return untyped __cpp__("SDL_BlitScaled({0}, {1}, {2}, {3})", src, RawConstPointer.addressOf(srcRect), dst, RawPointer.addressOf(dstRect));
 	}
 
 	@:native("SDL_LowerBlitScaled")
 	static inline function lowerBlitScaled(src:#if SDL_PREFIX SDLSurface #else Surface #end, srcRect:#if SDL_PREFIX SDLRectangle #else Rectangle #end, dst:#if SDL_PREFIX SDLSurface #else Surface #end, dstRect:#if SDL_PREFIX SDLRectangle #else Rectangle #end):Int {
-		return untyped __cpp__("SDL_LowerBlitScaled({0}, {1}, {2}, {3})", src, GAYSEX.addressOf(srcRect), dst, GAYSEX.addressOf(dstRect));
+		return untyped __cpp__("SDL_LowerBlitScaled({0}, {1}, {2}, {3})", src, RawPointer.addressOf(srcRect), dst, RawPointer.addressOf(dstRect));
 	}
 
 	@:native("SDL_SetYUVConversionMode")
@@ -1668,7 +1668,7 @@ extern class SDL {
 
 	@:native("SDL_GetKeyboardState")
 	static inline function getKeyboardStates(numKeys:Int):Array<#if SDL_PREFIX SDLKeyState #else KeyState #end> {
-		var sdlKeyStates:CArray<#if SDL_PREFIX SDLKeyState #else KeyState #end> = untyped __cpp__("*SDL_GetKeyboardState({0})", GAYSEX.addressOf(numKeys));
+		var sdlKeyStates:CArray<#if SDL_PREFIX SDLKeyState #else KeyState #end> = untyped __cpp__("*SDL_GetKeyboardState({0})", RawPointer.addressOf(numKeys));
 		var stateCount:Int = Helpers.lengthOfArray(sdlKeyStates);
 
 		var haxeKeyStates:Array<#if SDL_PREFIX SDLKeyState #else KeyState #end> = NativeArray.create(stateCount);
